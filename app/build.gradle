@@ -1,29 +1,141 @@
 apply plugin: 'com.android.application'
+apply from: '../config/quality.gradle'
+
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    def globalConfig = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfig.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfig.getAt("androidBuildToolsVersion")
+
     defaultConfig {
-        applicationId "com.ianarbuckle.dublinbushelper"
-        minSdkVersion 17
-        targetSdkVersion 25
-        versionCode 1
+        applicationId "com.ianarbuckle.fitnow"
+        minSdkVersion globalConfig.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfig.getAt("androidTargetSdkVersion")
+        versionCode calculateVersionCode()
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        def version = versionName + '.' + System.env.BUILD_NUMBER
+        buildConfigField "String", "VERSION", "\"$version\""
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
+
     buildTypes {
         release {
             minifyEnabled false
+            versionNameSuffix calculateVersionNameSuffix()
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            versionNameSuffix calculateVersionNameSuffix()
+        }
+    }
+
+    productFlavors {
+        snapshot {
+            applicationId "com.ianarbuckle.dublinbushelper.snapshot"
+        }
+        staging {
+            applicationId "com.ianarbuckle.dublinbushelper.staging"
+        }
+        production {
+            applicationId "com.ianarbuckle.dublinbushelper"
+        }
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    testCompile 'junit:junit:4.12'
+// Google dependencies
+    def googleDependencies = rootProject.ext.googleDependencies
+    compile googleDependencies.appCompat
+    compile googleDependencies.cardView
+    compile googleDependencies.recyclerView
+    compile googleDependencies.designSupportLib
+    compile googleDependencies.annotationsSupportLib
+    compile googleDependencies.mapUtils
+    compile googleDependencies.googleMaps
+    compile googleDependencies.googleLocation
+    compile googleDependencies.googleGcm
+    compile googleDependencies.googleAnalytics
+    compile googleDependencies.multidexSupportLib
+    compile googleDependencies.gson
+    compile googleDependencies.googleAuth
+    compile googleDependencies.supportV4Lib
+    compile googleDependencies.supportV13Lib
+
+    //Firebase dependencies
+//    compile firebaseDependencies.firebaseDatabase
+//    compile firebaseDependencies.firebaseAuth
+//    compile firebaseDependencies.firebaseConfig
+//    compile firebaseDependencies.firebaseInvite
+//    compile firebaseDependencies.firebaseMessage
+//    compile firebaseDependencies.firebaseCrash
+
+
+    // Third party dependencies
+    def thirdPartyDependencies = rootProject.ext.thirdPartyDependencies
+    compile thirdPartyDependencies.butterKnife
+    apt thirdPartyDependencies.butterKnifeCompiler
+    compile thirdPartyDependencies.okHttp
+    compile thirdPartyDependencies.okHttpUrlConnection
+    compile thirdPartyDependencies.retrofit
+    compile thirdPartyDependencies.glide
+    compile thirdPartyDependencies.joda
+
+    // RxJava
+    compile thirdPartyDependencies.rxJava
+    compile thirdPartyDependencies.rxAndroid
+    compile thirdPartyDependencies.rxBinding
+
+    // Dagger
+    apt thirdPartyDependencies.daggerCompiler
+    compile thirdPartyDependencies.dagger
+
+    // LeakCanary
+    debugCompile thirdPartyDependencies.leakCanaryDebug
+    releaseCompile thirdPartyDependencies.leakCanaryRelease
+
+    // Test
+    def testDependencies = rootProject.ext.testDependencies
+    testCompile testDependencies.junit
+    testCompile testDependencies.mockito
+    testCompile testDependencies.robolectric
+
+    //    instrumentation testing
+    androidTestCompile googleDependencies.annotationsSupportLib
+    androidTestCompile testDependencies.testRunner
+    androidTestCompile testDependencies.espresso
+
+    // Quality
+    provided thirdPartyDependencies.findBugs
+    compile thirdPartyDependencies.javax
 }
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+def calculateVersionNameSuffix() {
+    def buildNumber = System.env.BUILD_NUMBER
+    def buildTimestamp = new Date().format('HH:mm dd/MM/yy')
+    return buildNumber ? " (Build #$buildNumber)" : " (Built $buildTimestamp)"
+}
+
+def calculateVersionCode() {
+    def buildNumber = System.env.BUILD_NUMBER
+    return buildNumber ? buildNumber.toInteger() : 1000000
+}
+
+
