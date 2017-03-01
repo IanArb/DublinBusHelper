@@ -1,4 +1,4 @@
-package com.ianarbuckle.dublinbushelper.map;
+package com.ianarbuckle.dublinbushelper.dublinbus;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,40 +15,43 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
+import com.ianarbuckle.dublinbushelper.utils.PopupDialogFragment;
+
 
 /**
  * Created by Ian Arbuckle on 19/02/2017.
  *
  */
 
-public class BusMapFragment extends BaseFragment implements BusMapView {
+public class DublinBusDublinBusFragment extends BaseFragment implements DublinBusView {
 
-  BusMapPresenterImpl presenter;
+  DublinBusPresenterImpl presenter;
 
   public static Fragment newInstance() {
-    return new BusMapFragment();
+    return new DublinBusDublinBusFragment();
   }
-
 
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_bus_map, container, false);
+    return inflater.inflate(R.layout.fragment_map, container, false);
   }
 
   @Override
   protected void initPresenter() {
-    presenter = new BusMapPresenterImpl(this);
+    presenter = new DublinBusPresenterImpl(this);
   }
 
   @Override
   public void onStart() {
     super.onStart();
     presenter.checkLocationPermission(this);
+    presenter.fetchStops();
     initMap();
   }
 
@@ -80,8 +83,7 @@ public class BusMapFragment extends BaseFragment implements BusMapView {
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     switch (requestCode) {
       case Constants.PERMISSION_REQUEST_ACCESS_LOCATION: {
-        if (grantResults.length > 0
-            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
           presenter.onRequestPermission();
         }
       }
@@ -89,27 +91,41 @@ public class BusMapFragment extends BaseFragment implements BusMapView {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 
+  @Override
+  public void showProgress() {
+    showProgressDialog();
+  }
 
+  @Override
+  public void hideProgress() {
+    hideProgressDialog();
+  }
 
-  private void showErrorPermissionsDialog() {
-    FragmentTransaction fragmentTransaction = initFragmentManager();
-    DialogFragment errorDialog = ErrorDialogFragment.newInstance(R.string.common_permission_required);
-    fragmentTransaction.add(errorDialog, Constants.ERROR_DIALOG_FRAGMENT);
-    errorDialog.show(fragmentTransaction, Constants.ERROR_DIALOG_FRAGMENT);
+  @Override
+  public void showErrorMessage() {
+    FragmentTransaction fragmentTransaction = getFragmentTransaction();
+    DialogFragment dialogFragment = ErrorDialogFragment.newInstance(R.string.error_dialog_title);
+    dialogFragment.show(fragmentTransaction, Constants.DIALOG_FRAGMENT);
+  }
+
+  @Override
+  public void showPopupFragment(String displayStopId, String shortName, String shortNameLocalised, String lastUpdate, String routes) {
+    FragmentTransaction fragmentTransaction = getFragmentTransaction();
+    DialogFragment dialogFragment = PopupDialogFragment.newInstance(displayStopId, shortName, shortNameLocalised, lastUpdate, routes);
+    dialogFragment.onCreateAnimation(R.anim.slide_up, true, R.anim.slide_down);
+    dialogFragment.show(fragmentTransaction, Constants.POPUP_FRAGMENT);
   }
 
   @NonNull
-  private FragmentTransaction initFragmentManager() {
-    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-    Fragment fragment = getFragmentManager().findFragmentByTag(Constants.ERROR_DIALOG_FRAGMENT);
+  private FragmentTransaction getFragmentTransaction() {
+    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+    Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(Constants.DIALOG_FRAGMENT);
 
-    if (fragment != null && fragment.isAdded()) {
+    if (fragment != null) {
       fragmentTransaction.remove(fragment);
     }
 
     fragmentTransaction.addToBackStack(null);
-    fragmentTransaction.commitAllowingStateLoss();
     return fragmentTransaction;
   }
-
 }
