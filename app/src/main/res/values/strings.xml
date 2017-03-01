@@ -3,4 +3,17 @@
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
     <string name="log_out">Log out</string>
+    <string name="common_ok">OK</string>
+    <string name="common_permission_required">Please consider turning on location permissions to access google maps features</string>
+
+    <string name="google_maps_key" translatable="false">AIzaSyDw40KqdGNV_6FEqw5xlSNbqDKahUK1y6s</string>
+    <string name="error_dialog_title">Oops.. something went wrong!</string>
+    <string name="common_loading">Loading..</string>
+    <string name="tab_title_dublin_bus">Dublin Bus</string>
+    <string name="tab_title_luas">Luas</string>
+    <string name="tab_title_favourites">Favourites</string>
+    <string name="dismiss_content_desc">dismiss</string>
+    <string name="routes_content_desc">routes</string>
+    <string name="time_content_desc">time</string>
+    <string name="subscribe_content_desc">subscribe</string>
 </resources>

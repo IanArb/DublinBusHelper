@@ -1,5 +1,6 @@
 package com.ianarbuckle.dublinbushelper;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.ianarbuckle.dublinbushelper.map.BusMapFragment;
+import com.ianarbuckle.dublinbushelper.dublinbus.DublinBusDublinBusFragment;
 import com.ianarbuckle.dublinbushelper.utils.UiUtils;
 
 import butterknife.BindView;
@@ -37,6 +38,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
   @Nullable
   @BindView(R.id.drawer_layout)
   DrawerLayout drawerLayout;
+
+  protected ProgressDialog progressDialog;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     switch (itemId) {
       case R.id.nav_home:
-        BusMapFragment.newInstance();
+        DublinBusDublinBusFragment.newInstance();
         break;
       case R.id.nav_favourites:
         BlankFragment.newInstance();

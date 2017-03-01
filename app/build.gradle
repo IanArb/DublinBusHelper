@@ -83,6 +83,7 @@ dependencies {
     compile thirdPartyDependencies.okHttp
     compile thirdPartyDependencies.okHttpUrlConnection
     compile thirdPartyDependencies.retrofit
+    compile thirdPartyDependencies.retrofitGson
     compile thirdPartyDependencies.glide
     compile thirdPartyDependencies.joda
 

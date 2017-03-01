@@ -10,7 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
-import com.ianarbuckle.dublinbushelper.map.BusMapFragment;
+import com.ianarbuckle.dublinbushelper.dublinbus.DublinBusDublinBusFragment;
 
 import butterknife.BindView;
 
@@ -44,10 +44,11 @@ public class PagerActivity extends BaseActivity {
 
   private void initTabLayout() {
     assert tabLayout != null;
-    tabLayout.addTab(tabLayout.newTab().setText("Map"));
-    tabLayout.addTab(tabLayout.newTab().setText("Favourites"));
-    tabLayout.addTab(tabLayout.newTab().setText("Updates"));
+    tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_title_dublin_bus));
+    tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_title_luas));
+    tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_title_favourites));
   }
+
   private void initPager() {
     assert tabLayout != null;
     final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -82,7 +83,7 @@ public class PagerActivity extends BaseActivity {
     public Fragment getItem(int position) {
       switch (position) {
         case 0 :
-          return BusMapFragment.newInstance();
+          return DublinBusDublinBusFragment.newInstance();
         case 1 :
           return BlankFragment.newInstance();
         case 2 :

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Iompar Helper</string>
+    <string name="home">Baile</string>
+    <string name="favorite">Favorite</string>
+    <string name="log_out">Logáil Amach</string>
+    <string name="common_ok">OK</string>
+    <string name="common_permission_required">Le do thoil
+mheas casadh ar suíomh ceadanna chun rochtai google léarscáileanna bailte fearainn</string>
+
+    <string name="google_maps_key" translatable="false">AIzaSyDw40KqdGNV_6FEqw5xlSNbqDKahUK1y6s</string>
+    <string name="error_dialog_title">Rud chuaigh mícheart!</string>
+    <string name="common_loading">Luchtaigh..</string>
+    <string name="tab_title_dublin_bus">Bus Átha Cliath</string>
+    <string name="tab_title_luas">Luas</string>
+    <string name="tab_title_favourites">Favourites</string>
+</resources>
