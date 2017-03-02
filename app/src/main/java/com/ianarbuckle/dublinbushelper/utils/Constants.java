@@ -17,4 +17,5 @@ public class Constants {
   public static final String ROUTES_KEY = "routes";
 
   public static final String DEBUG_LOGGER = "TAG";
+  public static final String ERROR_DIALOG_FRAGMENT = "errorDialog";
 }
