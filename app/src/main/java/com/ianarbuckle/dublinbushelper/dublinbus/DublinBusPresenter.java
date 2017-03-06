@@ -14,7 +14,7 @@ import com.ianarbuckle.dublinbushelper.models.busstopinfo.Result;
 public interface DublinBusPresenter {
   boolean checkLocationPermission(Fragment fragment);
   void onRequestPermission();
+  void initMap(GoogleMap googleMap);
   void fetchStops();
   MarkerItemModel getMarkerItems(Result result);
-  void initMap(GoogleMap googleMap);
 }
