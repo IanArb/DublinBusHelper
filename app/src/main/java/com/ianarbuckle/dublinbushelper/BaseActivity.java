@@ -1,6 +1,8 @@
 package com.ianarbuckle.dublinbushelper;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,8 +12,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.ianarbuckle.dublinbushelper.dublinbus.DublinBusDublinBusFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.ianarbuckle.dublinbushelper.dublinbus.DublinBusFragment;
+import com.ianarbuckle.dublinbushelper.utils.CircleTransform;
+import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.UiUtils;
 
 import butterknife.BindView;
@@ -56,17 +65,50 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     initNavView();
   }
 
+  private void initNavView() {
+    if (navigationView != null) {
+      navigationView.setNavigationItemSelectedListener(this);
+      View headerView = navigationView.getHeaderView(0);
+
+      TextView nameTv = (TextView) headerView.findViewById(R.id.displayName);
+      TextView emailTv = (TextView) headerView.findViewById(R.id.email);
+      ImageView imageView = (ImageView) headerView.findViewById(R.id.img_profile);
+
+      setHeaderValues(headerView, nameTv, emailTv, imageView);
+
+    }
+  }
+
+  private void setHeaderValues(View headerView, TextView nameTv, TextView emailTv, ImageView imageView) {
+    SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+    if(sharedPreferences != null) {
+      String name = sharedPreferences.getString(Constants.NAME_KEY, Constants.DEFAULT_KEY);
+      String email = sharedPreferences.getString(Constants.EMAIL_KEY, Constants.DEFAULT_KEY);
+      String photo = sharedPreferences.getString(Constants.PHOTO_KEY, Constants.DEFAULT_KEY);
+
+      nameTv.setText(name);
+      emailTv.setText(email);
+
+      Glide.with(getApplicationContext()).load(photo)
+          .crossFade()
+          .thumbnail(0.5f)
+          .bitmapTransform(new CircleTransform(getApplicationContext()))
+          .diskCacheStrategy(DiskCacheStrategy.ALL)
+          .into(imageView);
+    }
+
+    ImageView bgImage = (ImageView) headerView.findViewById(R.id.img_header_bg);
+
+    Glide.with(getApplicationContext()).load(Constants.HEADER_URL)
+        .crossFade()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(bgImage);
+  }
+
   protected abstract void initLayout();
 
   private void butterKnifeUnbinder() {
     unbinder = ButterKnife.bind(this);
-  }
-
-  private void initNavView() {
-    if(navigationView != null) {
-      navigationView.setNavigationItemSelectedListener(this);
-
-    }
   }
 
   protected void initToolbar() {
@@ -87,7 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     switch (itemId) {
       case R.id.nav_home:
-        DublinBusDublinBusFragment.newInstance();
+        DublinBusFragment.newInstance();
         break;
       case R.id.nav_favourites:
         BlankFragment.newInstance();

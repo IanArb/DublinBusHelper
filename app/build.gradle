@@ -68,12 +68,12 @@ dependencies {
     compile googleDependencies.supportV13Lib
 
     //Firebase dependencies
-//    compile firebaseDependencies.firebaseDatabase
-//    compile firebaseDependencies.firebaseAuth
-//    compile firebaseDependencies.firebaseConfig
-//    compile firebaseDependencies.firebaseInvite
-//    compile firebaseDependencies.firebaseMessage
-//    compile firebaseDependencies.firebaseCrash
+    compile firebaseDependencies.firebaseDatabase
+    compile firebaseDependencies.firebaseAuth
+    compile firebaseDependencies.firebaseConfig
+    compile firebaseDependencies.firebaseInvite
+    compile firebaseDependencies.firebaseMessage
+    compile firebaseDependencies.firebaseCrash
 
 
     // Third party dependencies
@@ -138,5 +138,7 @@ def calculateVersionCode() {
     def buildNumber = System.env.BUILD_NUMBER
     return buildNumber ? buildNumber.toInteger() : 1000000
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 

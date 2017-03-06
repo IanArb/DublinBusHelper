@@ -1,10 +1,10 @@
-package com.ianarbuckle.dublinbushelper.dublinbus;
+package com.ianarbuckle.dublinbushelper.luas.luasmap;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,25 +15,28 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
+import com.ianarbuckle.dublinbushelper.luas.LuasPresenterImpl;
+import com.ianarbuckle.dublinbushelper.luas.LuasView;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
-import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
-import com.ianarbuckle.dublinbushelper.utils.PopupDialogFragment;
 
+import butterknife.BindView;
 
 /**
- * Created by Ian Arbuckle on 19/02/2017.
+ * Created by Ian Arbuckle on 02/03/2017.
  *
  */
 
-public class DublinBusDublinBusFragment extends BaseFragment implements DublinBusView {
+public class LuasMapFragment extends BaseFragment implements LuasView {
 
-  DublinBusPresenterImpl presenter;
+  LuasPresenterImpl presenter;
+
+  @BindView(R.id.tabs)
+  TabLayout tabLayout;
 
   public static Fragment newInstance() {
-    return new DublinBusDublinBusFragment();
+    return new LuasMapFragment();
   }
 
   @Nullable
@@ -44,15 +47,21 @@ public class DublinBusDublinBusFragment extends BaseFragment implements DublinBu
 
   @Override
   protected void initPresenter() {
-    presenter = new DublinBusPresenterImpl(this);
+    presenter = new LuasPresenterImpl(this);
   }
 
   @Override
   public void onStart() {
     super.onStart();
     presenter.checkLocationPermission(this);
-    presenter.fetchStops();
     initMap();
+    initTabLayout();
+  }
+
+  private void initTabLayout() {
+    assert tabLayout != null;
+    tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_title_dublin_bus));
+    tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_title_luas));
   }
 
   private void initMap() {
@@ -70,7 +79,7 @@ public class DublinBusDublinBusFragment extends BaseFragment implements DublinBu
   }
 
   private SupportMapFragment initFragment(SupportMapFragment supportMapFragment) {
-    if (supportMapFragment == null) {
+    if(supportMapFragment == null) {
       FragmentManager fragmentManager = getFragmentManager();
       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
       supportMapFragment = SupportMapFragment.newInstance();
@@ -89,43 +98,5 @@ public class DublinBusDublinBusFragment extends BaseFragment implements DublinBu
       }
     }
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-  }
-
-  @Override
-  public void showProgress() {
-    showProgressDialog();
-  }
-
-  @Override
-  public void hideProgress() {
-    hideProgressDialog();
-  }
-
-  @Override
-  public void showErrorMessage() {
-    FragmentTransaction fragmentTransaction = getFragmentTransaction();
-    DialogFragment dialogFragment = ErrorDialogFragment.newInstance(R.string.error_dialog_title);
-    dialogFragment.show(fragmentTransaction, Constants.DIALOG_FRAGMENT);
-  }
-
-  @Override
-  public void showPopupFragment(String displayStopId, String shortName, String shortNameLocalised, String lastUpdate, String routes) {
-    FragmentTransaction fragmentTransaction = getFragmentTransaction();
-    DialogFragment dialogFragment = PopupDialogFragment.newInstance(displayStopId, shortName, shortNameLocalised, lastUpdate, routes);
-    dialogFragment.onCreateAnimation(R.anim.slide_up, true, R.anim.slide_down);
-    dialogFragment.show(fragmentTransaction, Constants.POPUP_FRAGMENT);
-  }
-
-  @NonNull
-  private FragmentTransaction getFragmentTransaction() {
-    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-    Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(Constants.DIALOG_FRAGMENT);
-
-    if (fragment != null) {
-      fragmentTransaction.remove(fragment);
-    }
-
-    fragmentTransaction.addToBackStack(null);
-    return fragmentTransaction;
   }
 }

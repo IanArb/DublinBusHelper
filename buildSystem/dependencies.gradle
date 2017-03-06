@@ -14,7 +14,7 @@ ext {
     androidMinSdkVersion = 19
 
     // Google versions
-    androidSupportLibVersion = '25.1.1'
+    androidSupportLibVersion = '25.2.0'
     googlePlayServicesVersion = '10.0.1'
     mapUtilsVersion = '0.3.4'
     multidexSupportVersion = '1.0.1'
@@ -71,14 +71,14 @@ ext {
             googleAuth           : "com.google.android.gms:play-services-auth:${googleAuthVersion}",
     ]
 
-//    firebaseDependencies = [
-//            firebaseDatabase     : "com.google.firebase:firebase-database:${firebaseDatabaseVersion}",
-//            firebaseAuth         : "com.google.firebase:firebase-auth:${firebaseAuthVersion}",
-//            firebaseConfig       : "com.google.firebase:firebase-config:${firebaseConfigVersion}",
-//            firebaseInvite       : "com.google.android.gms:play-services-appinvite:${firebaseInviteVersion}",
-//            firebaseMessage      : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
-//            firebaseCrash        : "com.google.firebase:firebase-crash:${firebaseCrashVersion}"
-//    ]
+    firebaseDependencies = [
+            firebaseDatabase     : "com.google.firebase:firebase-database:${firebaseDatabaseVersion}",
+            firebaseAuth         : "com.google.firebase:firebase-auth:${firebaseAuthVersion}",
+            firebaseConfig       : "com.google.firebase:firebase-config:${firebaseConfigVersion}",
+            firebaseInvite       : "com.google.android.gms:play-services-appinvite:${firebaseInviteVersion}",
+            firebaseMessage      : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
+            firebaseCrash        : "com.google.firebase:firebase-crash:${firebaseCrashVersion}"
+    ]
 
     thirdPartyDependencies = [
             butterKnife        : "com.jakewharton:butterknife:${butterKnifeVersion}",

@@ -1,5 +1,7 @@
 package com.ianarbuckle.dublinbushelper;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,7 +12,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
-import com.ianarbuckle.dublinbushelper.dublinbus.DublinBusDublinBusFragment;
+import com.ianarbuckle.dublinbushelper.dublinbus.DublinBusFragment;
+import com.ianarbuckle.dublinbushelper.luas.LuasFragment;
 
 import butterknife.BindView;
 
@@ -27,6 +30,10 @@ public class PagerActivity extends BaseActivity {
   @Nullable
   @BindView(R.id.tabs)
   TabLayout tabLayout;
+
+  public static Intent newIntent(Context context) {
+    return new Intent(context, PagerActivity.class);
+  }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,9 +90,9 @@ public class PagerActivity extends BaseActivity {
     public Fragment getItem(int position) {
       switch (position) {
         case 0 :
-          return DublinBusDublinBusFragment.newInstance();
+          return DublinBusFragment.newInstance();
         case 1 :
-          return BlankFragment.newInstance();
+          return LuasFragment.newInstance();
         case 2 :
           return BlankFragment.newInstance();
         default:
