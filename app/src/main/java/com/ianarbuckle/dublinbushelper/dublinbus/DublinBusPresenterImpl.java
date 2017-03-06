@@ -17,6 +17,7 @@ import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,13 +85,17 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
     for(final Result results : dublinBusList) {
       for(final Operator operators : results.getOperators()) {
         boolean isDublinBus = operators.getName().equals("bac");
-        if(isDublinBus) {
-          MarkerItemModel items = getMarkerItems(results);
-          clusterManager.getClusterMarkerCollection().getMarkers();
-          clusterManager.addItem(items);
-          setOnClickListener();
-        }
+        getType(results, isDublinBus);
       }
+    }
+  }
+
+  private void getType(Result results, boolean isOperator) {
+    if(isOperator) {
+      MarkerItemModel items = getMarkerItems(results);
+      clusterManager.getClusterMarkerCollection().getMarkers();
+      clusterManager.addItem(items);
+      setOnClickListener();
     }
   }
 
@@ -101,7 +106,11 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
     LatLng latLng = new LatLng(latitude, longitude);
     String displaystopid = result.getDisplaystopid();
     String shortname = result.getShortname();
-    String shortnamelocalized = result.getShortnamelocalized();
+    boolean isIrish = Locale.getDefault().getLanguage().equals("ga_IE");
+    String shortnamelocalized = null;
+    if(isIrish) {
+      shortnamelocalized = result.getShortnamelocalized();
+    }
     String lastupdated = result.getLastupdated();
     String list = null;
     for (Operator operator : result.getOperators()) {
