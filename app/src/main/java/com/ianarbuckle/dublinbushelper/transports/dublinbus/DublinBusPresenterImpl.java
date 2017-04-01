@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
-import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelperImpl;
 import com.ianarbuckle.dublinbushelper.models.MarkerItemModel;
@@ -15,7 +14,6 @@ import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
 import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
 import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
-import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,33 +33,22 @@ import retrofit2.Response;
 public class DublinBusPresenterImpl implements DublinBusPresenter {
 
   private DublinBusView view;
-  private DublinBusFragmentView fragmentView;
-
-  private StopInformation stopInformation;
-  private List<Result> dublinBusList;
-
-  private LocationHelper locationHelper;
-  private ClusterManager<MarkerItemModel> clusterManager;
-
-  private DatabaseHelper databaseHelper;
 
   RTPIServiceAPI serviceAPI;
 
-  public DublinBusPresenterImpl(DatabaseHelper databaseHelper) {
-    this.databaseHelper = databaseHelper;
+  private StopInformation stopInformation;
+
+  private List<Result> dublinBusList;
+
+  private LocationHelper locationHelper;
+
+  private ClusterManager<MarkerItemModel> clusterManager;
+
+  public DublinBusPresenterImpl(DublinBusView view) {
+    this.view = view;
     stopInformation = new StopInformation();
     dublinBusList = new ArrayList<>();
-  }
-
-  @Override
-  public void setView(DublinBusView view) {
-    this.view = view;
     locationHelper = new LocationHelperImpl(view.getContext());
-  }
-
-  @Override
-  public void setFragmentView(DublinBusFragmentView view) {
-    this.fragmentView = view;
   }
 
   @Override
@@ -111,9 +98,9 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
     }
   }
 
-  private MarkerItemModel getMarkerItems(Result result) {
-    float latitude = result.getLatitude();
-    float longitude = result.getLongitude();
+  public MarkerItemModel getMarkerItems(Result result) {
+    double latitude = result.getLatitude();
+    double longitude = result.getLongitude();
     LatLng latLng = new LatLng(latitude, longitude);
     String displaystopid = result.getStopid();
     String shortname = result.getShortname();
@@ -124,12 +111,12 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
       view.setLocalVisibility();
     }
     String lastupdated = result.getLastupdated();
-    String routes = null;
+    String list = null;
     for (Operator operator : result.getOperators()) {
-      routes = operator.getRoutes().toString();
+      list = operator.getRoutes().toString();
     }
 
-    return new MarkerItemModel(latLng, displaystopid, shortname, shortnamelocalized, lastupdated, routes);
+    return new MarkerItemModel(latLng, displaystopid, shortname, shortnamelocalized, lastupdated, list);
   }
 
   private void setOnClickListener() {
@@ -141,10 +128,7 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
         String shortNameLocalised = markerItemModel.getShortNameLocalised();
         String lastUpdated = markerItemModel.getLastUpdated();
         String routes = markerItemModel.getRoutes();
-        LatLng latLng = markerItemModel.getPosition();
-        float latitude = ((float) latLng.latitude);
-        float longitude = ((float) latLng.longitude);
-        view.showPopupFragment(displayStopId, shortName, shortNameLocalised, lastUpdated, routes, latitude, longitude);
+        view.showPopupFragment(displayStopId, shortName, shortNameLocalised, lastUpdated, routes);
         return false;
       }
     });
@@ -161,19 +145,7 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
   }
 
   @Override
-  public void sendToDatabase(String lastUpdate, String stopid, String name, String routes, float latitude, float longtitude) {
-    if(!StringUtils.isStringEmptyorNull(lastUpdate, stopid, name, routes)) {
-      databaseHelper.sendFavouriteStopToDatabase(lastUpdate, stopid, name, routes, latitude, longtitude);
-      fragmentView.setSuccessMessage();
-    } else {
-      fragmentView.setErrorMessage();
-    }
-
-  }
-
-  @Override
   public void onRequestPermission() {
     locationHelper.onRequestPermission();
   }
-
 }

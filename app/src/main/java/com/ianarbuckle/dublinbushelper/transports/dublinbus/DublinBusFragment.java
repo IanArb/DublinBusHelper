@@ -11,8 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -21,8 +19,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
-import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 
@@ -40,12 +36,6 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
   @BindView(R.id.tvShortnameLocal)
   TextView tvShortnameLocal;
 
-  @BindView(R.id.rlProgress)
-  RelativeLayout rlProgress;
-
-  @BindView(R.id.progressBar)
-  ProgressBar progressBar;
-
   DublinBusPresenterImpl presenter;
 
   public static Fragment newInstance() {
@@ -60,9 +50,7 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
 
   @Override
   protected void initPresenter() {
-    DatabaseHelper databaseHelper = TransportHelperApplication.getAppInstance().getDatabaseHelper();
-    presenter = new DublinBusPresenterImpl(databaseHelper);
-    presenter.setView(this);
+    presenter = new DublinBusPresenterImpl(this);
   }
 
   @Override
@@ -111,17 +99,12 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
 
   @Override
   public void showProgress() {
-    if(progressBar != null) {
-      progressBar.setProgress(100);
-    }
+    showProgressDialog();
   }
 
   @Override
   public void hideProgress() {
-    if(progressBar != null) {
-      rlProgress.setVisibility(View.GONE);
-      progressBar.setVisibility(View.GONE);
-    }
+    hideProgressDialog();
   }
 
   @Override
@@ -132,9 +115,9 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
   }
 
   @Override
-  public void showPopupFragment(String displayStopId, String shortName, String shortNameLocalised, String lastUpdate, String routes, float lat, float lon) {
+  public void showPopupFragment(String displayStopId, String shortName, String shortNameLocalised, String lastUpdate, String routes) {
     FragmentTransaction fragmentTransaction = getFragmentTransaction();
-    DialogFragment dialogFragment = PopupDialogFragment.newInstance(displayStopId, shortName, shortNameLocalised, lastUpdate, routes, lat, lon);
+    DialogFragment dialogFragment = PopupDialogFragment.newInstance(displayStopId, shortName, shortNameLocalised, lastUpdate, routes);
     dialogFragment.onCreateAnimation(R.anim.slide_up, true, R.anim.slide_down);
     dialogFragment.show(fragmentTransaction, Constants.POPUP_FRAGMENT);
   }
