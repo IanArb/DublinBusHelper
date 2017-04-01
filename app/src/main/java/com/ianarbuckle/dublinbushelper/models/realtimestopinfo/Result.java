@@ -1,5 +1,5 @@
 
-package com.ianarbuckle.dublinbushelper.models.realtimebusstopinfo;
+package com.ianarbuckle.dublinbushelper.models.realtimestopinfo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,5 +1,5 @@
 
-package com.ianarbuckle.dublinbushelper.models.busstopinfo;
+package com.ianarbuckle.dublinbushelper.models.stopinfo;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

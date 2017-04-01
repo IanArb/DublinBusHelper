@@ -1,11 +1,11 @@
 
-package com.ianarbuckle.dublinbushelper.models.realtimebusstopinfo;
+package com.ianarbuckle.dublinbushelper.models.stopinfo;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RealTimeBusInfo {
+public class StopInformation {
 
     @SerializedName("errorcode")
     @Expose
@@ -16,9 +16,6 @@ public class RealTimeBusInfo {
     @SerializedName("numberofresults")
     @Expose
     private Integer numberofresults;
-    @SerializedName("stopid")
-    @Expose
-    private String stopid;
     @SerializedName("timestamp")
     @Expose
     private String timestamp;
@@ -48,14 +45,6 @@ public class RealTimeBusInfo {
 
     public void setNumberofresults(Integer numberofresults) {
         this.numberofresults = numberofresults;
-    }
-
-    public String getStopid() {
-        return stopid;
-    }
-
-    public void setStopid(String stopid) {
-        this.stopid = stopid;
     }
 
     public String getTimestamp() {
