@@ -18,15 +18,6 @@ public class PermissionsManager {
         == PackageManager.PERMISSION_GRANTED;
   }
 
-  public static boolean isCameraPermissionGranted(Context context) {
-    return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-        == PackageManager.PERMISSION_GRANTED;
-  }
-
-  public static boolean shouldShowRationale(Fragment fragment, String permission) {
-      return fragment.shouldShowRequestPermissionRationale(permission);
-  }
-
   public static void requestPermissions(Fragment fragment, int requestCode, String... permissions) {
     fragment.requestPermissions(permissions, requestCode);
   }

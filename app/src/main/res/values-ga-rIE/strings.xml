@@ -14,6 +14,7 @@ mheas casadh ar suíomh ceadanna chun rochtai google léarscáileanna bailte fea
     <string name="tab_title_dublin_bus">Bus Átha Cliath</string>
     <string name="tab_title_luas">Luas</string>
     <string name="tab_title_favourites">Favourites</string>
+    <string name="tab_title_irish_rail">Irish Iarnród</string>
 
     <string name="hint_email">Ríomhphost</string>
     <string name="hint_username">Ainm úsáideora</string>

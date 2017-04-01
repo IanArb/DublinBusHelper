@@ -20,4 +20,6 @@ public class NetworkClient {
     NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
     return networkInfo != null && networkInfo.isConnectedOrConnecting();
   }
+
+
 }

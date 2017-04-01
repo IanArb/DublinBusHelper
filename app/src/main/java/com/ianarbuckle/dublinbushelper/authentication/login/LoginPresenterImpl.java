@@ -75,7 +75,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     String username = firebaseAuthHelper.getUserDisplayName();
     String email = firebaseAuthHelper.getUserEmail();
     String photoUrl = firebaseAuthHelper.getUserPhoto();
-    SharedPreferences sharedPreferences = view.getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = view.getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.putString(Constants.NAME_KEY, username);
     editor.putString(Constants.EMAIL_KEY, email);

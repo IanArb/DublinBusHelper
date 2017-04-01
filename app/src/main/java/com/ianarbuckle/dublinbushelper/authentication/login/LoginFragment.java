@@ -20,7 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
-import com.ianarbuckle.dublinbushelper.PagerActivity;
+import com.ianarbuckle.dublinbushelper.transports.TransportsPagerActivity;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
@@ -179,6 +179,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
   @Override
   public void onLogin() {
     presenter.setSharedPreferences();
-    startActivity(PagerActivity.newIntent(getContext()));
+    startActivity(TransportsPagerActivity.newIntent(getContext()));
   }
 }

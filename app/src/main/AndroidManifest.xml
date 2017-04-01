@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PagerActivity"
+            android:name=".transports.TransportsPagerActivity"
             android:parentActivityName=".authentication.AuthPagerActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -45,6 +45,10 @@
             android:name=".authentication.AuthPagerActivity"
             android:parentActivityName=".SplashActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".transports.schedules.ScheduleActivity"
+                  android:parentActivityName=".transports.TransportsPagerActivity"
+                  android:screenOrientation="portrait"/>
 
     </application>
 

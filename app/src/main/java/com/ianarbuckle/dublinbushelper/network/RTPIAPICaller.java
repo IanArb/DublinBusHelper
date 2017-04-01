@@ -1,5 +1,7 @@
 package com.ianarbuckle.dublinbushelper.network;
 
+import com.ianarbuckle.dublinbushelper.utils.Constants;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -10,11 +12,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RTPIAPICaller {
 
-  private static final String BASE_URL = "https://data.dublinked.ie/";
-
   public static RTPIServiceAPI getRTPIServiceAPI() {
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(Constants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build();
 

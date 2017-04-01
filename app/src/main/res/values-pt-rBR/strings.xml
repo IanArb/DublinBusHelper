@@ -12,6 +12,7 @@
     <string name="common_loading">Carregando..</string>
     <string name="tab_title_dublin_bus">Dublin Bus</string>
     <string name="tab_title_luas">Luas</string>
+    <string name="tab_title_irish_rail">Irish Rail</string>
     <string name="tab_title_favourites">Favoritos</string>
     <string name="dismiss_content_desc">Dispensar</string>
     <string name="routes_content_desc">Rotas</string>

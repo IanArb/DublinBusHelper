@@ -10,6 +10,7 @@
     <string name="common_loading">Loading..</string>
     <string name="tab_title_dublin_bus">Dublin Bus</string>
     <string name="tab_title_luas">Luas</string>
+    <string name="tab_title_irish_rail">Irish Rail</string>
     <string name="tab_title_favourites">Favourites</string>
     <string name="dismiss_content_desc">dismiss</string>
     <string name="routes_content_desc">routes</string>
@@ -21,6 +22,15 @@
     <string name="welcome_message">"Welcome "</string>
     <string name="message_guest_user">Continue as guest user</string>
     <string name="message_forgot_password">Forgot your password?</string>
+    <string name="luas_green">Green line</string>
+    <string name="luas_red">Red line</string>
+    <string name="commuter_label">Commuter</string>
+    <string name="dart_label">DART</string>
+    <string name="dart_commuter_label">Commuter &amp; DART</string>
+    <string name="intercity_label">Intercity</string>
+    <string name="intercity_dart_label">DART &amp; Intercity</string>
+    <string name="intercity_dart_commuter_label">Commuter, DART &amp; Intercity</string>
+    <string name="commuter_intercity_label">Commuter &amp; Intercity</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_username">Username</string>
@@ -42,4 +52,6 @@
     <string name="common_error_username_invalid_message">Username should be longer than 2 characters</string>
     <string name="common_message_unsuccess">Login failed, please check your email or password again</string>
     <string name="common_google_failure">Google Sign In Failed. Check your internet connection</string>
+    <string name="show_schedule_btn_title">SHOW SCHEDULE</string>
+    <string name="alarm_content_desc">alarm</string>
 </resources>

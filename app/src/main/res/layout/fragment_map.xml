@@ -9,7 +9,6 @@
         android:id="@+id/fragment_map"
         layout="@layout/layout_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/radioGroup"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

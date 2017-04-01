@@ -1,6 +1,5 @@
 package com.ianarbuckle.dublinbushelper;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.ianarbuckle.dublinbushelper.dublinbus.DublinBusFragment;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.DublinBusFragment;
 import com.ianarbuckle.dublinbushelper.utils.CircleTransform;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.UiUtils;
@@ -38,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
   @Nullable
   @BindView(R.id.toolbar)
-  Toolbar toolbar;
+  protected Toolbar toolbar;
 
   @Nullable
   @BindView(R.id.nav_view)
@@ -46,9 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
   @Nullable
   @BindView(R.id.drawer_layout)
-  DrawerLayout drawerLayout;
-
-  protected ProgressDialog progressDialog;
+  protected DrawerLayout drawerLayout;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
   }
 
   private void setHeaderValues(View headerView, TextView nameTv, TextView emailTv, ImageView imageView) {
-    SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
     if(sharedPreferences != null) {
       String name = sharedPreferences.getString(Constants.NAME_KEY, Constants.DEFAULT_KEY);
       String email = sharedPreferences.getString(Constants.EMAIL_KEY, Constants.DEFAULT_KEY);
