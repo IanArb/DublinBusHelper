@@ -39,4 +39,6 @@
     <string name="twitter_placeholder">Acceso a Twitter en breve</string>
     <string name="annoymous_placeholder">Inicios de sesión anómalos próximamente</string>
     <string name="welcome_message">Bienvenido</string>
+
+    <string name="dimiss_content_desc">dismiss</string>
 </resources>
