@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -17,9 +18,13 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.ui.IconGenerator;
+import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.PermissionsManager;
 
@@ -55,8 +60,6 @@ public class LocationHelperImpl implements LocationHelper, GoogleApiClient.Conne
   @Override
   public void initMap(GoogleMap googleMap) {
     map = googleMap;
-
-    map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
     if (isLocationPermissionGranted()) {
       buildGoogleApiClient();
@@ -115,6 +118,13 @@ public class LocationHelperImpl implements LocationHelper, GoogleApiClient.Conne
     MarkerOptions markerOptions = new MarkerOptions();
     markerOptions.position(latLng);
     currentLocation = map.addMarker(markerOptions);
+
+    IconGenerator iconGenerator = new IconGenerator(context);
+
+    iconGenerator.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_location_on));
+
+    BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon());
+    currentLocation.setIcon(icon);
 
     map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
     map.animateCamera(CameraUpdateFactory.zoomTo(16));

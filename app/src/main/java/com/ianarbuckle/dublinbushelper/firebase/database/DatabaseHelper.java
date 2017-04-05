@@ -6,4 +6,5 @@ package com.ianarbuckle.dublinbushelper.firebase.database;
  */
 
 public interface DatabaseHelper {
+  void sendFavouriteStopToDatabase(String time, String stopId, String name, String routes, float lat, float lon);
 }
