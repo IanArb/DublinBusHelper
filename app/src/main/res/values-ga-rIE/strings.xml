@@ -8,7 +8,6 @@
     <string name="common_permission_required">Le do thoil
 mheas casadh ar suíomh ceadanna chun rochtai google léarscáileanna bailte fearainn</string>
 
-    <string name="google_maps_key" translatable="false">AIzaSyDw40KqdGNV_6FEqw5xlSNbqDKahUK1y6s</string>
     <string name="error_dialog_title">Rud chuaigh mícheart!</string>
     <string name="common_loading">Luchtaigh..</string>
     <string name="tab_title_dublin_bus">Bus Átha Cliath</string>

@@ -7,7 +7,6 @@
     <string name="common_ok">Está bem</string>
     <string name="common_permission_required">Considere ativar as permissões de localização para acessar os recursos do Google Maps</string>
 
-    <string name="google_maps_key" translatable="false">AIzaSyDw40KqdGNV_6FEqw5xlSNbqDKahUK1y6s</string>
     <string name="error_dialog_title">Ops .. algo deu errado!</string>
     <string name="common_loading">Carregando..</string>
     <string name="tab_title_dublin_bus">Dublin Bus</string>

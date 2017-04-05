@@ -7,7 +7,6 @@
     <string name="common_ok">De acuerdo</string>
     <string name="common_permission_required">Considere activar los permisos de ubicación para acceder a las funciones de Google Maps</string>
 
-    <string name="google_maps_key" translatable="false">AIzaSyDw40KqdGNV_6FEqw5xlSNbqDKahUK1y6s</string>
     <string name="error_dialog_title">¡Huy! Algo salió mal!</string>
     <string name="common_loading">Cargando..</string>
     <string name="tab_title_dublin_bus">Dublin Bus</string>
@@ -43,4 +42,6 @@
     <string name="twitter_placeholder">Acceso a Twitter en breve</string>
     <string name="annoymous_placeholder">Inicios de sesión anómalos próximamente</string>
     <string name="welcome_message">Bienvenido</string>
+
+    <string name="dimiss_content_desc">dismiss</string>
 </resources>
