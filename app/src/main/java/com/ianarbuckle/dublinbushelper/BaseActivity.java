@@ -17,7 +17,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.ianarbuckle.dublinbushelper.transports.dublinbus.DublinBusFragment;
+import com.ianarbuckle.dublinbushelper.favourites.FavouritesActivity;
+import com.ianarbuckle.dublinbushelper.transports.TransportsPagerActivity;
 import com.ianarbuckle.dublinbushelper.utils.CircleTransform;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.UiUtils;
@@ -60,6 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     initToolbar();
 
     initNavView();
+
   }
 
   private void initNavView() {
@@ -126,10 +128,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     switch (itemId) {
       case R.id.nav_home:
-        DublinBusFragment.newInstance();
+        startActivity(TransportsPagerActivity.newIntent(getApplicationContext()));
         break;
       case R.id.nav_favourites:
-        BlankFragment.newInstance();
+        startActivity(FavouritesActivity.newIntent(getApplicationContext()));
         break;
       case R.id.nav_signout:
         BlankFragment.newInstance();

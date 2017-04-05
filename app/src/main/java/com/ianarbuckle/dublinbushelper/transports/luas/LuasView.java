@@ -13,4 +13,6 @@ public interface LuasView {
   void hideProgress();
   void showErrorMessage();
   void setAdapter(LuasAdapter luasAdapter);
+  void showSuccessMessage();
+  String setFilter();
 }

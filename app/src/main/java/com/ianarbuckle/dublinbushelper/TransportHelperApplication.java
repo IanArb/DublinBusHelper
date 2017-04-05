@@ -6,8 +6,11 @@ import android.support.multidex.MultiDex;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ianarbuckle.dublinbushelper.firebase.authentication.FirebaseAuthHelper;
 import com.ianarbuckle.dublinbushelper.firebase.authentication.FirebaseAuthHelperImpl;
+import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
+import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelperImpl;
 
 /**
  * Created by Ian Arbuckle on 20/02/2017.
@@ -19,6 +22,7 @@ public class TransportHelperApplication extends Application {
   private ApplicationComponent applicationComponent;
 
   private FirebaseAuthHelper firebaseAuthHelper;
+  private DatabaseHelper databaseHelper;
 
   private static TransportHelperApplication appInstance;
 
@@ -34,14 +38,21 @@ public class TransportHelperApplication extends Application {
 
   private void initFirebaseAuth() {
     if(!FirebaseApp.getApps(this).isEmpty()) {
+      FirebaseDatabase.getInstance().setPersistenceEnabled(true);
       appInstance = this;
+      FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
       FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+      databaseHelper = new DatabaseHelperImpl(firebaseDatabase);
       firebaseAuthHelper = new FirebaseAuthHelperImpl(firebaseAuth);
     }
   }
 
   public static TransportHelperApplication getAppInstance() {
     return appInstance;
+  }
+
+  public DatabaseHelper getDatabaseHelper() {
+    return databaseHelper;
   }
 
   public FirebaseAuthHelper getFirebaseAuthHelper() {

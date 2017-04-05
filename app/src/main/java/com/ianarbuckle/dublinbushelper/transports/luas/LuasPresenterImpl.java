@@ -1,9 +1,11 @@
 package com.ianarbuckle.dublinbushelper.transports.luas;
 
+import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
 import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
 import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
+import com.ianarbuckle.dublinbushelper.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ import retrofit2.Response;
 
 public class LuasPresenterImpl implements LuasPresenter {
 
-  LuasView view;
+  private LuasView view;
 
   RTPIServiceAPI serviceAPI;
 
@@ -31,8 +33,11 @@ public class LuasPresenterImpl implements LuasPresenter {
 
   LuasAdapter luasAdapter;
 
-  public LuasPresenterImpl(LuasView view) {
+  private DatabaseHelper databaseHelper;
+
+  public LuasPresenterImpl(LuasView view, DatabaseHelper databaseHelper) {
     this.view = view;
+    this.databaseHelper = databaseHelper;
     stopInformation = new StopInformation();
     luasList = new ArrayList<>();
   }
@@ -44,8 +49,8 @@ public class LuasPresenterImpl implements LuasPresenter {
     view.showProgress();
 
     Map<String, String> filterMap = new HashMap<>();
-    filterMap.put("format", "json");
-    filterMap.put("operator", "LUAS");
+    filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
+    filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_LUAS);
 
     Call<StopInformation> call = serviceAPI.getStopInfo(filterMap);
 
@@ -73,6 +78,21 @@ public class LuasPresenterImpl implements LuasPresenter {
     luasList = stopInformation.getResults();
     luasAdapter = new LuasAdapter(luasList, view.getContext());
     view.setAdapter(luasAdapter);
+    view.setFilter();
+    luasAdapter.getFilter().filter(view.setFilter());
+    luasAdapter.updateList(luasList);
   }
 
+  @Override
+  public void sendToDatabase(Result result) {
+    assert result != null;
+    String lastupdated = result.getLastupdated();
+    String stopid = result.getStopid();
+    String fullname = result.getFullname();
+    String routes = result.getOperators().get(0).getRoutes().toString();
+    float lon = result.getLongitude();
+    float lat = result.getLatitude();
+    databaseHelper.sendFavouriteStopToDatabase(lastupdated, stopid, fullname, routes, lat, lon);
+    view.showSuccessMessage();
+  }
 }

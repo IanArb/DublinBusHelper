@@ -50,4 +50,5 @@ public class MarkerItemModel implements ClusterItem {
   public String getRoutes() {
     return routes;
   }
+
 }

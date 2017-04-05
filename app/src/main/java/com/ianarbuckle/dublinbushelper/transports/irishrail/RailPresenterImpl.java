@@ -1,5 +1,6 @@
 package com.ianarbuckle.dublinbushelper.transports.irishrail;
 
+import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
 import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
@@ -30,8 +31,11 @@ public class RailPresenterImpl implements RailPresenter {
   private StopInformation stopInformation;
   private List<Result> resultList;
 
-  public RailPresenterImpl(RailView view) {
+  private DatabaseHelper databaseHelper;
+
+  public RailPresenterImpl(RailView view, DatabaseHelper databaseHelper) {
     this.view = view;
+    this.databaseHelper = databaseHelper;
     stopInformation = new StopInformation();
     resultList = new ArrayList<>();
   }
@@ -72,6 +76,19 @@ public class RailPresenterImpl implements RailPresenter {
     resultList = stopInformation.getResults();
     adapter = new RailAdapter(view.getContext(), resultList);
     view.setAdapter(adapter);
+    adapter.getFilter().filter(view.setFilter());
+    adapter.updateList(resultList);
   }
 
+  @Override
+  public void sendToDatabase(Result result) {
+    String routes = result.getOperators().get(0).getRoutes().toString();
+    String lastupdated = result.getLastupdated();
+    String displaystopid = result.getDisplaystopid();
+    String stopid = result.getStopid();
+    float lat = result.getLatitude();
+    float lon = result.getLongitude();
+    databaseHelper.sendFavouriteStopToDatabase(lastupdated, stopid, displaystopid, routes, lat, lon);
+    view.showSuccessMessage();
+  }
 }

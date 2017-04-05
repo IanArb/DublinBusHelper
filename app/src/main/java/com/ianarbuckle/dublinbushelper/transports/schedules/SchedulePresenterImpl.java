@@ -1,5 +1,8 @@
 package com.ianarbuckle.dublinbushelper.transports.schedules;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
+import com.ianarbuckle.dublinbushelper.helper.LocationHelperImpl;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.RealTimeInfo;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.Result;
 import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
@@ -32,8 +35,11 @@ public class SchedulePresenterImpl implements SchedulePresenter {
 
   ScheduleAdapter adapter;
 
+  private LocationHelper locationHelper;
+
   public SchedulePresenterImpl(ScheduleView view) {
     this.view = view;
+    locationHelper = new LocationHelperImpl(view.getContext());
     realTimeInfo = new RealTimeInfo();
     resultList = new ArrayList<>();
   }
@@ -74,6 +80,16 @@ public class SchedulePresenterImpl implements SchedulePresenter {
     resultList = realTimeInfo.getResults();
     adapter = new ScheduleAdapter(view.getContext(), resultList);
     view.setAdapter(adapter);
+  }
+
+  @Override
+  public void initMap(GoogleMap googleMap) {
+    locationHelper.initMap(googleMap);
+  }
+
+  @Override
+  public void onRequestPermission() {
+    locationHelper.onRequestPermission();
   }
 
 }

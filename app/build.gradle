@@ -74,6 +74,7 @@ dependencies {
     compile firebaseDependencies.firebaseInvite
     compile firebaseDependencies.firebaseMessage
     compile firebaseDependencies.firebaseCrash
+    compile firebaseDependencies.firebaseUIDatabase
 
 
     // Third party dependencies

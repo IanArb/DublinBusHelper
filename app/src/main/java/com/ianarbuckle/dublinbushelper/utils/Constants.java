@@ -22,9 +22,8 @@ public class Constants {
   public static final String DIALOG_FRAGMENT = "dialog";
   public static final String POPUP_FRAGMENT = "popup";
   public static final String SCHEDULE_FRAGMENT = "scheduleFragment";
-  public static final String RAIL_FRAGMENT = "railFragment";
-  public static final String DEBUG_LOGGER = "TAG";
   public static final String ERROR_DIALOG_FRAGMENT = "errorDialog";
+  public static final String FAVOURITES_FRAGMENT = "favouritesFragment";
 
   public static final String SHARED_PREFERENCES_KEY = "profile";
   public static final String DISPLAY_STOP_ID_KEY = "displayStopId";

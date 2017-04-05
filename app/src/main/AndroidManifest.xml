@@ -50,6 +50,10 @@
                   android:parentActivityName=".transports.TransportsPagerActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".favourites.FavouritesActivity"
+                  android:parentActivityName=".favourites.FavouritesActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

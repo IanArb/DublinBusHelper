@@ -3,34 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <include layout="@layout/layout_progress"
+        tools:visibility="gone"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:padding="@dimen/spacing_normal">
 
-        <RadioButton
-            android:id="@+id/rbGreen"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etFilter"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Red Line"
-            android:textColorHighlight="@color/colorRed"
-            android:textColor="@color/colorRed"/>
+            android:hint="Search luas stops"
+            android:drawableStart="@drawable/ic_search"/>
 
-        <RadioButton
-            android:id="@+id/rbRed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Red Line"
-            android:textColorHighlight="@color/colorGreen"
-            android:textColor="@color/colorGreen"/>
-
-    </RadioGroup>
+    </android.support.design.widget.TextInputLayout>
 
     <include layout="@layout/layout_recycler_view"/>
 

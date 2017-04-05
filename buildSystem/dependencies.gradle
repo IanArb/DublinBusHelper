@@ -26,7 +26,7 @@ ext {
     firebaseInviteVersion = '10.0.1'
     firebaseMessagingVersion = '10.0.1'
     firebaseCrashVersion = '10.0.1'
-    firebaseUIVersion = '0.4.0'
+    firebaseUIVersion = '1.1.0'
 
     // Third party versions
     butterKnifeVersion = '8.4.0'
@@ -77,7 +77,8 @@ ext {
             firebaseConfig       : "com.google.firebase:firebase-config:${firebaseConfigVersion}",
             firebaseInvite       : "com.google.android.gms:play-services-appinvite:${firebaseInviteVersion}",
             firebaseMessage      : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
-            firebaseCrash        : "com.google.firebase:firebase-crash:${firebaseCrashVersion}"
+            firebaseCrash        : "com.google.firebase:firebase-crash:${firebaseCrashVersion}",
+            firebaseUIDatabase   : "com.firebaseui:firebase-ui-database:${firebaseUIVersion}"
     ]
 
     thirdPartyDependencies = [
