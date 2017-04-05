@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DublinBusHelper</string>
+    <string name="home">Casa</string>
+    <string name="favorite">Favorito</string>
+    <string name="log_out">Sair</string>
+    <string name="common_ok">Está bem</string>
+    <string name="common_permission_required">Considere ativar as permissões de localização para acessar os recursos do Google Maps</string>
+
+    <string name="error_dialog_title">Ops .. algo deu errado!</string>
+    <string name="common_loading">Carregando..</string>
+    <string name="tab_title_dublin_bus">Dublin Bus</string>
+    <string name="tab_title_luas">Luas</string>
+    <string name="tab_title_irish_rail">Irish Rail</string>
+    <string name="tab_title_favourites">Favoritos</string>
+    <string name="dismiss_content_desc">Dispensar</string>
+    <string name="routes_content_desc">Rotas</string>
+    <string name="time_content_desc">Tempo</string>
+    <string name="subscribe_content_desc">Se inscrever</string>
+
+    <string name="hint_email">o email</string>
+    <string name="hint_username">Nome de usuário</string>
+    <string name="hint_password">Senha</string>
+    <string name="hint_confirm_password">Confirme a Senha</string>
+    <string name="btn_sign_in">assinar em</string>
+    <string name="btn_sign_up">iniciar</string>
+    <string name="tab_title_sign_in">assinar em</string>
+    <string name="tab_title_sign_up">inscrever-se</string>
+    <string name="message_guest_user">Continuar como usuário convidado</string>
+    <string name="message_forgot_password">Esqueceu sua senha?</string>
+
+    <string name="common_email_error_empty">O e-mail não deve ficar em branco!</string>
+    <string name="common_email_error_invalid">O e-mail inserido é inválido!</string>
+    <string name="common_invalid_email">E-mail não é válido!</string>
+    <string name="common_invalid_password">Senha é incorreta!</string>
+    <string name="common_error_password_empty_message">A senha não deve ficar vazia!</string>
+    <string name="common_error_confirm_password_empty_message">O campo não deve estar vazio!</string>
+    <string name="common_error_username_empty_message">O nome de usuário não deve ficar em branco!</string>
+    <string name="common_error_username_invalid_message">O nome de usuário deve ter mais de 2 caracteres</string>
+    <string name="common_message_unsuccess">Falha no login, verifique novamente seu e-mail ou senha</string>
+    <string name="common_google_failure">Falha ao iniciar sessão no Google. Verifique a sua conexão com a internet</string>
+    <string name="facebook_placeholder">Login no Facebook em breve</string>
+    <string name="twitter_placeholder">Login no Twitter em breve</string>
+    <string name="annoymous_placeholder">Login Annoymous em breve</string>
+    <string name="welcome_message">Bem vinda</string>
+</resources>

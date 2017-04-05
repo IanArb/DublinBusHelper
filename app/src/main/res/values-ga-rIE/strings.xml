@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Iompar Helper</string>
+    <string name="home">Baile</string>
+    <string name="favorite">Favorite</string>
+    <string name="log_out">Logáil Amach</string>
+    <string name="common_ok">OK</string>
+    <string name="common_permission_required">Le do thoil
+mheas casadh ar suíomh ceadanna chun rochtai google léarscáileanna bailte fearainn</string>
+
+    <string name="error_dialog_title">Rud chuaigh mícheart!</string>
+    <string name="common_loading">Luchtaigh..</string>
+    <string name="tab_title_dublin_bus">Bus Átha Cliath</string>
+    <string name="tab_title_luas">Luas</string>
+    <string name="tab_title_favourites">Favourites</string>
+    <string name="tab_title_irish_rail">Irish Iarnród</string>
+
+    <string name="hint_email">Ríomhphost</string>
+    <string name="hint_username">Ainm úsáideora</string>
+    <string name="hint_password">Focal Faire</string>
+    <string name="hint_confirm_password">Deimhnigh Pasfhocal</string>
+    <string name="btn_sign_in">Sínigh isteach</string>
+    <string name="btn_sign_up">Tosaigh</string>
+    <string name="tab_title_sign_in">Sínigh isteach</string>
+    <string name="tab_title_sign_up">Clarú</string>
+    <string name="message_guest_user">Leanúint ar aghaidh mar úsáideoir aoi</string>
+    <string name="message_forgot_password">Ar rinne tú dearmad ar do Phásfhocail?</string>
+
+    <string name="common_email_error_empty">Níor chóir go Email folamh!</string>
+    <string name="common_email_error_invalid">Is ríomhphoist a diontráil neamhbhailí!</string>
+    <string name="common_invalid_email">Níl an ríomhphoist bailí!</string>
+    <string name="common_invalid_password">Focal faire mícheart!</string>
+    <string name="common_error_password_empty_message">Níor chóir go Pasfhocal folamh!</string>
+    <string name="common_error_confirm_password_empty_message">Níor chóir go Allamuigh folamh!</string>
+    <string name="common_error_username_empty_message">Níor chóir Ainm Úsáideora folamh!</string>
+    <string name="common_error_username_invalid_message">Ba chóir go mbeadh ainm úsáideora a bheith níos faide ná 2 carachtair</string>
+    <string name="common_message_unsuccess">Theip ar logáil isteach, seiceáil do r-phost nó ar do phasfhocal arís</string>
+    <string name="common_google_failure">Google Logáil Isteach Theip. Seiceáil do nasc Idirlín</string>
+    <string name="facebook_placeholder">Facebook Logáil isteach ag teacht go luath</string>
+    <string name="twitter_placeholder">Twitter logáil teacht go luath</string>
+    <string name="annoymous_placeholder">logáil Annoymous ag teacht go luath</string>
+    <string name="welcome_message">Fáilte</string>
+</resources>

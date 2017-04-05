@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="bottom">
+
+    <LinearLayout
+        android:id="@+id/rlContainer"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_normal">
+
+            <ImageButton
+                android:id="@+id/ibClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/dismiss_content_desc"
+                android:background="@drawable/ic_close"/>
+
+            <TextView
+                android:id="@+id/tvLastUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginStart="@dimen/spacing_normal"
+                tools:text="10:12:21"
+                android:layout_toEndOf="@+id/ivLastUpdate"
+                android:layout_below="@+id/ibClose"/>
+
+            <ImageView
+                android:id="@+id/ivLastUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_access_time"
+                android:contentDescription="@string/time_content_desc"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_below="@+id/ibClose"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/rlInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlHeader"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+            <TextView
+                android:id="@+id/tvDisplayStopId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                tools:text="123"/>
+
+            <TextView
+                android:id="@+id/tvShortname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                tools:text="Parnell Square"/>
+
+            <TextView
+                android:id="@+id/tvShortnameLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Cearnóg Parnell"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutOps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+            <ImageView
+                android:id="@+id/ivRoutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Routes available"
+                android:contentDescription="@string/routes_content_desc"
+                android:background="@drawable/ic_directions_bus"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvRoutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="46A, 46E, 38, 38D, 38A, 38B"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_normal">
+
+            <Button
+                android:id="@+id/btnSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_normal"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:textColor="@color/colorAccent"
+                android:text="@string/show_schedule_btn_title"/>
+
+            <ImageButton
+                android:id="@+id/ibFavourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:background="@drawable/ic_favorite"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

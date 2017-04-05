@@ -1,0 +1,293 @@
+{
+  "project_info": {
+    "project_number": "580100214935",
+    "firebase_url": "https://dublin-bikes-e42b7.firebaseio.com",
+    "project_id": "dublin-bikes-e42b7",
+    "storage_bucket": "dublin-bikes-e42b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580100214935:android:907c768a83f06457",
+        "android_client_info": {
+          "package_name": "com.ianarbuckle.dublinbikes.snapshot.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580100214935-manp48stavp890pt3hb81gffsbd8q1mu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ianarbuckle.dublinbikes.snapshot.debug",
+            "certificate_hash": "54c0b7797a8545dcf7fcf70e48d4199a29a6d3e4"
+          }
+        },
+        {
+          "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbHyNRPOWEmHgriGtb7UIFpYgoni2V6L8"
+        },
+        {
+          "current_key": "AIzaSyA4O37oah6SLXv1FASj3hgONRtyizjzGyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580100214935:android:2d0797dd1fc091e5",
+        "android_client_info": {
+          "package_name": "com.ian.arbuckle.dublinbikes.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580100214935-06v8j2gtokcfm4g478gfabi3je9hfpt5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ian.arbuckle.dublinbikes.debug",
+            "certificate_hash": "54c0b7797a8545dcf7fcf70e48d4199a29a6d3e4"
+          }
+        },
+        {
+          "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbHyNRPOWEmHgriGtb7UIFpYgoni2V6L8"
+        },
+        {
+          "current_key": "AIzaSyA4O37oah6SLXv1FASj3hgONRtyizjzGyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580100214935:android:b71ef1400daa32bb",
+        "android_client_info": {
+          "package_name": "com.ian.arbuckle.dublinbikes.staging.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580100214935-kleu615agomagkn6gtnukea551tt1916.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ian.arbuckle.dublinbikes.staging.debug",
+            "certificate_hash": "54c0b7797a8545dcf7fcf70e48d4199a29a6d3e4"
+          }
+        },
+        {
+          "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbHyNRPOWEmHgriGtb7UIFpYgoni2V6L8"
+        },
+        {
+          "current_key": "AIzaSyA4O37oah6SLXv1FASj3hgONRtyizjzGyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580100214935:android:746652a2528d4598",
+        "android_client_info": {
+          "package_name": "com.ianarbuckle.dublinbushelper.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580100214935-5h8romesush9k4kdkee9jfq5i62b4762.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ianarbuckle.dublinbushelper.debug",
+            "certificate_hash": "54c0b7797a8545dcf7fcf70e48d4199a29a6d3e4"
+          }
+        },
+        {
+          "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbHyNRPOWEmHgriGtb7UIFpYgoni2V6L8"
+        },
+        {
+          "current_key": "AIzaSyA4O37oah6SLXv1FASj3hgONRtyizjzGyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580100214935:android:1aee17a7ce06a793",
+        "android_client_info": {
+          "package_name": "com.ianarbuckle.dublinbushelper.snapshot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580100214935-3o2omo016fjb37c42om1osmltf5urte1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ianarbuckle.dublinbushelper.snapshot",
+            "certificate_hash": "54c0b7797a8545dcf7fcf70e48d4199a29a6d3e4"
+          }
+        },
+        {
+          "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbHyNRPOWEmHgriGtb7UIFpYgoni2V6L8"
+        },
+        {
+          "current_key": "AIzaSyA4O37oah6SLXv1FASj3hgONRtyizjzGyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580100214935:android:8e391535398a4704",
+        "android_client_info": {
+          "package_name": "com.ianarbuckle.dublinbushelper.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580100214935-cnvbbql3tijvmr3malpb3n83utjrv17f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ianarbuckle.dublinbushelper.staging",
+            "certificate_hash": "54c0b7797a8545dcf7fcf70e48d4199a29a6d3e4"
+          }
+        },
+        {
+          "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbHyNRPOWEmHgriGtb7UIFpYgoni2V6L8"
+        },
+        {
+          "current_key": "AIzaSyA4O37oah6SLXv1FASj3hgONRtyizjzGyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580100214935-t4gsqrndfodkcsvta34n3jg47r5aheic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
