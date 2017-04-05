@@ -44,7 +44,7 @@
     <string name="common_permission_required">Please consider turning on location permissions to access google maps features</string>
     <string name="common_email_error_empty">Email should not be empty!</string>
     <string name="common_email_error_invalid">Email entered is invalid!</string>
-    <string name="common_invalid_email" translatable="false">Email is not valid!</string>
+    <string name="common_invalid_email">Email is not valid!</string>
     <string name="common_invalid_password">Password is incorrect!</string>
     <string name="common_error_password_empty_message">Password should not be empty!</string>
     <string name="common_error_confirm_password_empty_message">Field should not be empty!</string>
