@@ -12,6 +12,6 @@ public interface DublinBusView {
   void showProgress();
   void hideProgress();
   void showErrorMessage();
-  void showPopupFragment(String displayStopId, String shortName, String shortNameLocalised, String lastUpdate, String routes);
+  void showPopupFragment(String displayStopId, String shortName, String shortNameLocalised, String lastUpdate, String routes, float latitude, float longtitude);
   void setLocalVisibility();
 }

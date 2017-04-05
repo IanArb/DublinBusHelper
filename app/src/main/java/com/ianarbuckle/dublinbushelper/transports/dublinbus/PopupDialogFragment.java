@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ianarbuckle.dublinbushelper.R;
+import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
+import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 
@@ -26,7 +29,7 @@ import butterknife.Unbinder;
  *
  */
 
-public class PopupDialogFragment extends DialogFragment {
+public class PopupDialogFragment extends DialogFragment implements DublinBusFragmentView {
 
   Unbinder unbinder;
 
@@ -35,6 +38,8 @@ public class PopupDialogFragment extends DialogFragment {
   String shortnameLocalised;
   String lastUpdated;
   String routes;
+  float latitude;
+  float longtitude;
 
   @BindView(R.id.tvDisplayStopId)
   TextView tvDisplayStopId;
@@ -51,12 +56,14 @@ public class PopupDialogFragment extends DialogFragment {
   @BindView(R.id.tvRoutes)
   TextView tvRoutes;
 
+  DublinBusPresenterImpl presenter;
+
 
   public PopupDialogFragment() {
 
   }
 
-  public static PopupDialogFragment newInstance(String displayStopId, String shortName, String shortnameLocalised, String lastUpdated, String routes) {
+  public static PopupDialogFragment newInstance(String displayStopId, String shortName, String shortnameLocalised, String lastUpdated, String routes, float latitude, float longtitude) {
     PopupDialogFragment popupDialogFragment = new PopupDialogFragment();
     Bundle args = new Bundle();
     args.putString(Constants.DISPLAY_STOP_ID_KEY, displayStopId);
@@ -64,12 +71,17 @@ public class PopupDialogFragment extends DialogFragment {
     args.putString(Constants.SHORT_NAME_LOCALISED_KEY, shortnameLocalised);
     args.putString(Constants.LAST_UPDATED_KEY, lastUpdated);
     args.putString(Constants.ROUTES_KEY, routes);
+    args.putFloat(Constants.LAT_KEY, latitude);
+    args.putFloat(Constants.LONG_KEY, longtitude);
     popupDialogFragment.setArguments(args);
     return popupDialogFragment;
   }
 
   @Override
   public void onStart() {
+    DatabaseHelper databaseHelper = TransportHelperApplication.getAppInstance().getDatabaseHelper();
+    presenter = new DublinBusPresenterImpl(databaseHelper);
+    presenter.setFragmentView(this);
     super.onStart();
     Window window = getDialog().getWindow();
     if(window != null) {
@@ -125,15 +137,42 @@ public class PopupDialogFragment extends DialogFragment {
   public void onShowScheduleClick() {
     displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
     shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
+    latitude = getArguments().getFloat(Constants.LAT_KEY);
+    longtitude = getArguments().getFloat(Constants.LONG_KEY);
     Intent intent = ScheduleActivity.newIntent(getContext());
     intent.putExtra(Constants.DISPLAYNAME_KEY, shortName);
     intent.putExtra(Constants.STOPID_KEY, displayStopId);
+    intent.putExtra(Constants.LAT_KEY, latitude);
+    intent.putExtra(Constants.LONG_KEY, longtitude);
     startActivity(intent);
+  }
+
+  @OnClick(R.id.ibFavourite)
+  public void onFavouriteClick() {
+    displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
+    shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
+    lastUpdated = getArguments().getString(Constants.LAST_UPDATED_KEY);
+    routes = getArguments().getString(Constants.ROUTES_KEY);
+    latitude = getArguments().getFloat(Constants.LAT_KEY);
+    longtitude = getArguments().getFloat(Constants.LONG_KEY);
+
+
+    presenter.sendToDatabase(lastUpdated, shortName, displayStopId, routes, latitude, longtitude);
   }
 
   @Override
   public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
+  }
+
+  @Override
+  public void setSuccessMessage() {
+    Toast.makeText(getContext(), "Saved to favourites", Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void setErrorMessage() {
+    Toast.makeText(getContext(), "Check your internet connection...", Toast.LENGTH_SHORT).show();
   }
 }
