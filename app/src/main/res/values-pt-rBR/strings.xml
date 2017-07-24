@@ -12,7 +12,11 @@
     <string name="tab_title_dublin_bus">Dublin Bus</string>
     <string name="tab_title_luas">Luas</string>
     <string name="tab_title_irish_rail">Irish Rail</string>
-    <string name="tab_title_favourites">Favourites</string>
+    <string name="tab_title_favourites">Favoritos</string>
+    <string name="dismiss_content_desc">Dispensar</string>
+    <string name="routes_content_desc">Rotas</string>
+    <string name="time_content_desc">Tempo</string>
+    <string name="subscribe_content_desc">Se inscrever</string>
 
     <string name="hint_email">o email</string>
     <string name="hint_username">Nome de usuário</string>

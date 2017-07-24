@@ -39,7 +39,6 @@ ext {
     rxJavaVersion = '1.0.14'
     daggerVersion = '2.4'
     retrofitVersion = '2.1.0'
-    retrofitGsonVersion = '2.1.0'
     javaxVersion = '1.2'
     butterKnifeCompilerVersion = '8.4.0'
     glideVersion = '3.7.0'
@@ -51,6 +50,9 @@ ext {
     espressoVersion = '2.2.2'
     testRunnerVersion = '0.5'
     testRobolectricVersion = '3.2.2'
+
+    //Kotlin versions
+    kotlinVersion = '1.1.3'
 
 
     googleDependencies = [
@@ -95,10 +97,16 @@ ext {
             rxBinding          : "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}",
             rxJava             : "io.reactivex:rxjava:${rxJavaVersion}",
             retrofit           : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
-            retrofitGson       : "com.squareup.retrofit2:converter-gson:${retrofitGsonVersion}",
+            retrofitGson       : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
             javax              : "javax.annotation:javax.annotation-api:${javaxVersion}",
             glide              : "com.github.bumptech.glide:glide:${glideVersion}",
-            joda               : "net.danlew:android.joda:${jodaVersion}"
+            joda               : "net.danlew:android.joda:${jodaVersion}",
+            moshi              : "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
+
+    ]
+
+    kotlinDependencies = [
+            kotlinPlugin       : "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
     ]
 
     testDependencies = [
