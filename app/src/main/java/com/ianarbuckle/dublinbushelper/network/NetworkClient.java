@@ -21,5 +21,4 @@ public class NetworkClient {
     return networkInfo != null && networkInfo.isConnectedOrConnecting();
   }
 
-
 }

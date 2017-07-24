@@ -59,8 +59,8 @@ public class FavouritesAdapter extends FirebaseRecyclerAdapter<Favourites, Favou
       public void onClick(View view) {
         String stopId = model.getStopId();
         String displayName = model.getName();
-        float latitude = model.getLat();
-        float longtitude = model.getLon();
+        float latitude = model.getLatitude();
+        float longtitude = model.getLongitude();
 
         Intent intent = ScheduleActivity.newIntent(context);
         intent.putExtra(Constants.STOPID_KEY, stopId);
@@ -103,8 +103,6 @@ public class FavouritesAdapter extends FirebaseRecyclerAdapter<Favourites, Favou
       case Constants.INTER_COMMUTER_ID:
         tvRoute.setText(context.getString(R.string.commuter_intercity_label));
         break;
-      case Constants.INTER_COMMUTER_DART_ID:
-        tvRoute.setText(context.getString(R.string.intercity_dart_commuter_label));
       default:
         tvRoute.setText(model.getRoutes());
     }
