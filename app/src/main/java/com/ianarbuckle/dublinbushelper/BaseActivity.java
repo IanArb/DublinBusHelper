@@ -134,7 +134,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         startActivity(FavouritesActivity.newIntent(getApplicationContext()));
         break;
       case R.id.nav_signout:
-        BlankFragment.newInstance();
+        BlankFragment.Companion.newInstance();
         break;
     }
 
