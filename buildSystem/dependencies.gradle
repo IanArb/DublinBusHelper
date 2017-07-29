@@ -53,6 +53,7 @@ ext {
 
     //Kotlin versions
     kotlinVersion = '1.1.3'
+    ankoVersion = '0.10.0'
 
 
     googleDependencies = [
@@ -106,7 +107,8 @@ ext {
     ]
 
     kotlinDependencies = [
-            kotlinPlugin       : "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
+            kotlinPlugin       : "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}",
+            anko               : "org.jetbrains.anko:anko-common:${ankoVersion}"
     ]
 
     testDependencies = [

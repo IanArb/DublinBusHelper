@@ -12,7 +12,6 @@ public interface RailView {
   void showProgress();
   void hideProgress();
   void showErrorMessage();
-  void setAdapter(RailAdapter adapter);
   void showSuccessMessage();
   String setFilter();
 }

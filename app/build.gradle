@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply from: '../config/quality.gradle'
 
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     def globalConfig = rootProject.extensions.getByName("ext")
@@ -120,6 +121,7 @@ dependencies {
 
     //Kotlin
     compile kotlinDependencies.kotlinPlugin
+    compile kotlinDependencies.anko
 }
 
 buildscript {

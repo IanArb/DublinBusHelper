@@ -179,6 +179,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
   @Override
   public void onLogin() {
     presenter.setSharedPreferences();
-    startActivity(TransportsPagerActivity.newIntent(getContext()));
+    startActivity(TransportsPagerActivity.Companion.newIntent(getContext()));
   }
 }
