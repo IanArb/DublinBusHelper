@@ -51,6 +51,8 @@ public class RailFragment extends BaseFragment implements RailView {
   @BindView(R.id.progressBar)
   ProgressBar progressBar;
 
+  RailAdapter railAdapter;
+
   LinearLayoutManager linearLayoutManager;
 
   RailPresenterImpl presenter;
@@ -65,21 +67,29 @@ public class RailFragment extends BaseFragment implements RailView {
     presenter = new RailPresenterImpl(this, databaseHelper);
   }
 
-  @Override
-  public void onStart() {
-    super.onStart();
-    presenter.fetchStations();
-  }
-
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_rail, container, false);
     ButterKnife.bind(this, view);
+    return view;
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    presenter.fetchStations();
+    attachRecyclerView();
+  }
+
+  private void attachRecyclerView() {
     recyclerView.setHasFixedSize(true);
     linearLayoutManager = new LinearLayoutManager(getContext());
     recyclerView.setLayoutManager(linearLayoutManager);
-    return view;
+    railAdapter = new RailAdapter(presenter);
+    recyclerView.setAdapter(railAdapter);
+    filterListener(railAdapter);
+    onClickListener(railAdapter);
   }
 
   @Override
@@ -117,14 +127,7 @@ public class RailFragment extends BaseFragment implements RailView {
     return fragmentTransaction;
   }
 
-  @Override
-  public void setAdapter(final RailAdapter adapter) {
-    recyclerView.setAdapter(adapter);
-    onClickListener(adapter);
-    filterListener(adapter);
-  }
-
-  private void filterListener(final RailAdapter adapter) {
+  private void filterListener(final RailAdapter railAdapter) {
     final EditText editText = tilFilter.getEditText();
     assert editText != null;
     editText.addTextChangedListener(new TextWatcher() {
@@ -140,7 +143,8 @@ public class RailFragment extends BaseFragment implements RailView {
 
       @Override
       public void afterTextChanged(Editable string) {
-        adapter.getFilter().filter(setFilter());
+        railAdapter.getFilter().filter(setFilter());
+        railAdapter.updateList(presenter.getResultsList());
       }
     });
   }

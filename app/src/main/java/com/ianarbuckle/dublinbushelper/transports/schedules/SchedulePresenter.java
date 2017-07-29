@@ -11,4 +11,6 @@ public interface SchedulePresenter {
   void fetchSchedules(String stopId);
   void onRequestPermission();
   void initMap(GoogleMap googleMap);
+  void onBindRowViewAtPositon(int position, ScheduleRowView view);
+  int getResultsRowCount();
 }

@@ -40,6 +40,8 @@ public class LuasFragment extends BaseFragment implements LuasView {
 
   LinearLayoutManager linearLayoutManager;
 
+  LuasAdapter luasAdapter;
+
   @BindView(R.id.rv)
   RecyclerView recyclerView;
 
@@ -59,12 +61,6 @@ public class LuasFragment extends BaseFragment implements LuasView {
   }
 
   @Override
-  public void onStart() {
-    super.onStart();
-    presenter.fetchStops();
-  }
-
-  @Override
   protected void initPresenter() {
     DatabaseHelper databaseHelper = TransportHelperApplication.getAppInstance().getDatabaseHelper();
     presenter = new LuasPresenterImpl(this, databaseHelper);
@@ -75,17 +71,24 @@ public class LuasFragment extends BaseFragment implements LuasView {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_luas, container, false);
     ButterKnife.bind(this, view);
-    recyclerView.setHasFixedSize(true);
-    linearLayoutManager = new LinearLayoutManager(getContext());
-    recyclerView.setLayoutManager(linearLayoutManager);
     return view;
   }
 
   @Override
-  public void setAdapter(final LuasAdapter luasAdapter) {
+  public void onStart() {
+    super.onStart();
+    presenter.fetchStops();
+    attachRecyclerView();
+  }
+
+  private void attachRecyclerView() {
+    recyclerView.setHasFixedSize(true);
+    linearLayoutManager = new LinearLayoutManager(getContext());
+    recyclerView.setLayoutManager(linearLayoutManager);
+    luasAdapter = new LuasAdapter(presenter);
     recyclerView.setAdapter(luasAdapter);
-    onClickListener(luasAdapter);
     filterListener(luasAdapter);
+    onClickListener(luasAdapter);
   }
 
   private void filterListener(final LuasAdapter luasAdapter) {
@@ -105,6 +108,7 @@ public class LuasFragment extends BaseFragment implements LuasView {
       @Override
       public void afterTextChanged(Editable string) {
         luasAdapter.getFilter().filter(setFilter());
+        luasAdapter.updateList(presenter.getResultsList());
       }
     });
   }
@@ -117,8 +121,6 @@ public class LuasFragment extends BaseFragment implements LuasView {
       }
     });
   }
-
-
 
   @Override
   public void showProgress() {

@@ -48,6 +48,8 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   @BindView(R.id.rv)
   RecyclerView recyclerView;
 
+  ScheduleAdapter adapter;
+
   @BindView(R.id.rlProgress)
   RelativeLayout rlProgress;
 
@@ -57,8 +59,6 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   LinearLayoutManager linearLayoutManager;
 
   SchedulePresenterImpl presenter;
-
-  GoogleMap map;
 
   Marker stationLocation;
 
@@ -76,9 +76,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_schedule, container, false);
     ButterKnife.bind(this, view);
-    recyclerView.setHasFixedSize(true);
-    linearLayoutManager = new LinearLayoutManager(getContext());
-    recyclerView.setLayoutManager(linearLayoutManager);
+
     return view;
   }
 
@@ -88,7 +86,16 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
     Intent intent = getActivity().getIntent();
     String stopId = intent.getStringExtra(Constants.STOPID_KEY);
     presenter.fetchSchedules(stopId);
+    attachRecyclerView();
     initMap();
+  }
+
+  private void attachRecyclerView() {
+    recyclerView.setHasFixedSize(true);
+    linearLayoutManager = new LinearLayoutManager(getContext());
+    recyclerView.setLayoutManager(linearLayoutManager);
+    adapter = new ScheduleAdapter(presenter);
+    recyclerView.setAdapter(adapter);
   }
 
   private void initMap() {
@@ -169,11 +176,6 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
 
     fragmentTransaction.addToBackStack(null);
     return fragmentTransaction;
-  }
-
-  @Override
-  public void setAdapter(ScheduleAdapter adapter) {
-    recyclerView.setAdapter(adapter);
   }
 
   @Override

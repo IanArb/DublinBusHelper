@@ -139,7 +139,7 @@ public class PopupDialogFragment extends DialogFragment implements DublinBusFrag
     shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
     latitude = getArguments().getFloat(Constants.LAT_KEY);
     longtitude = getArguments().getFloat(Constants.LONG_KEY);
-    Intent intent = ScheduleActivity.newIntent(getContext());
+    Intent intent = ScheduleActivity.Companion.newIntent(getContext());
     intent.putExtra(Constants.DISPLAYNAME_KEY, shortName);
     intent.putExtra(Constants.STOPID_KEY, displayStopId);
     intent.putExtra(Constants.LAT_KEY, latitude);

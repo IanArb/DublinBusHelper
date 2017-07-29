@@ -1,10 +1,16 @@
 package com.ianarbuckle.dublinbushelper.transports.luas;
 
+import android.content.Intent;
+import android.support.v4.content.ContextCompat;
+
+import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
+import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
 import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
 import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
+import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 
 import java.util.ArrayList;
@@ -27,11 +33,9 @@ public class LuasPresenterImpl implements LuasPresenter {
 
   RTPIServiceAPI serviceAPI;
 
-  private StopInformation stopInformation;
+  StopInformation stopInformation;
 
   private List<Result> luasList;
-
-  LuasAdapter luasAdapter;
 
   private DatabaseHelper databaseHelper;
 
@@ -62,7 +66,8 @@ public class LuasPresenterImpl implements LuasPresenter {
       @Override
       public void onResponse(Call<StopInformation> call, Response<StopInformation> response) {
         view.hideProgress();
-        getResponseBody(response);
+        StopInformation stopInformation = response.body();
+        luasList = stopInformation.getResults();
       }
 
       @Override
@@ -73,26 +78,84 @@ public class LuasPresenterImpl implements LuasPresenter {
     });
   }
 
-  private void getResponseBody(final Response<StopInformation> response) {
-    stopInformation = response.body();
-    luasList = stopInformation.getResults();
-    luasAdapter = new LuasAdapter(luasList, view.getContext());
-    view.setAdapter(luasAdapter);
-    view.setFilter();
-    luasAdapter.getFilter().filter(view.setFilter());
-    luasAdapter.updateList(luasList);
+  @Override
+  public void onBindRowViewAtPositon(int position, LuasCardRowView view) {
+    Result result = luasList.get(position);
+
+    String fullname = result.getFullname();
+    Operator operator = result.getOperators().get(0);
+    String route = operator.getRoutes().toString();
+    String stopid = result.getStopid();
+    String lastupdated = result.getLastupdated();
+
+    view.setName(fullname);
+    view.setRoute(route);
+    view.setStopId(stopid);
+    view.setTime(lastupdated);
+  }
+
+  @Override
+  public void onRowClickAtPosition(int position, LuasCardRowView luasView) {
+    Result result = luasList.get(position);
+
+    String stopId = result.getStopid();
+    String displayName = result.getDisplaystopid();
+    float latitude = result.getLatitude();
+    float longtitude = result.getLongitude();
+
+    Intent intent = ScheduleActivity.Companion.newIntent(view.getContext());
+    intent.putExtra(Constants.STOPID_KEY, stopId);
+    intent.putExtra(Constants.LAT_KEY, latitude);
+    intent.putExtra(Constants.LONG_KEY, longtitude);
+    intent.putExtra(Constants.DISPLAYNAME_KEY, displayName);
+    view.getContext().startActivity(intent);
+  }
+
+  @Override
+  public void setRouteText(int position, LuasCardRowView luasView) {
+    Result result = luasList.get(position);
+
+    Operator operator = result.getOperators().get(0);
+    String route = operator.getRoutes().toString();
+
+    switch (route) {
+      case Constants.RED_LINE:
+        luasView.setRedText(view.getContext().getString(R.string.luas_red));
+        luasView.setRedColorText(ContextCompat.getColor(view.getContext(), R.color.colorRed));
+        break;
+      case Constants.GREEN_LINE:
+        luasView.setGreenText(view.getContext().getString(R.string.luas_green));
+        luasView.setGreenColorText(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+        break;
+    }
+  }
+
+  @Override
+  public Result getResults(int position) {
+    return luasList.get(position);
+  }
+
+  @Override
+  public int getResultsRowCount() {
+    return luasList.size();
+  }
+
+  @Override
+  public List<Result> getResultsList() {
+    return luasList;
   }
 
   @Override
   public void sendToDatabase(Result result) {
-    assert result != null;
-    String lastupdated = result.getLastupdated();
-    String stopid = result.getStopid();
-    String fullname = result.getFullname();
-    String routes = result.getOperators().get(0).getRoutes().toString();
-    float lon = result.getLongitude();
-    float lat = result.getLatitude();
-    databaseHelper.sendFavouriteStopToDatabase(lastupdated, stopid, fullname, routes, lat, lon);
-    view.showSuccessMessage();
+    if(result != null) {
+      String lastupdated = result.getLastupdated();
+      String stopid = result.getStopid();
+      String fullname = result.getFullname();
+      String routes = result.getOperators().get(0).getRoutes().toString();
+      float lon = result.getLongitude();
+      float lat = result.getLatitude();
+      databaseHelper.sendFavouriteStopToDatabase(lastupdated, stopid, fullname, routes, lat, lon);
+      view.showSuccessMessage();
+    }
   }
 }

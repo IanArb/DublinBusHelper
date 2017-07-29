@@ -9,7 +9,7 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/img_header_bg"
+        android:id="@+id/ivHeader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
@@ -23,14 +23,14 @@
         android:padding="@dimen/activity_horizontal_margin">
 
         <ImageView
-            android:id="@+id/img_profile"
+            android:id="@+id/ivProfile"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             app:srcCompat="@android:drawable/sym_def_app_icon"/>
 
         <TextView
-            android:id="@+id/displayName"
+            android:id="@+id/tvDisplayName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -38,7 +38,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         <TextView
-            android:id="@+id/email"
+            android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="ian.arbuckle18@gmail.com"/>

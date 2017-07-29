@@ -12,5 +12,4 @@ public interface ScheduleView {
   void showProgress();
   void hideProgress();
   void showErrorMessage();
-  void setAdapter(ScheduleAdapter adapter);
 }
