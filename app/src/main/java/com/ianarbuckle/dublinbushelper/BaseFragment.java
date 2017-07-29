@@ -47,6 +47,7 @@ public abstract class BaseFragment extends Fragment {
     }
     fragmentTransaction.commit();
   }
+
   public void showProgressDialog() {
     if(progressDialog == null) {
       progressDialog = new ProgressDialog(getContext());

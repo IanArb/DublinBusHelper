@@ -62,7 +62,7 @@ public class FavouritesAdapter extends FirebaseRecyclerAdapter<Favourites, Favou
         float latitude = model.getLatitude();
         float longtitude = model.getLongitude();
 
-        Intent intent = ScheduleActivity.newIntent(context);
+        Intent intent = ScheduleActivity.Companion.newIntent(context);
         intent.putExtra(Constants.STOPID_KEY, stopId);
         intent.putExtra(Constants.LAT_KEY, latitude);
         intent.putExtra(Constants.LONG_KEY, longtitude);

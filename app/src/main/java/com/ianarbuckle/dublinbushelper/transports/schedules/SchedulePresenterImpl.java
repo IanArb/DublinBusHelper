@@ -29,18 +29,13 @@ public class SchedulePresenterImpl implements SchedulePresenter {
 
   RTPIServiceAPI serviceAPI;
 
-  private RealTimeInfo realTimeInfo;
-
   private List<Result> resultList;
-
-  ScheduleAdapter adapter;
 
   private LocationHelper locationHelper;
 
   public SchedulePresenterImpl(ScheduleView view) {
     this.view = view;
     locationHelper = new LocationHelperImpl(view.getContext());
-    realTimeInfo = new RealTimeInfo();
     resultList = new ArrayList<>();
   }
 
@@ -64,7 +59,8 @@ public class SchedulePresenterImpl implements SchedulePresenter {
       @Override
       public void onResponse(Call<RealTimeInfo> call, Response<RealTimeInfo> response) {
         view.hideProgress();
-        getResponseBody(response);
+        RealTimeInfo realTimeInfo = response.body();
+        resultList = realTimeInfo.getResults();
       }
 
       @Override
@@ -75,11 +71,22 @@ public class SchedulePresenterImpl implements SchedulePresenter {
     });
   }
 
-  private void getResponseBody(Response<RealTimeInfo> response) {
-    realTimeInfo = response.body();
-    resultList = realTimeInfo.getResults();
-    adapter = new ScheduleAdapter(view.getContext(), resultList);
-    view.setAdapter(adapter);
+  @Override
+  public void onBindRowViewAtPositon(int position, ScheduleRowView view) {
+    Result result = resultList.get(position);
+
+    String destination = result.getDestination();
+    String direction = result.getDirection();
+    String duetime = result.getDuetime();
+
+    view.setDestination(destination);
+    view.setDirection(direction);
+    view.setDueTime(duetime);
+  }
+
+  @Override
+  public int getResultsRowCount() {
+    return resultList.size();
   }
 
   @Override
