@@ -5,7 +5,7 @@ package com.ianarbuckle.dublinbushelper.transports.dublinbus;
  *
  */
 
-public interface DublinBusFragmentView {
-  void setSuccessMessage();
-  void setErrorMessage();
+public interface DialogCallback {
+  void onSuccess();
+  void onFailure();
 }

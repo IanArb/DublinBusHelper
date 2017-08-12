@@ -31,11 +31,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
+import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
+import com.ianarbuckle.dublinbushelper.transports.schedules.di.DaggerScheduleComponent;
+import com.ianarbuckle.dublinbushelper.transports.schedules.di.ScheduleModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -58,6 +62,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
 
   LinearLayoutManager linearLayoutManager;
 
+  @Inject
   SchedulePresenterImpl presenter;
 
   Marker stationLocation;
@@ -67,17 +72,18 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   }
 
   @Override
-  protected void initPresenter() {
-    presenter = new SchedulePresenterImpl(this);
+  protected void injectDagger() {
+    DaggerScheduleComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .scheduleModule(new ScheduleModule(this))
+        .build()
+        .inject(this);
   }
 
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_schedule, container, false);
-    ButterKnife.bind(this, view);
-
-    return view;
+    return inflater.inflate(R.layout.fragment_schedule, container, false);
   }
 
   @Override
@@ -109,27 +115,34 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
       public void onMapReady(GoogleMap googleMap) {
         presenter.initMap(googleMap);
 
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.getUiSettings().setMapToolbarEnabled(false);
-
-        Intent intent = getActivity().getIntent();
-        float latitude = intent.getFloatExtra(Constants.LAT_KEY, 0);
-        float longtitude = intent.getFloatExtra(Constants.LONG_KEY, 0);
-
-        LatLng latLng = new LatLng(latitude, longtitude);
-
-        stationLocation = googleMap.addMarker(new MarkerOptions().position(latLng));
-
-        IconGenerator iconGenerator = new IconGenerator(getContext());
-
-        iconGenerator.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_my_location));
-
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon());
-        stationLocation.setIcon(icon);
-
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, 16)));
+        setMarker(googleMap);
+        setGeneratedIcon();
       }
     });
+  }
+
+  private void setMarker(GoogleMap googleMap) {
+    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    googleMap.getUiSettings().setMapToolbarEnabled(false);
+
+    Intent intent = getActivity().getIntent();
+    float latitude = intent.getFloatExtra(Constants.LAT_KEY, 0);
+    float longtitude = intent.getFloatExtra(Constants.LONG_KEY, 0);
+
+    LatLng latLng = new LatLng(latitude, longtitude);
+
+    stationLocation = googleMap.addMarker(new MarkerOptions().position(latLng));
+
+    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, 16)));
+  }
+
+  private void setGeneratedIcon() {
+    IconGenerator iconGenerator = new IconGenerator(getContext());
+
+    iconGenerator.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_my_location));
+
+    BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon());
+    stationLocation.setIcon(icon);
   }
 
   private SupportMapFragment initFragment(SupportMapFragment supportMapFragment) {

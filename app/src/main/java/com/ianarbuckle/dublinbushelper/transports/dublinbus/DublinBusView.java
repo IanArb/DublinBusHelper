@@ -1,5 +1,6 @@
 package com.ianarbuckle.dublinbushelper.transports.dublinbus;
 
+import android.app.Activity;
 import android.content.Context;
 
 /**
@@ -8,6 +9,7 @@ import android.content.Context;
  */
 
 public interface DublinBusView {
+  Activity getActivity();
   Context getContext();
   void showProgress();
   void hideProgress();

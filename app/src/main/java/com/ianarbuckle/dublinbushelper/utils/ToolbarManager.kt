@@ -13,6 +13,7 @@ interface ToolbarManager {
     val toolbar: Toolbar
 
     var toolbarTitle: String
+
     get() = toolbar.title.toString()
     set(value) {
         toolbar.title = value

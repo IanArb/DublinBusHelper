@@ -14,8 +14,13 @@ import android.widget.Toast;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
+import com.ianarbuckle.dublinbushelper.authentication.di.AuthModule;
+import com.ianarbuckle.dublinbushelper.authentication.di.DaggerAuthComponent;
+import com.ianarbuckle.dublinbushelper.authentication.di.RegisterModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,6 +44,7 @@ public class RegisterFragment extends BaseFragment implements RegisterView {
   @BindView(R.id.tilConfirmPassword)
   TextInputLayout tilConfirmPassword;
 
+  @Inject
   RegisterPresenterImpl presenter;
 
   public static Fragment newInstance() {
@@ -52,8 +58,13 @@ public class RegisterFragment extends BaseFragment implements RegisterView {
   }
 
   @Override
-  protected void initPresenter() {
-    presenter = new RegisterPresenterImpl(TransportHelperApplication.getAppInstance().getFirebaseAuthHelper());
+  protected void injectDagger() {
+    DaggerAuthComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .authModule(new AuthModule())
+        .registerModule(new RegisterModule())
+        .build()
+        .inject(this);
     presenter.setView(this);
   }
 

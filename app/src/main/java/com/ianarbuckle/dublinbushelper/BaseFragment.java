@@ -30,14 +30,14 @@ public abstract class BaseFragment extends Fragment {
 
     butterKnifeUnbinder(view);
 
-    initPresenter();
+    injectDagger();
   }
 
   private void butterKnifeUnbinder(View view) {
     unbinder = ButterKnife.bind(this, view);
   }
 
-  protected abstract void initPresenter();
+  protected abstract void injectDagger();
 
   public static void switchFragment(FragmentManager fragmentManager, Fragment fragment, String tag, boolean addToBackStack) {
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

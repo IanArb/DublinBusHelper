@@ -20,11 +20,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
+import com.ianarbuckle.dublinbushelper.authentication.di.AuthModule;
+import com.ianarbuckle.dublinbushelper.authentication.di.DaggerAuthComponent;
+import com.ianarbuckle.dublinbushelper.authentication.di.LoginModule;
 import com.ianarbuckle.dublinbushelper.transports.TransportsPagerActivity;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,6 +47,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
   @BindView(R.id.tilPassword)
   TextInputLayout tilPassword;
 
+  @Inject
   LoginPresenterImpl presenter;
 
   private GoogleApiClient googleApiClient;
@@ -63,8 +69,13 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
   }
 
   @Override
-  protected void initPresenter() {
-    presenter = new LoginPresenterImpl(TransportHelperApplication.getAppInstance().getFirebaseAuthHelper());
+  protected void injectDagger() {
+    DaggerAuthComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .authModule(new AuthModule())
+        .loginModule(new LoginModule())
+        .build()
+        .inject(this);
     presenter.setView(this);
   }
 
