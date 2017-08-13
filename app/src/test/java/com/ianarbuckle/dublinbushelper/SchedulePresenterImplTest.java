@@ -1,5 +1,6 @@
 package com.ianarbuckle.dublinbushelper;
 
+import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
 import com.ianarbuckle.dublinbushelper.transports.schedules.SchedulePresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleView;
 
@@ -25,10 +26,13 @@ public class SchedulePresenterImplTest {
   @Mock
   ScheduleView view;
 
+  @Mock
+  LocationHelper locationHelper;
+
   @Before
   public void setup() throws Exception {
     MockitoAnnotations.initMocks(this);
-    presenter = new SchedulePresenterImpl(view);
+    presenter = new SchedulePresenterImpl(locationHelper, view);
   }
 
   @Test

@@ -10,11 +10,9 @@ import com.google.android.gms.maps.GoogleMap;
  */
 
 public interface DublinBusPresenter {
-  void setView(DublinBusView view);
-  void setFragmentView(DublinBusFragmentView view);
   boolean checkLocationPermission(Fragment fragment);
   void onRequestPermission();
   void initMap(GoogleMap googleMap);
   void fetchStops();
-  void sendToDatabase(String lastUpdate, String stopid, String name, String routes, float lat, float lon);
+  void sendToDatabase(String shortName, float latitude, float longtitude, String lastUpdated, String displayStopId, String routes);
 }

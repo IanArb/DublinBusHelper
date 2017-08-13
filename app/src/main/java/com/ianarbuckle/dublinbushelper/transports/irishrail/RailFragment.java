@@ -21,13 +21,14 @@ import android.widget.Toast;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
+import com.ianarbuckle.dublinbushelper.transports.irishrail.di.DaggerRailComponent;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 import com.ianarbuckle.dublinbushelper.utils.OnRecyclerItemClickListener;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,20 +52,24 @@ public class RailFragment extends BaseFragment implements RailView {
   @BindView(R.id.progressBar)
   ProgressBar progressBar;
 
+  @Inject
+  RailPresenterImpl presenter;
+
   RailAdapter railAdapter;
 
   LinearLayoutManager linearLayoutManager;
-
-  RailPresenterImpl presenter;
 
   public static Fragment newInstance() {
     return new RailFragment();
   }
 
   @Override
-  protected void initPresenter() {
-    DatabaseHelper databaseHelper = TransportHelperApplication.getAppInstance().getDatabaseHelper();
-    presenter = new RailPresenterImpl(this, databaseHelper);
+  protected void injectDagger() {
+    DaggerRailComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .railModule(new com.ianarbuckle.dublinbushelper.transports.irishrail.di.RailModule(this))
+        .build()
+        .inject(this);
   }
 
   @Nullable

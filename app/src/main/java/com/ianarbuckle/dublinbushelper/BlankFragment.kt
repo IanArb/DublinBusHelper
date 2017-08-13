@@ -17,7 +17,7 @@ class BlankFragment : BaseFragment() {
         return inflater.inflate(R.layout.activity_blank, container, false)
     }
 
-    override fun initPresenter() {
+    override fun injectDagger() {
 
     }
 

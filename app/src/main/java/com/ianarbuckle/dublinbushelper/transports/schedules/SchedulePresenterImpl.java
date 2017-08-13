@@ -2,7 +2,6 @@ package com.ianarbuckle.dublinbushelper.transports.schedules;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
-import com.ianarbuckle.dublinbushelper.helper.LocationHelperImpl;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.RealTimeInfo;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.Result;
 import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
@@ -13,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,17 +26,19 @@ import retrofit2.Response;
 
 public class SchedulePresenterImpl implements SchedulePresenter {
 
-  private ScheduleView view;
+  @Inject
+  ScheduleView view;
+
+  @Inject
+  LocationHelper locationHelper;
 
   RTPIServiceAPI serviceAPI;
 
   private List<Result> resultList;
 
-  private LocationHelper locationHelper;
-
-  public SchedulePresenterImpl(ScheduleView view) {
+  public SchedulePresenterImpl(LocationHelper locationHelper, ScheduleView view) {
     this.view = view;
-    locationHelper = new LocationHelperImpl(view.getContext());
+    this.locationHelper = locationHelper;
     resultList = new ArrayList<>();
   }
 

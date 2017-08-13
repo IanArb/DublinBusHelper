@@ -22,14 +22,16 @@ import android.widget.Toast;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
+import com.ianarbuckle.dublinbushelper.transports.luas.di.DaggerLuasComponent;
+import com.ianarbuckle.dublinbushelper.transports.luas.di.LuasModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 import com.ianarbuckle.dublinbushelper.utils.OnRecyclerItemClickListener;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Ian Arbuckle on 02/03/2017.
@@ -54,24 +56,26 @@ public class LuasFragment extends BaseFragment implements LuasView {
   @BindView(R.id.progressBar)
   ProgressBar progressBar;
 
-  private LuasPresenterImpl presenter;
+  @Inject
+  LuasPresenterImpl presenter;
 
   public static Fragment newInstance() {
     return new LuasFragment();
   }
 
   @Override
-  protected void initPresenter() {
-    DatabaseHelper databaseHelper = TransportHelperApplication.getAppInstance().getDatabaseHelper();
-    presenter = new LuasPresenterImpl(this, databaseHelper);
+  protected void injectDagger() {
+    DaggerLuasComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .luasModule(new LuasModule(this))
+        .build()
+        .inject(this);
   }
 
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_luas, container, false);
-    ButterKnife.bind(this, view);
-    return view;
+    return inflater.inflate(R.layout.fragment_luas, container, false);
   }
 
   @Override

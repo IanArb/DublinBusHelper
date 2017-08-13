@@ -15,17 +15,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
+import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
+import com.ianarbuckle.dublinbushelper.favourites.di.DaggerFavouritesComponent;
+import com.ianarbuckle.dublinbushelper.favourites.di.FavouritesModule;
 import com.ianarbuckle.dublinbushelper.models.Favourites;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Ian Arbuckle on 03/04/2017.
  *
  */
 
-public class FavouritesFragment extends BaseFragment {
+public class FavouritesFragment extends BaseFragment implements FavouritesView {
 
   @BindView(R.id.rv)
   RecyclerView recyclerView;
@@ -40,22 +44,32 @@ public class FavouritesFragment extends BaseFragment {
   DatabaseReference databaseReference;
   DatabaseReference childRef;
 
+  @Inject
+  FavouritesPresenterImpl presenter;
+
   public static Fragment newInstance() {
     return new FavouritesFragment();
   }
 
   @Override
-  protected void initPresenter() {
-    //Stub method
+  protected void injectDagger() {
+    DaggerFavouritesComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .favouritesModule(new FavouritesModule(this))
+        .build()
+        .inject(this);
   }
 
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    final View view = inflater.inflate(R.layout.fragment_favourites, container, false);
-    ButterKnife.bind(this, view);
+    return inflater.inflate(R.layout.fragment_favourites, container, false);
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
     attachRecyclerView();
-    return view;
   }
 
   private void attachRecyclerView() {
@@ -64,7 +78,7 @@ public class FavouritesFragment extends BaseFragment {
     recyclerView.setLayoutManager(linearLayoutManager);
     databaseReference = FirebaseDatabase.getInstance().getReference();
     childRef = databaseReference.child("favourites");
-    adapter = new FavouritesAdapter(Favourites.class, R.layout.layout_card_favourites, FavouritesViewHolder.class, childRef, getContext());
+    adapter = new FavouritesAdapter(Favourites.class, R.layout.layout_card_favourites, FavouritesViewHolder.class, childRef, presenter);
     recyclerView.setAdapter(adapter);
   }
 

@@ -8,7 +8,7 @@
                 android:padding="@dimen/spacing_normal">
 
     <TextView
-        android:id="@+id/tvDestination"
+        android:id="@+id/tvDest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="The Point"/>
@@ -24,7 +24,7 @@
         android:id="@+id/tvDirection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDestination"
+        android:layout_below="@+id/tvDest"
         tools:text="Inbound"/>
 
     <ImageButton

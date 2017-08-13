@@ -2,8 +2,11 @@ package com.ianarbuckle.dublinbushelper.transports.dublinbus;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +18,15 @@ import android.widget.Toast;
 
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DaggerDublinBusComponent;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DublinBusModule;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.HelperModule;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
+import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,17 +38,8 @@ import butterknife.Unbinder;
  *
  */
 
-public class PopupDialogFragment extends DialogFragment implements DublinBusFragmentView {
-
+public class PopupDialogFragment extends DialogFragment implements DialogCallback {
   Unbinder unbinder;
-
-  String displayStopId;
-  String shortName;
-  String shortnameLocalised;
-  String lastUpdated;
-  String routes;
-  float latitude;
-  float longtitude;
 
   @BindView(R.id.tvDisplayStopId)
   TextView tvDisplayStopId;
@@ -56,6 +56,7 @@ public class PopupDialogFragment extends DialogFragment implements DublinBusFrag
   @BindView(R.id.tvRoutes)
   TextView tvRoutes;
 
+  @Inject @Named("dialogPresenter")
   DublinBusPresenterImpl presenter;
 
 
@@ -79,12 +80,23 @@ public class PopupDialogFragment extends DialogFragment implements DublinBusFrag
 
   @Override
   public void onStart() {
-    DatabaseHelper databaseHelper = TransportHelperApplication.getAppInstance().getDatabaseHelper();
-    presenter = new DublinBusPresenterImpl(databaseHelper);
-    presenter.setFragmentView(this);
+    injectDagger();
     super.onStart();
+    drawWindow();
+  }
+
+  private void injectDagger() {
+    DaggerDublinBusComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .dublinBusModule(new DublinBusModule(this))
+        .helperModule(new HelperModule())
+        .build()
+        .inject(this);
+  }
+
+  private void drawWindow() {
     Window window = getDialog().getWindow();
-    if(window != null) {
+    if (window != null) {
       window.setWindowAnimations(R.style.DialogAnimation);
       int matchParent = WindowManager.LayoutParams.MATCH_PARENT;
       int wrapContent = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -110,22 +122,22 @@ public class PopupDialogFragment extends DialogFragment implements DublinBusFrag
     return view;
   }
 
-  private void butterKnifeUnbinder(View view) {
-    unbinder = ButterKnife.bind(this, view);
-  }
-
   private void initViews() {
-    displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
-    shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
-    shortnameLocalised = getArguments().getString(Constants.SHORT_NAME_LOCALISED_KEY);
-    lastUpdated = getArguments().getString(Constants.LAST_UPDATED_KEY);
-    routes = getArguments().getString(Constants.ROUTES_KEY);
+    String displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
+    String shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
+    String shortnameLocalised = getArguments().getString(Constants.SHORT_NAME_LOCALISED_KEY);
+    String lastUpdated = getArguments().getString(Constants.LAST_UPDATED_KEY);
+    String routes = getArguments().getString(Constants.ROUTES_KEY);
 
     tvDisplayStopId.setText(displayStopId);
     tvShortname.setText(shortName);
     tvShortnamelocal.setText(shortnameLocalised);
     tvLastupdate.setText(lastUpdated);
     tvRoutes.setText(routes);
+  }
+
+  private void butterKnifeUnbinder(View view) {
+    unbinder = ButterKnife.bind(this, view);
   }
 
   @OnClick(R.id.ibClose)
@@ -135,29 +147,28 @@ public class PopupDialogFragment extends DialogFragment implements DublinBusFrag
 
   @OnClick(R.id.btnSchedule)
   public void onShowScheduleClick() {
-    displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
-    shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
-    latitude = getArguments().getFloat(Constants.LAT_KEY);
-    longtitude = getArguments().getFloat(Constants.LONG_KEY);
+    String displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
+    String shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
+    float latitude = getArguments().getFloat(Constants.LAT_KEY);
+    float longtitude = getArguments().getFloat(Constants.LONG_KEY);
+
     Intent intent = ScheduleActivity.Companion.newIntent(getContext());
     intent.putExtra(Constants.DISPLAYNAME_KEY, shortName);
     intent.putExtra(Constants.STOPID_KEY, displayStopId);
     intent.putExtra(Constants.LAT_KEY, latitude);
     intent.putExtra(Constants.LONG_KEY, longtitude);
-    startActivity(intent);
+    getActivity().startActivity(intent);
   }
 
   @OnClick(R.id.ibFavourite)
   public void onFavouriteClick() {
-    displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
-    shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
-    lastUpdated = getArguments().getString(Constants.LAST_UPDATED_KEY);
-    routes = getArguments().getString(Constants.ROUTES_KEY);
-    latitude = getArguments().getFloat(Constants.LAT_KEY);
-    longtitude = getArguments().getFloat(Constants.LONG_KEY);
-
-
-    presenter.sendToDatabase(lastUpdated, shortName, displayStopId, routes, latitude, longtitude);
+    String displayStopId = getArguments().getString(Constants.DISPLAY_STOP_ID_KEY);
+    String shortName = getArguments().getString(Constants.SHORT_NAME_KEY);
+    String lastUpdated = getArguments().getString(Constants.LAST_UPDATED_KEY);
+    String routes = getArguments().getString(Constants.ROUTES_KEY);
+    float latitude = getArguments().getFloat(Constants.LAT_KEY);
+    float longtitude = getArguments().getFloat(Constants.LONG_KEY);
+    presenter.sendToDatabase(shortName, latitude, longtitude, lastUpdated, displayStopId, routes);
   }
 
   @Override
@@ -167,12 +178,28 @@ public class PopupDialogFragment extends DialogFragment implements DublinBusFrag
   }
 
   @Override
-  public void setSuccessMessage() {
+  public void onSuccess() {
     Toast.makeText(getContext(), "Saved to favourites", Toast.LENGTH_SHORT).show();
   }
 
   @Override
-  public void setErrorMessage() {
-    Toast.makeText(getContext(), "Check your internet connection...", Toast.LENGTH_SHORT).show();
+  public void onFailure() {
+    FragmentTransaction fragmentTransaction = getFragmentTransaction();
+    DialogFragment dialogFragment = ErrorDialogFragment.newInstance(R.string.error_dialog_title);
+    dialogFragment.show(fragmentTransaction, Constants.DIALOG_FRAGMENT);
   }
+
+  @NonNull
+  private FragmentTransaction getFragmentTransaction() {
+    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+    Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(Constants.DIALOG_FRAGMENT);
+
+    if (fragment != null) {
+      fragmentTransaction.remove(fragment);
+    }
+
+    fragmentTransaction.addToBackStack(null);
+    return fragmentTransaction;
+  }
+
 }

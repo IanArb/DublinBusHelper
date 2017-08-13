@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
+import com.ianarbuckle.dublinbushelper.models.Favourites;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
@@ -12,11 +13,14 @@ import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
 import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
+import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,7 +32,6 @@ import retrofit2.Response;
  */
 
 public class LuasPresenterImpl implements LuasPresenter {
-
   private LuasView view;
 
   RTPIServiceAPI serviceAPI;
@@ -37,7 +40,8 @@ public class LuasPresenterImpl implements LuasPresenter {
 
   private List<Result> luasList;
 
-  private DatabaseHelper databaseHelper;
+  @Inject
+  DatabaseHelper databaseHelper;
 
   public LuasPresenterImpl(LuasView view, DatabaseHelper databaseHelper) {
     this.view = view;
@@ -103,6 +107,10 @@ public class LuasPresenterImpl implements LuasPresenter {
     float latitude = result.getLatitude();
     float longtitude = result.getLongitude();
 
+    startActivityWithIntent(stopId, displayName, latitude, longtitude);
+  }
+
+  private void startActivityWithIntent(String stopId, String displayName, float latitude, float longtitude) {
     Intent intent = ScheduleActivity.Companion.newIntent(view.getContext());
     intent.putExtra(Constants.STOPID_KEY, stopId);
     intent.putExtra(Constants.LAT_KEY, latitude);
@@ -152,10 +160,22 @@ public class LuasPresenterImpl implements LuasPresenter {
       String stopid = result.getStopid();
       String fullname = result.getFullname();
       String routes = result.getOperators().get(0).getRoutes().toString();
-      float lon = result.getLongitude();
-      float lat = result.getLatitude();
-      databaseHelper.sendFavouriteStopToDatabase(lastupdated, stopid, fullname, routes, lat, lon);
-      view.showSuccessMessage();
+      float longitude = result.getLongitude();
+      float latitude = result.getLatitude();
+
+      if(!StringUtils.isStringEmptyorNull(lastupdated, stopid, fullname, routes)) {
+        Favourites favourites = new Favourites();
+        favourites.setRoutes(routes);
+        favourites.setStopId(stopid);
+        favourites.setName(fullname);
+        favourites.setTime(lastupdated);
+        favourites.setLongitude(longitude);
+        favourites.setLatitude(latitude);
+        databaseHelper.sendFavouriteStopToDatabase(favourites, Constants.FIREBASE_URL);
+        view.showSuccessMessage();
+      } else {
+        view.showErrorMessage();
+      }
     }
   }
 }

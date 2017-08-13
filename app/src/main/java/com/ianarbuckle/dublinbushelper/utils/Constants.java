@@ -59,4 +59,6 @@ public class Constants {
   public static final String INTER_COMMUTER_ID = "[Intercity, Commuter]";
   public static final String INTER_COMMUTER_DART_ID = "[Intercity, Commuter, DART]";
   public static final String DUE_TIME_ID = "Due";
+
+  public static final String FIREBASE_URL = "favourites";
 }

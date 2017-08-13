@@ -19,6 +19,7 @@ import com.ianarbuckle.dublinbushelper.utils.Constants
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.ianarbuckle.dublinbushelper.utils.ToolbarManager
+import com.ianarbuckle.dublinbushelper.utils.UIManager
 
 import kotlinx.android.synthetic.main.layout_nav_header_main.*
 import kotlinx.android.synthetic.main.layout_navview.*
@@ -35,6 +36,8 @@ abstract class BaseActivity : AppCompatActivity(), ToolbarManager, NavigationVie
     @BindView(R.id.drawerLayout)
     var drawerLayout: DrawerLayout? = null
 
+    val uiManager: UIManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,6 +46,8 @@ abstract class BaseActivity : AppCompatActivity(), ToolbarManager, NavigationVie
         ButterKnife.bind(this)
 
         butterKnifeUnbinder()
+
+        initNavView()
 
     }
 
@@ -57,17 +62,20 @@ abstract class BaseActivity : AppCompatActivity(), ToolbarManager, NavigationVie
         tvDisplayName?.text = name
         tvEmail?.text = email
 
-        Glide.with(applicationContext).load(photo)
-                .crossFade()
-                .thumbnail(0.5f)
-                .bitmapTransform(CircleTransform(applicationContext))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivProfile)
+//        Glide.with(applicationContext).load(photo)
+//                .crossFade()
+//                .thumbnail(0.5f)
+//                .bitmapTransform(CircleTransform(applicationContext))
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(ivProfile)
 
-        Glide.with(applicationContext).load(Constants.HEADER_URL)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivHeader)
+        uiManager?.loadImage(photo, ivProfile)
+        uiManager?.loadImage(Constants.HEADER_URL, ivHeader)
+
+//        Glide.with(applicationContext).load(Constants.HEADER_URL)
+//                .crossFade()
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(ivHeader)
     }
 
     protected abstract fun initLayout()

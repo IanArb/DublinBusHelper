@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
+import com.ianarbuckle.dublinbushelper.models.Favourites;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
@@ -11,6 +12,7 @@ import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
 import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
+import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -165,9 +167,22 @@ public class RailPresenterImpl implements RailPresenter {
     String lastupdated = result.getLastupdated();
     String displaystopid = result.getDisplaystopid();
     String stopid = result.getStopid();
-    float lat = result.getLatitude();
-    float lon = result.getLongitude();
-    databaseHelper.sendFavouriteStopToDatabase(lastupdated, stopid, displaystopid, routes, lat, lon);
-    view.showSuccessMessage();
+    float latitude = result.getLatitude();
+    float longitude = result.getLongitude();
+
+    if(!StringUtils.isStringEmptyorNull(routes, lastupdated, displaystopid, stopid)) {
+      Favourites favourites = new Favourites();
+      favourites.setRoutes(routes);
+      favourites.setStopId(stopid);
+      favourites.setName(displaystopid);
+      favourites.setTime(lastupdated);
+      favourites.setLongitude(longitude);
+      favourites.setLatitude(latitude);
+      databaseHelper.sendFavouriteStopToDatabase(favourites, Constants.FIREBASE_URL);
+      view.showSuccessMessage();
+    } else {
+      view.showErrorMessage();
+    }
+
   }
 }

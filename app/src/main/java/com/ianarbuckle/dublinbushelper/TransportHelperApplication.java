@@ -59,7 +59,7 @@ public class TransportHelperApplication extends Application {
     return firebaseAuthHelper;
   }
 
-  private static ApplicationComponent getApplicationComponent(Context context) {
+  public static ApplicationComponent getApplicationComponent(Context context) {
     TransportHelperApplication application = (TransportHelperApplication) context.getApplicationContext();
     if(application.applicationComponent == null) {
       application.applicationComponent = DaggerApplicationComponent.builder()

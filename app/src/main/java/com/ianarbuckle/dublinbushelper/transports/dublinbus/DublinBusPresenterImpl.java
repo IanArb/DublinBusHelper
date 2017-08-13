@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
-import com.ianarbuckle.dublinbushelper.helper.LocationHelperImpl;
+import com.ianarbuckle.dublinbushelper.models.Favourites;
 import com.ianarbuckle.dublinbushelper.models.MarkerItemModel;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
@@ -17,11 +17,12 @@ import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,39 +35,52 @@ import retrofit2.Response;
 
 public class DublinBusPresenterImpl implements DublinBusPresenter {
 
-  private DublinBusView view;
-  private DublinBusFragmentView fragmentView;
+  @Inject
+  DublinBusView view;
 
-  private StopInformation stopInformation;
-  private List<Result> dublinBusList;
+  @Inject
+  DialogCallback dialogCallback;
 
-  private LocationHelper locationHelper;
-  private ClusterManager<MarkerItemModel> clusterManager;
+  @Inject
+  StopInformation stopInformation;
 
-  private DatabaseHelper databaseHelper;
+  @Inject
+  List<Result> dublinBusList;
+
+  @Inject
+  LocationHelper locationHelper;
+
+  @Inject
+  DatabaseHelper databaseHelper;
 
   RTPIServiceAPI serviceAPI;
 
-  public DublinBusPresenterImpl(DatabaseHelper databaseHelper) {
+  private ClusterManager<MarkerItemModel> clusterManager;
+
+  public DublinBusPresenterImpl(DatabaseHelper databaseHelper, LocationHelper locationHelper, DublinBusView view) {
     this.databaseHelper = databaseHelper;
-    stopInformation = new StopInformation();
-    dublinBusList = new ArrayList<>();
-  }
-
-  @Override
-  public void setView(DublinBusView view) {
+    this.locationHelper = locationHelper;
     this.view = view;
-    locationHelper = new LocationHelperImpl(view.getContext());
   }
 
-  @Override
-  public void setFragmentView(DublinBusFragmentView view) {
-    this.fragmentView = view;
+  public DublinBusPresenterImpl(DatabaseHelper databaseHelper, DialogCallback dialogCallback) {
+    this.dialogCallback = dialogCallback;
+    this.databaseHelper = databaseHelper;
   }
 
   @Override
   public boolean checkLocationPermission(Fragment fragment) {
     return locationHelper.checkLocationPermission(fragment);
+  }
+
+  @Override
+  public void initMap(GoogleMap googleMap) {
+    locationHelper.initMap(googleMap);
+    clusterManager = new ClusterManager<>(view.getContext(), googleMap);
+    final BusMarkerRenderer clusterRenderer = new BusMarkerRenderer(view.getContext(), googleMap, clusterManager);
+    googleMap.setOnMarkerClickListener(clusterManager);
+    clusterManager.setRenderer(clusterRenderer);
+    googleMap.setOnCameraChangeListener(clusterManager);
   }
 
   @Override
@@ -140,7 +154,7 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
         String shortName = markerItemModel.getShortName();
         String shortNameLocalised = markerItemModel.getShortNameLocalised();
         String lastUpdated = markerItemModel.getLastUpdated();
-        String routes = markerItemModel.getRoutes();
+        String routes = markerItemModel.getRoutes().trim();
         LatLng latLng = markerItemModel.getPosition();
         float latitude = ((float) latLng.latitude);
         float longitude = ((float) latLng.longitude);
@@ -151,24 +165,20 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
   }
 
   @Override
-  public void initMap(GoogleMap googleMap) {
-    locationHelper.initMap(googleMap);
-    clusterManager = new ClusterManager<>(view.getContext(), googleMap);
-    final BusMarkerRenderer clusterRenderer = new BusMarkerRenderer(view.getContext(), googleMap, clusterManager);
-    googleMap.setOnMarkerClickListener(clusterManager);
-    clusterManager.setRenderer(clusterRenderer);
-    googleMap.setOnCameraChangeListener(clusterManager);
-  }
+  public void sendToDatabase(String shortName, float latitude, float longtitude, String lastUpdated, String displayStopId, String routes) {
+    Favourites favourites = new Favourites();
+    favourites.setName(shortName);
+    favourites.setLatitude(latitude);
+    favourites.setLongitude(longtitude);
+    favourites.setTime(lastUpdated);
+    favourites.setStopId(displayStopId);
 
-  @Override
-  public void sendToDatabase(String lastUpdate, String stopid, String name, String routes, float latitude, float longtitude) {
-    if(!StringUtils.isStringEmptyorNull(lastUpdate, stopid, name, routes)) {
-      databaseHelper.sendFavouriteStopToDatabase(lastUpdate, stopid, name, routes, latitude, longtitude);
-      fragmentView.setSuccessMessage();
+    if(!StringUtils.isStringEmptyorNull(lastUpdated, displayStopId, shortName, routes)) {
+      databaseHelper.sendFavouriteStopToDatabase(favourites, Constants.FIREBASE_URL);
+      dialogCallback.onSuccess();
     } else {
-      fragmentView.setErrorMessage();
+      dialogCallback.onFailure();
     }
-
   }
 
   @Override

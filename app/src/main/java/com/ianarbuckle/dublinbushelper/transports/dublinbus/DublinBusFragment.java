@@ -22,9 +22,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DaggerDublinBusComponent;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DublinBusModule;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.HelperModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 
@@ -46,6 +51,7 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
   @BindView(R.id.progressBar)
   ProgressBar progressBar;
 
+  @Inject @Named("fragmentPresenter")
   DublinBusPresenterImpl presenter;
 
   public static Fragment newInstance() {
@@ -59,10 +65,13 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
   }
 
   @Override
-  protected void initPresenter() {
-    DatabaseHelper databaseHelper = TransportHelperApplication.getAppInstance().getDatabaseHelper();
-    presenter = new DublinBusPresenterImpl(databaseHelper);
-    presenter.setView(this);
+  protected void injectDagger() {
+    DaggerDublinBusComponent.builder()
+        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .dublinBusModule(new DublinBusModule(this))
+        .helperModule(new HelperModule())
+        .build()
+        .inject(this);
   }
 
   @Override
