@@ -18,4 +18,5 @@ public interface RailPresenter {
   void onRowClickAtPosition(int position, RailCardRowView view);
   Result getResults(int position);
   void setRouteText(int position, RailCardRowView view);
+  void onStop();
 }

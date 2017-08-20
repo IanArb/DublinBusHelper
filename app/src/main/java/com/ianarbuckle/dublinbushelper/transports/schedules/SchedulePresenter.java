@@ -13,4 +13,5 @@ public interface SchedulePresenter {
   void initMap(GoogleMap googleMap);
   void onBindRowViewAtPositon(int position, ScheduleRowView view);
   int getResultsRowCount();
+  void onStop();
 }

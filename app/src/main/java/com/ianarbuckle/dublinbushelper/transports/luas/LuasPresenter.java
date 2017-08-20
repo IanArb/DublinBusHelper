@@ -18,4 +18,5 @@ public interface LuasPresenter {
   void onRowClickAtPosition(int position, LuasCardRowView luasView);
   Result getResults(int position);
   void setRouteText(int position, LuasCardRowView luasView);
+  void onStop();
 }

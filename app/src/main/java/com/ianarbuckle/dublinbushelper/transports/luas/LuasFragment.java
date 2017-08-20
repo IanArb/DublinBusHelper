@@ -23,8 +23,8 @@ import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.transports.luas.di.DaggerLuasComponent;
-import com.ianarbuckle.dublinbushelper.transports.luas.di.LuasModule;
+import com.ianarbuckle.dublinbushelper.transports.luas.dagger.DaggerLuasComponent;
+import com.ianarbuckle.dublinbushelper.transports.luas.dagger.LuasModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 import com.ianarbuckle.dublinbushelper.utils.OnRecyclerItemClickListener;
@@ -66,7 +66,7 @@ public class LuasFragment extends BaseFragment implements LuasView {
   @Override
   protected void injectDagger() {
     DaggerLuasComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
         .luasModule(new LuasModule(this))
         .build()
         .inject(this);
@@ -171,5 +171,11 @@ public class LuasFragment extends BaseFragment implements LuasView {
     EditText editText = tilFilter.getEditText();
     assert editText != null;
     return editText.getText().toString();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    presenter.onStop();
   }
 }

@@ -1,6 +1,6 @@
 package com.ianarbuckle.dublinbushelper;
 
-import android.content.Context;
+import android.app.Application;
 
 import dagger.Module;
 import dagger.Provides;
@@ -11,15 +11,15 @@ import dagger.Provides;
  */
 @Module
 public class ApplicationModule {
-  private TransportHelperApplication application;
+  private final Application application;
 
-  public ApplicationModule(TransportHelperApplication application) {
+  public ApplicationModule(Application application) {
     this.application = application;
   }
 
+  @ApplicationScope
   @Provides
-  Context provideContext() {
-    return application.getApplicationContext();
+  public Application provideApplication() {
+    return application;
   }
-
 }

@@ -4,20 +4,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.RealTimeInfo;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
-import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
-import com.ianarbuckle.dublinbushelper.utils.Constants;
+import com.ianarbuckle.dublinbushelper.network.NetworkClient;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Ian Arbuckle on 31/03/2017.
@@ -32,13 +27,18 @@ public class SchedulePresenterImpl implements SchedulePresenter {
   @Inject
   LocationHelper locationHelper;
 
-  RTPIServiceAPI serviceAPI;
+  @Inject
+  NetworkClient networkClient;
 
   private List<Result> resultList;
 
-  public SchedulePresenterImpl(LocationHelper locationHelper, ScheduleView view) {
+  private CompositeSubscription subscriptions;
+
+  public SchedulePresenterImpl(LocationHelper locationHelper, ScheduleView view, NetworkClient networkClient) {
     this.view = view;
     this.locationHelper = locationHelper;
+    this.networkClient = networkClient;
+    this.subscriptions = new CompositeSubscription();
     resultList = new ArrayList<>();
   }
 
@@ -46,32 +46,21 @@ public class SchedulePresenterImpl implements SchedulePresenter {
   public void fetchSchedules(String stopId) {
     view.showProgress();
 
-    serviceAPI = RTPIAPICaller.getRTPIServiceAPI();
-
-    Map<String, String> data = new HashMap<>();
-    data.put(Constants.STOPID_KEY, stopId);
-    data.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
-
-    Call<RealTimeInfo> call = serviceAPI.getRealTimeInfo(data);
-
-    getCallback(call);
-  }
-
-  private void getCallback(Call<RealTimeInfo> call) {
-    call.enqueue(new Callback<RealTimeInfo>() {
+    Subscription subscription = networkClient.getRealTimeInformation(new NetworkClient.RealTimeInformationCallback() {
       @Override
-      public void onResponse(Call<RealTimeInfo> call, Response<RealTimeInfo> response) {
+      public void onSuccess(RealTimeInfo realTimeInfo) {
         view.hideProgress();
-        RealTimeInfo realTimeInfo = response.body();
         resultList = realTimeInfo.getResults();
       }
 
       @Override
-      public void onFailure(Call<RealTimeInfo> call, Throwable throwable) {
+      public void onError() {
         view.hideProgress();
         view.showErrorMessage();
       }
-    });
+    }, stopId);
+
+    subscriptions.add(subscription);
   }
 
   @Override
@@ -100,6 +89,11 @@ public class SchedulePresenterImpl implements SchedulePresenter {
   @Override
   public void onRequestPermission() {
     locationHelper.onRequestPermission();
+  }
+
+  @Override
+  public void onStop() {
+    subscriptions.unsubscribe();
   }
 
 }

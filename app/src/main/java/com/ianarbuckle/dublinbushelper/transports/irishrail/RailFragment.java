@@ -22,7 +22,8 @@ import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.transports.irishrail.di.DaggerRailComponent;
+import com.ianarbuckle.dublinbushelper.transports.irishrail.dagger.DaggerRailComponent;
+import com.ianarbuckle.dublinbushelper.transports.irishrail.dagger.RailModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 import com.ianarbuckle.dublinbushelper.utils.OnRecyclerItemClickListener;
@@ -66,8 +67,8 @@ public class RailFragment extends BaseFragment implements RailView {
   @Override
   protected void injectDagger() {
     DaggerRailComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
-        .railModule(new com.ianarbuckle.dublinbushelper.transports.irishrail.di.RailModule(this))
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
+        .railModule(new RailModule(this))
         .build()
         .inject(this);
   }
@@ -173,5 +174,11 @@ public class RailFragment extends BaseFragment implements RailView {
     EditText editText = tilFilter.getEditText();
     assert editText != null;
     return editText.getText().toString();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    presenter.onStop();
   }
 }
