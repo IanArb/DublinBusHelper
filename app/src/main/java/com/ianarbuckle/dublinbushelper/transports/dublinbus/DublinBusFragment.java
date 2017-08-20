@@ -22,9 +22,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DaggerDublinBusComponent;
-import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DublinBusModule;
-import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.HelperModule;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.dagger.DaggerDublinBusComponent;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.dagger.DublinBusModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 
@@ -67,9 +66,8 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
   @Override
   protected void injectDagger() {
     DaggerDublinBusComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
         .dublinBusModule(new DublinBusModule(this))
-        .helperModule(new HelperModule())
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
         .build()
         .inject(this);
   }
@@ -165,5 +163,11 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
   public void setLocalVisibility() {
     assert tvShortnameLocal != null;
     tvShortnameLocal.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    presenter.onStop();
   }
 }

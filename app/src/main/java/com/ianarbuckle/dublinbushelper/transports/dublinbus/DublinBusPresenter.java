@@ -14,5 +14,6 @@ public interface DublinBusPresenter {
   void onRequestPermission();
   void initMap(GoogleMap googleMap);
   void fetchStops();
+  void onStop();
   void sendToDatabase(String shortName, float latitude, float longtitude, String lastUpdated, String displayStopId, String routes);
 }

@@ -8,8 +8,7 @@ import com.ianarbuckle.dublinbushelper.models.Favourites;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
-import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
+import com.ianarbuckle.dublinbushelper.network.NetworkClient;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
@@ -19,9 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import javax.inject.Inject;
+
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Ian Arbuckle on 29/03/2017.
@@ -30,52 +30,55 @@ import retrofit2.Response;
 
 public class RailPresenterImpl implements RailPresenter {
 
-  RTPIServiceAPI serviceAPI;
+  @Inject
+  RailView view;
 
-  private RailView view;
+  @Inject
+  NetworkClient networkClient;
 
-  StopInformation stopInformation;
+  @Inject
+  DatabaseHelper databaseHelper;
+
+  private CompositeSubscription subscriptions;
+
   private List<Result> railList;
 
-  private DatabaseHelper databaseHelper;
-
-  public RailPresenterImpl(RailView view, DatabaseHelper databaseHelper) {
+  public RailPresenterImpl(RailView view, DatabaseHelper databaseHelper, NetworkClient networkClient) {
     this.view = view;
     this.databaseHelper = databaseHelper;
-    stopInformation = new StopInformation();
+    this.subscriptions = new CompositeSubscription();
+    this.networkClient = networkClient;
     railList = new ArrayList<>();
   }
 
   @Override
   public void fetchStations() {
     view.showProgress();
-    serviceAPI = RTPIAPICaller.getRTPIServiceAPI();
 
     Map<String, String> filterMap = new HashMap<>();
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_RAIL);
 
-    Call<StopInformation> call = serviceAPI.getStopInfo(filterMap);
-
-    getCallback(call);
-
-  }
-
-  private void getCallback(Call<StopInformation> call) {
-    call.enqueue(new Callback<StopInformation>() {
+    Subscription subscription = networkClient.getStopInformation(new NetworkClient.StopInformationCallback() {
       @Override
-      public void onResponse(Call<StopInformation> call, Response<StopInformation> response) {
+      public void onSuccess(StopInformation stopInformation) {
         view.hideProgress();
-        StopInformation stopInformation = response.body();
         railList = stopInformation.getResults();
       }
 
       @Override
-      public void onFailure(Call<StopInformation> call, Throwable throwable) {
+      public void onError() {
         view.hideProgress();
         view.showErrorMessage();
       }
-    });
+    }, filterMap);
+
+    subscriptions.add(subscription);
+  }
+
+  @Override
+  public void onStop() {
+    subscriptions.unsubscribe();
   }
 
   @Override
@@ -170,7 +173,7 @@ public class RailPresenterImpl implements RailPresenter {
     float latitude = result.getLatitude();
     float longitude = result.getLongitude();
 
-    if(!StringUtils.isStringEmptyorNull(routes, lastupdated, displaystopid, stopid)) {
+    if (!StringUtils.isStringEmptyorNull(routes, lastupdated, displaystopid, stopid)) {
       Favourites favourites = new Favourites();
       favourites.setRoutes(routes);
       favourites.setStopId(stopid);

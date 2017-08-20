@@ -16,8 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.favourites.di.DaggerFavouritesComponent;
-import com.ianarbuckle.dublinbushelper.favourites.di.FavouritesModule;
+import com.ianarbuckle.dublinbushelper.favourites.dagger.DaggerFavouritesComponent;
+import com.ianarbuckle.dublinbushelper.favourites.dagger.FavouritesModule;
 import com.ianarbuckle.dublinbushelper.models.Favourites;
 
 import javax.inject.Inject;
@@ -54,7 +54,7 @@ public class FavouritesFragment extends BaseFragment implements FavouritesView {
   @Override
   protected void injectDagger() {
     DaggerFavouritesComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
         .favouritesModule(new FavouritesModule(this))
         .build()
         .inject(this);

@@ -14,9 +14,8 @@ import android.widget.Toast;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.authentication.di.AuthModule;
-import com.ianarbuckle.dublinbushelper.authentication.di.DaggerAuthComponent;
-import com.ianarbuckle.dublinbushelper.authentication.di.RegisterModule;
+import com.ianarbuckle.dublinbushelper.authentication.dagger.DaggerAuthComponent;
+import com.ianarbuckle.dublinbushelper.authentication.dagger.RegisterModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 
@@ -60,8 +59,7 @@ public class RegisterFragment extends BaseFragment implements RegisterView {
   @Override
   protected void injectDagger() {
     DaggerAuthComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
-        .authModule(new AuthModule())
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
         .registerModule(new RegisterModule())
         .build()
         .inject(this);

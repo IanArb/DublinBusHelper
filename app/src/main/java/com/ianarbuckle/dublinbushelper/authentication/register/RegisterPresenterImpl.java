@@ -7,6 +7,8 @@ import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
 import java.util.regex.Matcher;
 
+import javax.inject.Inject;
+
 /**
  * Created by Ian Arbuckle on 04/03/2017.
  *
@@ -16,7 +18,8 @@ public class RegisterPresenterImpl implements RegisterPresenter {
 
   private RegisterView view;
 
-  private FirebaseAuthHelper firebaseAuthHelper;
+  @Inject
+  FirebaseAuthHelper firebaseAuthHelper;
 
   public RegisterPresenterImpl(FirebaseAuthHelper firebaseAuthHelper) {
     this.firebaseAuthHelper = firebaseAuthHelper;

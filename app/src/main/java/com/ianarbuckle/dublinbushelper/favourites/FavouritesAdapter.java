@@ -35,7 +35,7 @@ public class FavouritesAdapter extends FirebaseRecyclerAdapter<Favourites, Favou
 
     btnSchedule.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
         presenter.onRowClickPosition(model, viewHolder.getAdapterPosition(), viewHolder);
       }
     });

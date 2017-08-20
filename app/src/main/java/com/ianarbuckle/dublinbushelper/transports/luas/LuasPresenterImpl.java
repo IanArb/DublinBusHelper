@@ -9,8 +9,7 @@ import com.ianarbuckle.dublinbushelper.models.Favourites;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
-import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
+import com.ianarbuckle.dublinbushelper.network.NetworkClient;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
@@ -22,9 +21,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Ian Arbuckle on 02/03/2017.
@@ -32,54 +30,55 @@ import retrofit2.Response;
  */
 
 public class LuasPresenterImpl implements LuasPresenter {
-  private LuasView view;
 
-  RTPIServiceAPI serviceAPI;
+  @Inject
+  LuasView view;
 
-  StopInformation stopInformation;
-
-  private List<Result> luasList;
+  @Inject
+  NetworkClient networkClient;
 
   @Inject
   DatabaseHelper databaseHelper;
 
-  public LuasPresenterImpl(LuasView view, DatabaseHelper databaseHelper) {
+  private CompositeSubscription subscriptions;
+
+  private List<Result> luasList;
+
+  public LuasPresenterImpl(LuasView view, DatabaseHelper databaseHelper, NetworkClient networkClient) {
     this.view = view;
     this.databaseHelper = databaseHelper;
-    stopInformation = new StopInformation();
+    this.subscriptions = new CompositeSubscription();
+    this.networkClient = networkClient;
     luasList = new ArrayList<>();
   }
 
   @Override
   public void fetchStops() {
-    serviceAPI = RTPIAPICaller.getRTPIServiceAPI();
-
     view.showProgress();
 
     Map<String, String> filterMap = new HashMap<>();
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_LUAS);
 
-    Call<StopInformation> call = serviceAPI.getStopInfo(filterMap);
-
-    getRTPIResponse(call);
-  }
-
-  private void getRTPIResponse(Call<StopInformation> call) {
-    call.enqueue(new Callback<StopInformation>() {
+    Subscription subscription = networkClient.getStopInformation(new NetworkClient.StopInformationCallback() {
       @Override
-      public void onResponse(Call<StopInformation> call, Response<StopInformation> response) {
+      public void onSuccess(StopInformation stopInformation) {
         view.hideProgress();
-        StopInformation stopInformation = response.body();
         luasList = stopInformation.getResults();
       }
 
       @Override
-      public void onFailure(Call<StopInformation> call, Throwable throwable) {
+      public void onError() {
         view.hideProgress();
         view.showErrorMessage();
       }
-    });
+    }, filterMap);
+    subscriptions.add(subscription);
+  }
+
+  @Override
+  public void onStop() {
+    subscriptions.unsubscribe();
   }
 
   @Override
@@ -155,17 +154,18 @@ public class LuasPresenterImpl implements LuasPresenter {
 
   @Override
   public void sendToDatabase(Result result) {
-    if(result != null) {
-      String lastupdated = result.getLastupdated();
-      String stopid = result.getStopid();
-      String fullname = result.getFullname();
-      String routes = result.getOperators().get(0).getRoutes().toString();
+    String lastupdated = result.getLastupdated();
+    String stopid = result.getStopid();
+    String fullname = result.getFullname();
+    for (Operator operator : result.getOperators()) {
+      List<String> routes = operator.getRoutes();
+      String route = routes.toString();
       float longitude = result.getLongitude();
       float latitude = result.getLatitude();
 
-      if(!StringUtils.isStringEmptyorNull(lastupdated, stopid, fullname, routes)) {
+      if (!StringUtils.isStringEmptyorNull(lastupdated, stopid, fullname, route)) {
         Favourites favourites = new Favourites();
-        favourites.setRoutes(routes);
+        favourites.setRoutes(route);
         favourites.setStopId(stopid);
         favourites.setName(fullname);
         favourites.setTime(lastupdated);

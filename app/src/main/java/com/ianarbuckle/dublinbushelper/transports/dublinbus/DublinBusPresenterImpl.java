@@ -12,8 +12,7 @@ import com.ianarbuckle.dublinbushelper.models.MarkerItemModel;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.RTPIAPICaller;
-import com.ianarbuckle.dublinbushelper.network.RTPIServiceAPI;
+import com.ianarbuckle.dublinbushelper.network.NetworkClient;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
@@ -24,9 +23,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Ian Arbuckle on 19/02/2017.
@@ -53,14 +51,18 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
   @Inject
   DatabaseHelper databaseHelper;
 
-  RTPIServiceAPI serviceAPI;
+  @Inject
+  NetworkClient networkClient;
+
+  private CompositeSubscription subscriptions;
 
   private ClusterManager<MarkerItemModel> clusterManager;
 
-  public DublinBusPresenterImpl(DatabaseHelper databaseHelper, LocationHelper locationHelper, DublinBusView view) {
-    this.databaseHelper = databaseHelper;
+  public DublinBusPresenterImpl(NetworkClient networkClient, LocationHelper locationHelper, DublinBusView view) {
     this.locationHelper = locationHelper;
     this.view = view;
+    this.networkClient = networkClient;
+    this.subscriptions = new CompositeSubscription();
   }
 
   public DublinBusPresenterImpl(DatabaseHelper databaseHelper, DialogCallback dialogCallback) {
@@ -76,6 +78,10 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
   @Override
   public void initMap(GoogleMap googleMap) {
     locationHelper.initMap(googleMap);
+    setupCluster(googleMap);
+  }
+
+  private void setupCluster(GoogleMap googleMap) {
     clusterManager = new ClusterManager<>(view.getContext(), googleMap);
     final BusMarkerRenderer clusterRenderer = new BusMarkerRenderer(view.getContext(), googleMap, clusterManager);
     googleMap.setOnMarkerClickListener(clusterManager);
@@ -85,41 +91,38 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
 
   @Override
   public void fetchStops() {
-    serviceAPI = RTPIAPICaller.getRTPIServiceAPI();
-
     view.showProgress();
 
     Map<String, String> filterMap = new HashMap<>();
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_BUS);
 
-    Call<StopInformation> call = serviceAPI.getStopInfo(filterMap);
-
-    getCallback(call);
-  }
-
-  private void getCallback(Call<StopInformation> call) {
-    call.enqueue(new Callback<StopInformation>() {
+    Subscription subscription = networkClient.getStopInformation(new NetworkClient.StopInformationCallback() {
       @Override
-      public void onResponse(Call<StopInformation> call, Response<StopInformation> response) {
+      public void onSuccess(StopInformation stopInformation) {
         view.hideProgress();
-        getResponseBody(response);
+        dublinBusList = stopInformation.getResults();
+        drawMarkerItems();
       }
 
       @Override
-      public void onFailure(Call<StopInformation> call, Throwable throwable) {
+      public void onError() {
         view.hideProgress();
         view.showErrorMessage();
       }
-    });
+    }, filterMap);
 
+    subscriptions.add(subscription);
   }
 
-  private void getResponseBody(final Response<StopInformation> response) {
-    stopInformation = response.body();
-    dublinBusList = stopInformation.getResults();
-    for(final Result results : dublinBusList) {
-      MarkerItemModel items = getMarkerItems(results);
+  @Override
+  public void onStop() {
+    subscriptions.unsubscribe();
+  }
+
+  private void drawMarkerItems() {
+    for (final Result result : dublinBusList) {
+      MarkerItemModel items = getMarkerItems(result);
       clusterManager.addItem(items);
       setOnClickListener();
     }
@@ -133,7 +136,7 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
     String shortname = result.getShortname();
     boolean isIrish = Locale.getDefault().getLanguage().equals(Constants.IRISH_INTERNATIONAL_VALUE);
     String shortnamelocalized = null;
-    if(isIrish) {
+    if (isIrish) {
       shortnamelocalized = result.getShortnamelocalized();
       view.setLocalVisibility();
     }
@@ -173,7 +176,7 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
     favourites.setTime(lastUpdated);
     favourites.setStopId(displayStopId);
 
-    if(!StringUtils.isStringEmptyorNull(lastUpdated, displayStopId, shortName, routes)) {
+    if (!StringUtils.isStringEmptyorNull(lastUpdated, displayStopId, shortName, routes)) {
       databaseHelper.sendFavouriteStopToDatabase(favourites, Constants.FIREBASE_URL);
       dialogCallback.onSuccess();
     } else {
@@ -184,6 +187,12 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
   @Override
   public void onRequestPermission() {
     locationHelper.onRequestPermission();
+  }
+
+  public interface DialogCallback {
+    void onSuccess();
+
+    void onFailure();
   }
 
 }

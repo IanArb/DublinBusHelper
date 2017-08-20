@@ -9,6 +9,8 @@ import com.ianarbuckle.dublinbushelper.firebase.authentication.FirebaseAuthHelpe
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
+import javax.inject.Inject;
+
 /**
  * Created by Ian Arbuckle on 04/03/2017.
  *
@@ -18,7 +20,8 @@ public class LoginPresenterImpl implements LoginPresenter {
 
   private LoginView view;
 
-  private FirebaseAuthHelper firebaseAuthHelper;
+  @Inject
+  FirebaseAuthHelper firebaseAuthHelper;
 
   public LoginPresenterImpl(FirebaseAuthHelper firebaseAuthHelper) {
     this.firebaseAuthHelper = firebaseAuthHelper;

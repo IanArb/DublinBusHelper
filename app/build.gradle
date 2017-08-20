@@ -85,16 +85,19 @@ dependencies {
     apt thirdPartyDependencies.butterKnifeCompiler
     compile thirdPartyDependencies.okHttp
     compile thirdPartyDependencies.okHttpUrlConnection
+    compile thirdPartyDependencies.okHttpLogging
     compile thirdPartyDependencies.retrofit
     compile thirdPartyDependencies.retrofitGson
     compile thirdPartyDependencies.glide
     compile thirdPartyDependencies.joda
     compile thirdPartyDependencies.moshi
+    compile thirdPartyDependencies.timber
 
     // RxJava
     compile thirdPartyDependencies.rxJava
     compile thirdPartyDependencies.rxAndroid
     compile thirdPartyDependencies.rxBinding
+    compile thirdPartyDependencies.rxJavaAdapter
 
     // Dagger
     apt thirdPartyDependencies.daggerCompiler

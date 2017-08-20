@@ -20,9 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
-import com.ianarbuckle.dublinbushelper.authentication.di.AuthModule;
-import com.ianarbuckle.dublinbushelper.authentication.di.DaggerAuthComponent;
-import com.ianarbuckle.dublinbushelper.authentication.di.LoginModule;
+import com.ianarbuckle.dublinbushelper.authentication.dagger.DaggerAuthComponent;
+import com.ianarbuckle.dublinbushelper.authentication.dagger.LoginModule;
 import com.ianarbuckle.dublinbushelper.transports.TransportsPagerActivity;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
@@ -71,8 +70,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
   @Override
   protected void injectDagger() {
     DaggerAuthComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
-        .authModule(new AuthModule())
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
         .loginModule(new LoginModule())
         .build()
         .inject(this);

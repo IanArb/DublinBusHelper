@@ -32,8 +32,8 @@ import com.google.maps.android.ui.IconGenerator;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.transports.schedules.di.DaggerScheduleComponent;
-import com.ianarbuckle.dublinbushelper.transports.schedules.di.ScheduleModule;
+import com.ianarbuckle.dublinbushelper.transports.schedules.dagger.DaggerScheduleComponent;
+import com.ianarbuckle.dublinbushelper.transports.schedules.dagger.ScheduleModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 
@@ -74,8 +74,8 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   @Override
   protected void injectDagger() {
     DaggerScheduleComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
         .scheduleModule(new ScheduleModule(this))
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
         .build()
         .inject(this);
   }
@@ -201,5 +201,11 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
       }
     }
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    presenter.onStop();
   }
 }

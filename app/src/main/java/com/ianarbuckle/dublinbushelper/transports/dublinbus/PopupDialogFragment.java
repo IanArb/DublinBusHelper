@@ -18,9 +18,8 @@ import android.widget.Toast;
 
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DaggerDublinBusComponent;
-import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.DublinBusModule;
-import com.ianarbuckle.dublinbushelper.transports.dublinbus.di.HelperModule;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.dagger.DaggerDublinBusComponent;
+import com.ianarbuckle.dublinbushelper.transports.dublinbus.dagger.DublinBusModule;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
@@ -38,7 +37,7 @@ import butterknife.Unbinder;
  *
  */
 
-public class PopupDialogFragment extends DialogFragment implements DialogCallback {
+public class PopupDialogFragment extends DialogFragment implements DublinBusPresenterImpl.DialogCallback {
   Unbinder unbinder;
 
   @BindView(R.id.tvDisplayStopId)
@@ -87,9 +86,8 @@ public class PopupDialogFragment extends DialogFragment implements DialogCallbac
 
   private void injectDagger() {
     DaggerDublinBusComponent.builder()
-        .applicationComponent(TransportHelperApplication.getApplicationComponent(getContext()))
+        .applicationComponent(TransportHelperApplication.get(this).getApplicationComponent())
         .dublinBusModule(new DublinBusModule(this))
-        .helperModule(new HelperModule())
         .build()
         .inject(this);
   }
@@ -168,6 +166,7 @@ public class PopupDialogFragment extends DialogFragment implements DialogCallbac
     String routes = getArguments().getString(Constants.ROUTES_KEY);
     float latitude = getArguments().getFloat(Constants.LAT_KEY);
     float longtitude = getArguments().getFloat(Constants.LONG_KEY);
+
     presenter.sendToDatabase(shortName, latitude, longtitude, lastUpdated, displayStopId, routes);
   }
 
