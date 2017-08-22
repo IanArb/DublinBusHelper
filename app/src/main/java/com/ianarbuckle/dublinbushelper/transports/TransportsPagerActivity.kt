@@ -43,7 +43,7 @@ class TransportsPagerActivity : BaseActivity() {
 
     override fun initToolbar(isHomeAsUpEnabled: Boolean) {
         super.initToolbar(isHomeAsUpEnabled)
-        toolbar.setTitle(R.string.app_name)
+        toolbar?.setTitle(R.string.app_name)
     }
 
     private fun initPager() {

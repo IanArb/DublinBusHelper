@@ -34,7 +34,7 @@ class AuthPagerActivity : BaseActivity() {
 
     override fun initToolbar(isHomeAsUpEnabled: Boolean) {
         super.initToolbar(isHomeAsUpEnabled)
-        toolbar.title = getString(R.string.app_name)
+        toolbar?.title = getString(R.string.app_name)
     }
 
     override fun initLayout() {
