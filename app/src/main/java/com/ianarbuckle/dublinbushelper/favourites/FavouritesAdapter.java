@@ -24,10 +24,11 @@ public class FavouritesAdapter extends FirebaseRecyclerAdapter<Favourites, Favou
 
   @Override
   protected void populateViewHolder(final FavouritesViewHolder viewHolder, final Favourites model, final int position) {
-    presenter.onBindRowViewAtPosition(model, position, viewHolder);
-    presenter.setRouteText(model, position, viewHolder);
-
-    setClickListeners(viewHolder, model, position);
+    if(model != null) {
+      presenter.onBindRowViewAtPosition(model, position, viewHolder);
+      presenter.setRouteText(model, position, viewHolder);
+      setClickListeners(viewHolder, model, position);
+    }
   }
 
   private void setClickListeners(final FavouritesViewHolder viewHolder, final Favourites model, final int position) {

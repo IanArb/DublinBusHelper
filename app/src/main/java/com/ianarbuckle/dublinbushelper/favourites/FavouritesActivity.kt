@@ -3,15 +3,12 @@ package com.ianarbuckle.dublinbushelper.favourites
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-
 import com.ianarbuckle.dublinbushelper.BaseActivity
+
 import com.ianarbuckle.dublinbushelper.BaseFragment
 import com.ianarbuckle.dublinbushelper.R
 import com.ianarbuckle.dublinbushelper.utils.Constants
-
-import org.jetbrains.anko.find
 
 /**
  * Created by Ian Arbuckle on 03/04/2017.
@@ -20,21 +17,18 @@ import org.jetbrains.anko.find
 
 class FavouritesActivity : BaseActivity() {
 
-    override val toolbar: Toolbar by lazy {
-        find<Toolbar>(R.id.toolbar)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()
-        initToolbar()
+        initToolbar(true)
     }
 
     override fun initLayout() {
         setContentView(R.layout.activity_container)
     }
 
-    private fun initToolbar() {
+    override fun initToolbar(isHomeAsUpEnabled: Boolean) {
+        super.initToolbar(isHomeAsUpEnabled)
         toolbar.title = getString(R.string.tab_title_favourites)
     }
 

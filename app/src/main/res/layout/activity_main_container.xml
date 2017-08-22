@@ -5,16 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/activityBackground"
     tools:context="com.ianarbuckle.dublinbushelper.BaseActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
-    <include layout="@layout/content_main"
+    <include layout="@layout/layout_pager"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_below="@+id/toolbar"/>
+        android:layout_above="@+id/navigation"/>
+
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/layout_bottom_nav_bar"/>
 
 </RelativeLayout>
