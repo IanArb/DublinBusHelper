@@ -113,8 +113,6 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
       @Override
       public void onMapReady(GoogleMap googleMap) {
-        presenter.initMap(googleMap);
-
         setMarker(googleMap);
         setGeneratedIcon();
       }

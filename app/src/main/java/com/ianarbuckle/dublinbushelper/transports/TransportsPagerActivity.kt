@@ -7,19 +7,15 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.GravityCompat
-import android.support.v7.widget.Toolbar
-import android.view.MenuItem
 
 import com.ianarbuckle.dublinbushelper.BaseActivity
+
 import com.ianarbuckle.dublinbushelper.R
 import com.ianarbuckle.dublinbushelper.transports.dublinbus.DublinBusFragment
 import com.ianarbuckle.dublinbushelper.transports.irishrail.RailFragment
 import com.ianarbuckle.dublinbushelper.transports.luas.LuasFragment
-
 import kotlinx.android.synthetic.main.layout_pager.*
 import kotlinx.android.synthetic.main.layout_tab.*
-import org.jetbrains.anko.find
 
 /**
  * Created by Ian Arbuckle on 14/02/2017.
@@ -28,29 +24,26 @@ import org.jetbrains.anko.find
 
 class TransportsPagerActivity : BaseActivity() {
 
-    override val toolbar: Toolbar by lazy {
-        find<Toolbar>(R.id.toolbar)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar()
+        initToolbar(false)
         initTabLayout()
         initPager()
     }
 
-    private fun initToolbar() {
-        toolbarTitle = "Transport Helper Ireland"
-    }
-
     override fun initLayout() {
-        setContentView(R.layout.activity_nav_drawer)
+        setContentView(R.layout.activity_main_container)
     }
 
     private fun initTabLayout() {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_title_dublin_bus))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_title_luas))
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_title_irish_rail)))
+    }
+
+    override fun initToolbar(isHomeAsUpEnabled: Boolean) {
+        super.initToolbar(isHomeAsUpEnabled)
+        toolbar.setTitle(R.string.app_name)
     }
 
     private fun initPager() {
@@ -84,15 +77,6 @@ class TransportsPagerActivity : BaseActivity() {
         override fun getCount(): Int {
             return numOfTabs
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                drawerLayout?.openDrawer(GravityCompat.START)
-            }
-        }
-        return true
     }
 
     companion object {

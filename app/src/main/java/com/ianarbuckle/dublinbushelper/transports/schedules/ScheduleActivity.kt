@@ -3,14 +3,12 @@ package com.ianarbuckle.dublinbushelper.transports.schedules
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-
 import com.ianarbuckle.dublinbushelper.BaseActivity
+
 import com.ianarbuckle.dublinbushelper.BaseFragment
 import com.ianarbuckle.dublinbushelper.R
 import com.ianarbuckle.dublinbushelper.utils.Constants
-import org.jetbrains.anko.find
 
 /**
  * Created by Ian Arbuckle on 02/03/2017.
@@ -19,24 +17,19 @@ import org.jetbrains.anko.find
 
 class ScheduleActivity : BaseActivity() {
 
-    override val toolbar: Toolbar by lazy {
-        find<Toolbar>(R.id.toolbar)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()
-        initToolbar()
+        initToolbar(true)
     }
 
     override fun initLayout() {
         setContentView(R.layout.activity_container)
     }
 
-    private fun initToolbar() {
+    override fun initToolbar(isHomeAsUpEnabled: Boolean) {
         val displayName = intent.getStringExtra(Constants.DISPLAYNAME_KEY)
         toolbar.title = displayName
-        enableHomeAsUp { onBackPressed() }
     }
 
     private fun initFragment() {

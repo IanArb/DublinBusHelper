@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">DublinBusHelper</string>
+    <string name="app_name">Transport Helper Ireland</string>
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
-    <string name="log_out">Log out</string>
     <string name="common_ok">OK</string>
 
     <string name="google_maps_key" translatable="false">AIzaSyDw40KqdGNV_6FEqw5xlSNbqDKahUK1y6s</string>
@@ -57,4 +56,8 @@
 
     <string name="login">Login</string>
     <string name="register">Register</string>
+
+    <string name="nav_profile">Profile</string>
+    <string name="nav_favourites">Favourites</string>
+    <string name="nav_nearby">Nearby</string>
 </resources>

@@ -51,7 +51,7 @@
 
     <style name="MyCustomTabText" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">@dimen/spacing_medium_normal</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
     </style>
 
     <!-- Custom Dialog Animation -->
