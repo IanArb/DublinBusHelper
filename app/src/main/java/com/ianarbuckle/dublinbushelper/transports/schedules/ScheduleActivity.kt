@@ -29,7 +29,7 @@ class ScheduleActivity : BaseActivity() {
 
     override fun initToolbar(isHomeAsUpEnabled: Boolean) {
         val displayName = intent.getStringExtra(Constants.DISPLAYNAME_KEY)
-        toolbar.title = displayName
+        toolbar?.title = displayName
     }
 
     private fun initFragment() {

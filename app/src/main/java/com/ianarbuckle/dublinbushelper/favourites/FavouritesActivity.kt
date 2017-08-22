@@ -29,7 +29,7 @@ class FavouritesActivity : BaseActivity() {
 
     override fun initToolbar(isHomeAsUpEnabled: Boolean) {
         super.initToolbar(isHomeAsUpEnabled)
-        toolbar.title = getString(R.string.tab_title_favourites)
+        toolbar?.title = getString(R.string.tab_title_favourites)
     }
 
     private fun initFragment() {

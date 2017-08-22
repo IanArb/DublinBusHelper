@@ -24,6 +24,7 @@ import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+  @Nullable
   @BindView(R.id.toolbar)
   protected Toolbar toolbar;
 
@@ -46,14 +47,12 @@ public abstract class BaseActivity extends AppCompatActivity {
   protected abstract void initLayout();
 
   protected void initToolbar(boolean isHomeAsUpEnabled) {
-    if (toolbar != null) {
-      UiUtils.customiseToolbar(toolbar);
-      setSupportActionBar(toolbar);
-      if (getSupportActionBar() != null) {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(isHomeAsUpEnabled);
-        getSupportActionBar().setHomeAsUpIndicator(UiUtils.colourAndStyleActionBar(toolbar));
-        toolbar.setTitle(R.string.app_name);
-      }
+    UiUtils.customiseToolbar(toolbar);
+    setSupportActionBar(toolbar);
+    if (getSupportActionBar() != null && toolbar != null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(isHomeAsUpEnabled);
+      getSupportActionBar().setHomeAsUpIndicator(UiUtils.colourAndStyleActionBar(toolbar));
+      toolbar.setTitle(R.string.app_name);
     }
   }
 

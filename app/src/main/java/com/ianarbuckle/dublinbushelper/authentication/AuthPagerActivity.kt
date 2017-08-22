@@ -1,22 +1,17 @@
 package com.ianarbuckle.dublinbushelper.authentication
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import com.ianarbuckle.dublinbushelper.BaseActivity
 
 import com.ianarbuckle.dublinbushelper.R
 import com.ianarbuckle.dublinbushelper.authentication.login.LoginFragment
 import com.ianarbuckle.dublinbushelper.authentication.register.RegisterFragment
-import com.ianarbuckle.dublinbushelper.utils.ToolbarManager
 import kotlinx.android.synthetic.main.layout_pager.*
 import kotlinx.android.synthetic.main.layout_tab.*
-import org.jetbrains.anko.find
 
 /**
  * Created by Ian Arbuckle on 04/03/2017.
@@ -34,7 +29,7 @@ class AuthPagerActivity : BaseActivity() {
 
     override fun initToolbar(isHomeAsUpEnabled: Boolean) {
         super.initToolbar(isHomeAsUpEnabled)
-        toolbar.title = getString(R.string.app_name)
+        toolbar?.title = getString(R.string.app_name)
     }
 
     override fun initLayout() {
