@@ -8,13 +8,13 @@ allprojects {
 
 ext {
     // Android versions
-    androidBuildToolsVersion = '25.0.0'
-    androidCompileSdkVersion = 25
-    androidTargetSdkVersion = 25
+    androidBuildToolsVersion = '26.0.1'
+    androidCompileSdkVersion = 26
+    androidTargetSdkVersion = 26
     androidMinSdkVersion = 19
 
     // Google versions
-    androidSupportLibVersion = '25.2.0'
+    androidSupportLibVersion = '26.0.1'
     googlePlayServicesVersion = '10.0.1'
     mapUtilsVersion = '0.3.4'
     multidexSupportVersion = '1.0.1'
@@ -73,6 +73,7 @@ ext {
             googleGcm            : "com.google.android.gms:play-services-gcm:${googlePlayServicesVersion}",
             gson                 : "com.google.code.gson:gson:${gsonVersion}",
             googleAuth           : "com.google.android.gms:play-services-auth:${googleAuthVersion}",
+            coreUtils            : "com.android.support:support-core-utils:${androidSupportLibVersion}"
     ]
 
     firebaseDependencies = [
