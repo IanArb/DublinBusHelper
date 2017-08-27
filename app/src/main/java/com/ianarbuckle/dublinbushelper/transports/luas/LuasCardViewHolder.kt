@@ -14,10 +14,6 @@ import kotlinx.android.synthetic.main.layout_card.view.*
 
 class LuasCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), LuasCardRowView {
 
-    override fun setTime(time: String) {
-        itemView.tvTime.text = time
-    }
-
     override fun setStopId(stopId: String) {
         itemView.tvStopid.text = stopId
     }

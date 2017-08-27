@@ -2,6 +2,8 @@ package com.ianarbuckle.dublinbushelper.transports.schedules
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.ianarbuckle.dublinbushelper.utils.StringUtils
+import com.ianarbuckle.dublinbushelper.utils.UiUtils
 
 import kotlinx.android.synthetic.main.layout_item_schedule_data.view.*
 
@@ -17,7 +19,7 @@ class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), Sc
     }
 
     override fun setDueTime(dueTime: String) {
-        itemView.tvDue.text = dueTime
+        itemView.tvDue.text = StringUtils.timeFormatter(dueTime)
     }
 
     override fun setDirection(direction: String) {

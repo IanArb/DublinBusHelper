@@ -157,7 +157,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   @Override
   public void showProgress() {
     if(progressBar != null) {
-      progressBar.setProgress(100);
+      progressBar.setProgress(Constants.PROGRESS_BAR_VALUE);
     }
   }
 
@@ -172,6 +172,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   @Override
   public void showErrorMessage() {
     FragmentTransaction fragmentTransaction = getFragmentTransaction();
+    FragmentManager fragmentManager = getFragmentManager();
     DialogFragment dialogFragment = ErrorDialogFragment.newInstance(R.string.error_dialog_title);
     dialogFragment.show(fragmentTransaction, Constants.DIALOG_FRAGMENT);
   }

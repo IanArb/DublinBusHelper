@@ -6,7 +6,6 @@ package com.ianarbuckle.dublinbushelper.transports.irishrail;
  */
 
 public interface RailCardRowView {
-  void setTime(String time);
   void setStopId(String stopId);
   void setName(String name);
   void setRoute(String route);

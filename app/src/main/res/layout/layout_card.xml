@@ -15,35 +15,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rlUpdate"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvStopIdLabel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_normal">
-
-            <ImageView
-                android:id="@+id/ivTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_access_time"/>
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/ivTime"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_small"
-                tools:text="02/03/2017 11:16:52"/>
-
-        </RelativeLayout>
+            android:text="Stop ID"
+            android:textStyle="bold"
+            android:padding="@dimen/spacing_normal"/>
 
         <TextView
             android:id="@+id/tvStopid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_normal"
-            tools:text="Stop ID - LUAS1"/>
+            tools:text="LUAS1"/>
+
+        <TextView
+            android:id="@+id/tvNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop Name"
+            android:textStyle="bold"
+            android:padding="@dimen/spacing_normal"/>
 
         <TextView
             android:id="@+id/tvName"
@@ -53,11 +46,20 @@
             tools:text="LUAS Tallaght"/>
 
         <TextView
+            android:id="@+id/tvRouteLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Routes"
+            android:textStyle="bold"
+            android:padding="@dimen/spacing_normal"/>
+
+        <TextView
             android:id="@+id/tvRoute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_normal"
-            tools:text="Green"/>
+            tools:textColor="@color/colorGreen"
+            tools:text="Green line"/>
 
         <View
             android:layout_width="match_parent"
@@ -87,6 +89,16 @@
                 android:layout_marginStart="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:background="@drawable/ic_favorite"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/ibFavourite"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_medium_normal"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_large"
+                android:text="Save"/>
 
         </RelativeLayout>
 

@@ -18,9 +18,6 @@ import butterknife.ButterKnife;
 
 public class RailCardViewHolder extends RecyclerView.ViewHolder implements RailCardRowView {
 
-  @BindView(R.id.tvTime)
-  TextView tvTime;
-
   @BindView(R.id.tvStopid)
   TextView tvStopId;
 
@@ -39,11 +36,6 @@ public class RailCardViewHolder extends RecyclerView.ViewHolder implements RailC
   public RailCardViewHolder(View itemView) {
     super(itemView);
     ButterKnife.bind(this, itemView);
-  }
-
-  @Override
-  public void setTime(String time) {
-    tvTime.setText(time);
   }
 
   @Override

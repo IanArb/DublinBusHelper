@@ -89,12 +89,10 @@ public class RailPresenterImpl implements RailPresenter {
     Operator operator = result.getOperators().get(0);
     String route = operator.getRoutes().toString();
     String stopid = result.getStopid();
-    String lastupdated = result.getLastupdated();
 
     view.setName(fullname);
     view.setRoute(route);
     view.setStopId(stopid);
-    view.setTime(lastupdated);
   }
 
   @Override

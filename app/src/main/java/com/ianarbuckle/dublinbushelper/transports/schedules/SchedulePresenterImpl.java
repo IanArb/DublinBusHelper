@@ -64,7 +64,7 @@ public class SchedulePresenterImpl implements SchedulePresenter {
   }
 
   @Override
-  public void onBindRowViewAtPositon(int position, ScheduleRowView view) {
+  public void onBindRowViewAtPosition(int position, ScheduleRowView view) {
     Result result = resultList.get(position);
 
     String destination = result.getDestination();

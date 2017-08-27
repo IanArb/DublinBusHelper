@@ -2,7 +2,6 @@ package com.ianarbuckle.dublinbushelper.transports.schedules
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 
 import com.ianarbuckle.dublinbushelper.R
@@ -20,7 +19,7 @@ class ScheduleAdapter(private val presenter: SchedulePresenterImpl) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
-        presenter.onBindRowViewAtPositon(position, holder)
+        presenter.onBindRowViewAtPosition(position, holder)
     }
 
     override fun getItemCount(): Int {

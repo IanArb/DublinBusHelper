@@ -16,4 +16,8 @@ public class StringUtils {
     return false;
   }
 
+  public static String timeFormatter(String time) {
+    return time + Constants.FORMAT_TIME;
+  }
+
 }

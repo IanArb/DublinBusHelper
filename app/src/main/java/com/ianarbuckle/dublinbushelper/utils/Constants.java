@@ -11,13 +11,12 @@ public class Constants {
   public static final int PERMISSION_REQUEST_ACCESS_LOCATION = 99;
   public static final int RC_SIGN_IN = 9001;
 
-  public static final String HEADER_URL = "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
   public static final String BASE_URL = "https://data.dublinked.ie/";
 
   public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
       Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-  public static final String FORMAT_TIME = "%s mins";
+  public static final String FORMAT_TIME = "mins";
 
   public static final String DIALOG_FRAGMENT = "dialog";
   public static final String POPUP_FRAGMENT = "popup";
@@ -42,7 +41,6 @@ public class Constants {
   public static final String FORMAT_KEY = "format";
   public static final String FORMAT_VALUE = "json";
   public static final String OPERATOR_KEY = "operator";
-
   public static final String OPERATOR_VALUE_RAIL = "ir";
   public static final String OPERATOR_VALUE_BUS = "bac";
   public static final String OPERATOR_VALUE_LUAS = "LUAS";
@@ -63,6 +61,7 @@ public class Constants {
   public static final String FIREBASE_URL = "favourites";
 
   public static final String HTTP_CACHE_DIR = "okhttp_cache";
-  public static final String LOGTAG = "RxMVP";
   public static final int HTTP_CACHE_SIZE = 10 * 1024 * 1024; //10MB
+
+  public static final int PROGRESS_BAR_VALUE = 100;
 }

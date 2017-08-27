@@ -28,17 +28,13 @@ class ScheduleActivity : BaseActivity() {
     }
 
     override fun initToolbar(isHomeAsUpEnabled: Boolean) {
+        super.initToolbar(isHomeAsUpEnabled)
         val displayName = intent.getStringExtra(Constants.DISPLAYNAME_KEY)
         toolbar?.title = displayName
     }
 
     private fun initFragment() {
         val fragmentManager = supportFragmentManager
-
-        if (fragmentManager.findFragmentByTag(Constants.SCHEDULE_FRAGMENT) != null) {
-            return
-        }
-
         BaseFragment.switchFragment(fragmentManager, ScheduleFragment.newInstance(), Constants.SCHEDULE_FRAGMENT, false)
     }
 

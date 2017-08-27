@@ -28,6 +28,7 @@ import com.ianarbuckle.dublinbushelper.transports.luas.dagger.LuasModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 import com.ianarbuckle.dublinbushelper.utils.OnRecyclerItemClickListener;
+import com.ianarbuckle.dublinbushelper.utils.ReyclerViewOnScrollListener;
 
 import javax.inject.Inject;
 
@@ -75,7 +76,7 @@ public class LuasFragment extends BaseFragment implements LuasView {
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_luas, container, false);
+    return inflater.inflate(R.layout.fragment_stations, container, false);
   }
 
   @Override
@@ -91,6 +92,7 @@ public class LuasFragment extends BaseFragment implements LuasView {
     recyclerView.setLayoutManager(linearLayoutManager);
     luasAdapter = new LuasAdapter(presenter);
     recyclerView.setAdapter(luasAdapter);
+    recyclerView.addOnScrollListener(new ReyclerViewOnScrollListener(tilFilter));
     filterListener(luasAdapter);
     onClickListener(luasAdapter);
   }
@@ -129,7 +131,7 @@ public class LuasFragment extends BaseFragment implements LuasView {
   @Override
   public void showProgress() {
     if(progressBar != null) {
-      progressBar.setProgress(100);
+      progressBar.setProgress(Constants.PROGRESS_BAR_VALUE);
     }
   }
 

@@ -3,10 +3,13 @@ package com.ianarbuckle.dublinbushelper.utils;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -50,5 +53,22 @@ public class UiUtils {
         .thumbnail(0.5f)
         .centerCrop()
         .into(imageView);
+  }
+
+  public static void slideEnterTil(TextInputLayout view) {
+    if(view.getTranslationY() < 0f) {
+      ViewPropertyAnimator animate = view.animate();
+      animate.translationY(0f);
+      view.setVisibility(View.VISIBLE);
+    }
+  }
+
+  public static void slideExitTil(TextInputLayout view) {
+    if(view.getTranslationY() == 0f) {
+      int height = view.getHeight();
+      ViewPropertyAnimator animate = view.animate();
+      animate.translationY(-height);
+      view.setVisibility(View.GONE);
+    }
   }
 }

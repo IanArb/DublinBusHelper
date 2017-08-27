@@ -6,7 +6,6 @@ package com.ianarbuckle.dublinbushelper.transports.luas;
  */
 
 public interface LuasCardRowView {
-  void setTime(String time);
   void setStopId(String stopId);
   void setName(String name);
   void setRoute(String route);

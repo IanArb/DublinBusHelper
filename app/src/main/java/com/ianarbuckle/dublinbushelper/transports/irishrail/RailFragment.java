@@ -1,6 +1,7 @@
 package com.ianarbuckle.dublinbushelper.transports.irishrail;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +28,7 @@ import com.ianarbuckle.dublinbushelper.transports.irishrail.dagger.RailModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
 import com.ianarbuckle.dublinbushelper.utils.OnRecyclerItemClickListener;
+import com.ianarbuckle.dublinbushelper.utils.ReyclerViewOnScrollListener;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -76,7 +78,7 @@ public class RailFragment extends BaseFragment implements RailView {
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_rail, container, false);
+    View view = inflater.inflate(R.layout.fragment_stations, container, false);
     ButterKnife.bind(this, view);
     return view;
   }
@@ -94,6 +96,7 @@ public class RailFragment extends BaseFragment implements RailView {
     recyclerView.setLayoutManager(linearLayoutManager);
     railAdapter = new RailAdapter(presenter);
     recyclerView.setAdapter(railAdapter);
+    recyclerView.addOnScrollListener(new ReyclerViewOnScrollListener(tilFilter));
     filterListener(railAdapter);
     onClickListener(railAdapter);
   }
@@ -101,7 +104,7 @@ public class RailFragment extends BaseFragment implements RailView {
   @Override
   public void showProgress() {
     if(progressBar != null) {
-      progressBar.setProgress(100);
+      progressBar.setProgress(Constants.PROGRESS_BAR_VALUE);
     }
   }
 
@@ -136,7 +139,12 @@ public class RailFragment extends BaseFragment implements RailView {
   private void filterListener(final RailAdapter railAdapter) {
     final EditText editText = tilFilter.getEditText();
     assert editText != null;
-    editText.addTextChangedListener(new TextWatcher() {
+    editText.addTextChangedListener(getWatcher(railAdapter));
+  }
+
+  @NonNull
+  private TextWatcher getWatcher(final RailAdapter railAdapter) {
+    return new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence string, int start, int count, int after) {
 
@@ -152,7 +160,7 @@ public class RailFragment extends BaseFragment implements RailView {
         railAdapter.getFilter().filter(setFilter());
         railAdapter.updateList(presenter.getResultsList());
       }
-    });
+    };
   }
 
   private void onClickListener(RailAdapter adapter) {
@@ -181,4 +189,5 @@ public class RailFragment extends BaseFragment implements RailView {
     super.onStop();
     presenter.onStop();
   }
+
 }
