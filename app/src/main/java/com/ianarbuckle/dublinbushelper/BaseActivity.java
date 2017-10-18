@@ -1,6 +1,5 @@
 package com.ianarbuckle.dublinbushelper;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.ianarbuckle.dublinbushelper.favourites.FavouritesActivity;
 import com.ianarbuckle.dublinbushelper.utils.UiUtils;
 
 import butterknife.BindView;
@@ -47,12 +45,14 @@ public abstract class BaseActivity extends AppCompatActivity {
   protected abstract void initLayout();
 
   protected void initToolbar(boolean isHomeAsUpEnabled) {
-    UiUtils.customiseToolbar(toolbar);
-    setSupportActionBar(toolbar);
-    if (getSupportActionBar() != null && toolbar != null) {
-      getSupportActionBar().setDisplayHomeAsUpEnabled(isHomeAsUpEnabled);
-      getSupportActionBar().setHomeAsUpIndicator(UiUtils.colourAndStyleActionBar(toolbar));
-      toolbar.setTitle(R.string.app_name);
+    if(toolbar != null) {
+      UiUtils.customiseToolbar(toolbar);
+      setSupportActionBar(toolbar);
+      if (getSupportActionBar() != null && toolbar != null) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(isHomeAsUpEnabled);
+        getSupportActionBar().setHomeAsUpIndicator(UiUtils.colourAndStyleActionBar(toolbar));
+        toolbar.setTitle(R.string.app_name);
+      }
     }
   }
 
@@ -76,12 +76,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
       switch (item.getItemId()) {
+        case R.id.nav_dublin_bus:
+        case R.id.nav_luas:
+        case R.id.nav_rail:
+        case R.id.nav_bus_eireann:
         case R.id.nav_favourites:
-          Intent intent = FavouritesActivity.Companion.newIntent(getApplicationContext());
-          startActivity(intent);
-        case R.id.nav_nearby:
-          Toast.makeText(getApplicationContext(), "Feature coming soon", Toast.LENGTH_SHORT).show();
-        case R.id.nav_profile:
           Toast.makeText(getApplicationContext(), "Feature coming soon", Toast.LENGTH_SHORT).show();
       }
       return true;

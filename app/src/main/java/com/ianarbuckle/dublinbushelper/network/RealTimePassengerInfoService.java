@@ -14,7 +14,7 @@ import rx.Observable;
  *
  */
 
-public interface APIService {
+public interface RealTimePassengerInfoService {
 
   @GET("cgi-bin/rtpi/busstopinformation")
   Observable<StopInformation> getStopInfo(@QueryMap Map<String, String> mapFilter);

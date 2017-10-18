@@ -2,21 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/nav_nearby"
+        android:id="@+id/nav_dublin_bus"
         android:enabled="true"
-        android:icon="@drawable/ic_my_location"
-        android:title="@string/nav_nearby"
+        android:icon="@drawable/ic_directions_bus"
+        android:title="Dublin Bus"/>
+    <item
+        android:id="@+id/nav_luas"
+        android:enabled="true"
+        android:icon="@drawable/ic_tram"
+        android:title="Luas"/>
+    <item
+        android:id="@+id/nav_rail"
+        android:enabled="true"
+        android:icon="@drawable/ic_tram"
+        android:title="Rail"/>
+
+    <item
+        android:id="@+id/nav_bus_eireann"
+        android:enabled="true"
+        android:icon="@drawable/ic_tram"
+        android:title="Bus Eireann"
         app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/nav_favourites"
         android:enabled="true"
         android:icon="@drawable/ic_favorite"
-        android:title="@string/nav_favourites"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/nav_profile"
-        android:enabled="true"
-        android:icon="@drawable/ic_person"
-        android:title="@string/nav_profile"
-        app:showAsAction="ifRoom"/>
+        android:title="Favourites"/>
 </menu>

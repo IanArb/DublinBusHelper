@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/colorPrimary">
 
-    <include layout="@layout/layout_progress"
+    <include layout="@layout/item_progress"
         tools:visibility="gone"/>
 
     <android.support.design.widget.TextInputLayout
@@ -25,6 +25,6 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <include layout="@layout/layout_recycler_view"/>
+    <include layout="@layout/item_recycler_view"/>
 
 </LinearLayout>

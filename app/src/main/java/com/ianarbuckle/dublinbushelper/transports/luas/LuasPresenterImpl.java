@@ -9,7 +9,7 @@ import com.ianarbuckle.dublinbushelper.models.Favourites;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
@@ -35,7 +35,7 @@ public class LuasPresenterImpl implements LuasPresenter {
   LuasView view;
 
   @Inject
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   @Inject
   DatabaseHelper databaseHelper;
@@ -44,11 +44,11 @@ public class LuasPresenterImpl implements LuasPresenter {
 
   private List<Result> luasList;
 
-  public LuasPresenterImpl(LuasView view, DatabaseHelper databaseHelper, NetworkClient networkClient) {
+  public LuasPresenterImpl(LuasView view, DatabaseHelper databaseHelper, RealTimePassengerInfoAPI realTimePassengerInfoAPI) {
     this.view = view;
     this.databaseHelper = databaseHelper;
     this.subscriptions = new CompositeSubscription();
-    this.networkClient = networkClient;
+    this.realTimePassengerInfoAPI = realTimePassengerInfoAPI;
     luasList = new ArrayList<>();
   }
 
@@ -60,7 +60,7 @@ public class LuasPresenterImpl implements LuasPresenter {
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_LUAS);
 
-    Subscription subscription = networkClient.getStopInformation(new NetworkClient.StopInformationCallback() {
+    Subscription subscription = realTimePassengerInfoAPI.getStopInformation(new RealTimePassengerInfoAPI.StopInformationCallback() {
       @Override
       public void onSuccess(StopInformation stopInformation) {
         view.hideProgress();
@@ -73,6 +73,7 @@ public class LuasPresenterImpl implements LuasPresenter {
         view.showErrorMessage();
       }
     }, filterMap);
+
     subscriptions.add(subscription);
   }
 

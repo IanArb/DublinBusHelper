@@ -1,7 +1,7 @@
 package com.ianarbuckle.dublinbushelper.transports.schedules.dagger;
 
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.schedules.SchedulePresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleView;
 
@@ -23,8 +23,8 @@ public class ScheduleModule {
 
   @ScheduleScope
   @Provides
-  SchedulePresenterImpl providePresenter(LocationHelper locationHelper, NetworkClient networkClient) {
-    return new SchedulePresenterImpl(locationHelper, view, networkClient);
+  SchedulePresenterImpl providePresenter(LocationHelper locationHelper, RealTimePassengerInfoAPI realTimePassengerInfoAPI) {
+    return new SchedulePresenterImpl(locationHelper, view, realTimePassengerInfoAPI);
   }
 
 }

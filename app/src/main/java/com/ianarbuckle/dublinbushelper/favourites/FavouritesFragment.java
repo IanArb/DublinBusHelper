@@ -31,7 +31,7 @@ import butterknife.BindView;
 
 public class FavouritesFragment extends BaseFragment implements FavouritesView {
 
-  @BindView(R.id.rv)
+  @BindView(R.id.recyclerView)
   RecyclerView recyclerView;
 
   @BindView(R.id.tvEmptyMessage)

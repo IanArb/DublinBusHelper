@@ -12,7 +12,7 @@ import com.ianarbuckle.dublinbushelper.models.MarkerItemModel;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
 
@@ -52,16 +52,16 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
   DatabaseHelper databaseHelper;
 
   @Inject
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   private CompositeSubscription subscriptions;
 
   private ClusterManager<MarkerItemModel> clusterManager;
 
-  public DublinBusPresenterImpl(NetworkClient networkClient, LocationHelper locationHelper, DublinBusView view) {
+  public DublinBusPresenterImpl(RealTimePassengerInfoAPI realTimePassengerInfoAPI, LocationHelper locationHelper, DublinBusView view) {
     this.locationHelper = locationHelper;
     this.view = view;
-    this.networkClient = networkClient;
+    this.realTimePassengerInfoAPI = realTimePassengerInfoAPI;
     this.subscriptions = new CompositeSubscription();
   }
 
@@ -97,7 +97,7 @@ public class DublinBusPresenterImpl implements DublinBusPresenter {
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_BUS);
 
-    Subscription subscription = networkClient.getStopInformation(new NetworkClient.StopInformationCallback() {
+    Subscription subscription = realTimePassengerInfoAPI.getStopInformation(new RealTimePassengerInfoAPI.StopInformationCallback() {
       @Override
       public void onSuccess(StopInformation stopInformation) {
         view.hideProgress();

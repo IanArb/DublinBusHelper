@@ -1,7 +1,7 @@
 package com.ianarbuckle.dublinbushelper.transports.irishrail.dagger;
 
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.irishrail.RailPresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.irishrail.RailView;
 
@@ -28,7 +28,7 @@ public class RailModule {
 
   @RailScope
   @Provides
-  RailPresenterImpl providesPresenter(RailView view, DatabaseHelper databaseHelper, NetworkClient networkClient) {
-    return new RailPresenterImpl(view, databaseHelper, networkClient);
+  RailPresenterImpl providesPresenter(RailView view, DatabaseHelper databaseHelper, RealTimePassengerInfoAPI realTimePassengerInfoAPI) {
+    return new RailPresenterImpl(view, databaseHelper, realTimePassengerInfoAPI);
   }
 }

@@ -2,8 +2,8 @@ package com.ianarbuckle.dublinbushelper;
 
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.RealTimeInfo;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
-import com.ianarbuckle.dublinbushelper.network.APIService;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoService;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 
 import org.junit.After;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 public class TestNetworkClient {
 
   @Mock
-  APIService mockApiService;
+  RealTimePassengerInfoService mockRealTimePassengerInfoService;
 
   @Mock
   Observable<StopInformation> mockStopInfoCall;
@@ -48,13 +48,13 @@ public class TestNetworkClient {
   Observable<RealTimeInfo> mockRealTimeInfoCall;
 
   @Mock
-  NetworkClient.RealTimeInformationCallback mockRealTimeInfoCallback;
+  RealTimePassengerInfoAPI.RealTimeInformationCallback mockRealTimeInfoCallback;
 
   @Mock
-  NetworkClient.StopInformationCallback mockStopInfoCallback;
+  RealTimePassengerInfoAPI.StopInformationCallback mockStopInfoCallback;
 
   @Mock
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   private Map<String, String> filterMap;
 
@@ -62,7 +62,7 @@ public class TestNetworkClient {
   public void setup() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    networkClient = new NetworkClient(mockApiService);
+    realTimePassengerInfoAPI = new RealTimePassengerInfoAPI(mockRealTimePassengerInfoService);
     filterMap = new HashMap<>();
 
     RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
@@ -90,12 +90,12 @@ public class TestNetworkClient {
   @Test
   public void testSuccessOnStopInfoCallback() {
     final StopInformation stopInformation = new StopInformation();
-    when(mockApiService.getStopInfo(ArgumentMatchers.<String, String>anyMap())).thenReturn(Observable.just(stopInformation));
+    when(mockRealTimePassengerInfoService.getStopInfo(ArgumentMatchers.anyMap())).thenReturn(Observable.just(stopInformation));
 
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_LUAS);
 
-    networkClient.getStopInformation(mockStopInfoCallback, filterMap);
+    realTimePassengerInfoAPI.getStopInformation(mockStopInfoCallback, filterMap);
 
     verify(mockStopInfoCallback, never()).onError();
     verify(mockStopInfoCallback, times(1)).onSuccess(stopInformation);
@@ -106,24 +106,24 @@ public class TestNetworkClient {
     StopInformation stopInformation = new StopInformation();
 
     Throwable throwable = new Throwable();
-    when(mockApiService.getStopInfo(ArgumentMatchers.<String, String>anyMap()))
+    when(mockRealTimePassengerInfoService.getStopInfo(ArgumentMatchers.<String, String>anyMap()))
         .thenReturn(Observable.<StopInformation>error(throwable));
 
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_LUAS);
 
-    networkClient.getStopInformation(mockStopInfoCallback, filterMap);
+    realTimePassengerInfoAPI.getStopInformation(mockStopInfoCallback, filterMap);
 
     verify(mockStopInfoCallback, never()).onSuccess(stopInformation);
-    verify(mockStopInfoCallback, times(1)).onError();
+    verify(mockStopInfoCallback, times(2)).onError();
   }
 
   @Test
   public void testSuccessOnRealTimeInfoCallback() {
     final RealTimeInfo realTimeInfo = new RealTimeInfo();
-    when(mockApiService.getRealTimeInfo(ArgumentMatchers.<String, String>anyMap())).thenReturn(Observable.just(realTimeInfo));
+    when(mockRealTimePassengerInfoService.getRealTimeInfo(ArgumentMatchers.<String, String>anyMap())).thenReturn(Observable.just(realTimeInfo));
 
-    networkClient.getRealTimeInformation(mockRealTimeInfoCallback, "LUAS11");
+    realTimePassengerInfoAPI.getRealTimeInformation(mockRealTimeInfoCallback, "LUAS11");
 
     verify(mockRealTimeInfoCallback, never()).onError();
     verify(mockRealTimeInfoCallback, times(1)).onSuccess(realTimeInfo);
@@ -134,12 +134,12 @@ public class TestNetworkClient {
     final RealTimeInfo realTimeInfo = new RealTimeInfo();
 
     Throwable throwable = new Throwable();
-    when(mockApiService.getRealTimeInfo(ArgumentMatchers.<String, String>anyMap()))
+    when(mockRealTimePassengerInfoService.getRealTimeInfo(ArgumentMatchers.<String, String>anyMap()))
         .thenReturn(Observable.<RealTimeInfo>error(throwable));
 
-    networkClient.getRealTimeInformation(mockRealTimeInfoCallback, "LUAS11");
+    realTimePassengerInfoAPI.getRealTimeInformation(mockRealTimeInfoCallback, "LUAS11");
 
     verify(mockRealTimeInfoCallback, never()).onSuccess(realTimeInfo);
-    verify(mockRealTimeInfoCallback, times(1)).onError();
+    verify(mockRealTimeInfoCallback, times(2)).onError();
   }
 }

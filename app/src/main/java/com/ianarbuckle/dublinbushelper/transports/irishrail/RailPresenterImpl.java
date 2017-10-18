@@ -8,7 +8,7 @@ import com.ianarbuckle.dublinbushelper.models.Favourites;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Operator;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleActivity;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.StringUtils;
@@ -34,7 +34,7 @@ public class RailPresenterImpl implements RailPresenter {
   RailView view;
 
   @Inject
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   @Inject
   DatabaseHelper databaseHelper;
@@ -43,11 +43,11 @@ public class RailPresenterImpl implements RailPresenter {
 
   private List<Result> railList;
 
-  public RailPresenterImpl(RailView view, DatabaseHelper databaseHelper, NetworkClient networkClient) {
+  public RailPresenterImpl(RailView view, DatabaseHelper databaseHelper, RealTimePassengerInfoAPI realTimePassengerInfoAPI) {
     this.view = view;
     this.databaseHelper = databaseHelper;
     this.subscriptions = new CompositeSubscription();
-    this.networkClient = networkClient;
+    this.realTimePassengerInfoAPI = realTimePassengerInfoAPI;
     railList = new ArrayList<>();
   }
 
@@ -59,7 +59,7 @@ public class RailPresenterImpl implements RailPresenter {
     filterMap.put(Constants.FORMAT_KEY, Constants.FORMAT_VALUE);
     filterMap.put(Constants.OPERATOR_KEY, Constants.OPERATOR_VALUE_RAIL);
 
-    Subscription subscription = networkClient.getStopInformation(new NetworkClient.StopInformationCallback() {
+    Subscription subscription = realTimePassengerInfoAPI.getStopInformation(new RealTimePassengerInfoAPI.StopInformationCallback() {
       @Override
       public void onSuccess(StopInformation stopInformation) {
         view.hideProgress();

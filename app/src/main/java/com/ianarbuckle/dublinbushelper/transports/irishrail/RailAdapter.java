@@ -53,19 +53,11 @@ public class RailAdapter extends RecyclerView.Adapter<RailCardViewHolder> implem
   }
 
   private void onClickListeners(final RailCardViewHolder holder, final int position, Button btnSchedule, ImageButton btnFavourites) {
-    btnSchedule.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        presenter.onRowClickAtPosition(holder.getAdapterPosition(), holder);
-      }
-    });
+    btnSchedule.setOnClickListener(view -> presenter.onRowClickAtPosition(holder.getAdapterPosition(), holder));
 
-    btnFavourites.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if(onRecyclerItemClickListener != null) {
-          onRecyclerItemClickListener.onItemClick(RailAdapter.this, presenter.getResults(position), holder.getAdapterPosition());
-        }
+    btnFavourites.setOnClickListener(view -> {
+      if(onRecyclerItemClickListener != null) {
+        onRecyclerItemClickListener.onItemClick(this, presenter.getResults(position), holder.getAdapterPosition());
       }
     });
   }

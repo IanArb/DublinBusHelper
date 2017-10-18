@@ -4,7 +4,7 @@ import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.dublinbus.DublinBusPresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.dublinbus.DublinBusView;
 
@@ -47,8 +47,8 @@ public class DublinBusModule {
 
   @DublinBusScope
   @Provides @Named("fragmentPresenter")
-  DublinBusPresenterImpl providePresenter(NetworkClient networkClient, LocationHelper locationHelper) {
-    return new DublinBusPresenterImpl(networkClient, locationHelper, view);
+  DublinBusPresenterImpl providePresenter(RealTimePassengerInfoAPI realTimePassengerInfoAPI, LocationHelper locationHelper) {
+    return new DublinBusPresenterImpl(realTimePassengerInfoAPI, locationHelper, view);
   }
 
   @DublinBusScope

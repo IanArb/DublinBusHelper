@@ -17,9 +17,9 @@ public class ReyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
   }
 
   @Override
-  public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-    super.onScrolled(recyclerView, dx, dy);
-    if (dy > 0) {
+  public void onScrolled(RecyclerView recyclerView, int dimenx, int dimeny) {
+    super.onScrolled(recyclerView, dimenx, dimeny);
+    if (dimeny > 0) {
       UiUtils.slideExitTil(tilFilter);
     } else {
       UiUtils.slideEnterTil(tilFilter);

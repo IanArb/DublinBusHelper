@@ -44,7 +44,7 @@ public class DublinBusFragment extends BaseFragment implements DublinBusView {
   @BindView(R.id.tvShortnameLocal)
   TextView tvShortnameLocal;
 
-  @BindView(R.id.rlProgress)
+  @BindView(R.id.progressBarContainer)
   RelativeLayout rlProgress;
 
   @BindView(R.id.progressBar)

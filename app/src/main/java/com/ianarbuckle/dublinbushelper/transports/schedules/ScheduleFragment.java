@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -49,12 +48,12 @@ import butterknife.BindView;
 
 public class ScheduleFragment extends BaseFragment implements ScheduleView {
 
-  @BindView(R.id.rv)
+  @BindView(R.id.recyclerView)
   RecyclerView recyclerView;
 
   ScheduleAdapter adapter;
 
-  @BindView(R.id.rlProgress)
+  @BindView(R.id.progressBarContainer)
   RelativeLayout rlProgress;
 
   @BindView(R.id.progressBar)
@@ -110,12 +109,9 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
 
     supportMapFragment = initFragment(supportMapFragment);
 
-    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-      @Override
-      public void onMapReady(GoogleMap googleMap) {
-        setMarker(googleMap);
-        setGeneratedIcon();
-      }
+    supportMapFragment.getMapAsync(googleMap -> {
+      setMarker(googleMap);
+      setGeneratedIcon();
     });
   }
 
@@ -172,7 +168,6 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
   @Override
   public void showErrorMessage() {
     FragmentTransaction fragmentTransaction = getFragmentTransaction();
-    FragmentManager fragmentManager = getFragmentManager();
     DialogFragment dialogFragment = ErrorDialogFragment.newInstance(R.string.error_dialog_title);
     dialogFragment.show(fragmentTransaction, Constants.DIALOG_FRAGMENT);
   }

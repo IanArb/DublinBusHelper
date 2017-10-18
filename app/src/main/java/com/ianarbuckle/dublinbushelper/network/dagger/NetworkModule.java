@@ -3,8 +3,8 @@ package com.ianarbuckle.dublinbushelper.network.dagger;
 import android.content.Context;
 
 import com.ianarbuckle.dublinbushelper.ApplicationScope;
-import com.ianarbuckle.dublinbushelper.network.APIService;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoService;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 
 import java.io.File;
@@ -43,10 +43,7 @@ public class NetworkModule {
   @Provides
   @ApplicationScope
   public HttpLoggingInterceptor providesLoggingInterceptor() {
-    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-      @Override
-      public void log(String message) {
-      }
+    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(message -> {
     });
     interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
     return interceptor;
@@ -65,14 +62,14 @@ public class NetworkModule {
 
   @Provides
   @ApplicationScope
-  public APIService provideRTPIService(Retrofit retrofit) {
-    return retrofit.create(APIService.class);
+  public RealTimePassengerInfoService provideRTPIService(Retrofit retrofit) {
+    return retrofit.create(RealTimePassengerInfoService.class);
   }
 
   @Provides
   @ApplicationScope
-  public NetworkClient provideNetworkClient(APIService service) {
-    return new NetworkClient(service);
+  public RealTimePassengerInfoAPI provideNetworkClient(RealTimePassengerInfoService service) {
+    return new RealTimePassengerInfoAPI(service);
   }
 
 }

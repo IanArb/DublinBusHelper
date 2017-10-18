@@ -1,7 +1,7 @@
 package com.ianarbuckle.dublinbushelper.transports.luas.dagger;
 
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.luas.LuasPresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.luas.LuasView;
 
@@ -26,7 +26,7 @@ public class LuasModule {
   }
 
   @Provides
-  LuasPresenterImpl providesPresenter(LuasView view, DatabaseHelper databaseHelper, NetworkClient networkClient) {
-    return new LuasPresenterImpl(view, databaseHelper, networkClient);
+  LuasPresenterImpl providesPresenter(LuasView view, DatabaseHelper databaseHelper, RealTimePassengerInfoAPI realTimePassengerInfoAPI) {
+    return new LuasPresenterImpl(view, databaseHelper, realTimePassengerInfoAPI);
   }
 }

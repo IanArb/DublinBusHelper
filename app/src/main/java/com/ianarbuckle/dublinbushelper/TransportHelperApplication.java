@@ -1,5 +1,6 @@
 package com.ianarbuckle.dublinbushelper;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
@@ -24,6 +25,10 @@ public class TransportHelperApplication extends Application {
 
   public static TransportHelperApplication get(Fragment fragment) {
     return (TransportHelperApplication) fragment.getActivity().getApplication();
+  }
+
+  public static TransportHelperApplication get(Activity activity) {
+    return (TransportHelperApplication) activity.getApplication();
   }
 
   public void initDagger() {

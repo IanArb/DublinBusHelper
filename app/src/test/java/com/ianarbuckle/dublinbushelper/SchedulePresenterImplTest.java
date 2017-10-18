@@ -1,7 +1,7 @@
 package com.ianarbuckle.dublinbushelper;
 
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.schedules.SchedulePresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.schedules.ScheduleView;
 
@@ -45,12 +45,12 @@ public class SchedulePresenterImplTest {
   LocationHelper locationHelper;
 
   @Mock
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   @Before
   public void setup() throws Exception {
     MockitoAnnotations.initMocks(this);
-    presenter = new SchedulePresenterImpl(locationHelper, view, networkClient);
+    presenter = new SchedulePresenterImpl(locationHelper, view, realTimePassengerInfoAPI);
 
     RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
       @Override
@@ -76,7 +76,7 @@ public class SchedulePresenterImplTest {
 
   @Test
   public void testFetchSchedules() {
-    when(networkClient.getRealTimeInformation(any(NetworkClient.RealTimeInformationCallback.class), anyString()))
+    when(realTimePassengerInfoAPI.getRealTimeInformation(any(RealTimePassengerInfoAPI.RealTimeInformationCallback.class), anyString()))
         .thenReturn(subscription);
     presenter.fetchSchedules("LUAS11");
     verify(view).showProgress();

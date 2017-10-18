@@ -45,13 +45,13 @@ public class LuasFragment extends BaseFragment implements LuasView {
 
   LuasAdapter luasAdapter;
 
-  @BindView(R.id.rv)
+  @BindView(R.id.recyclerView)
   RecyclerView recyclerView;
 
   @BindView(R.id.tilFilter)
   TextInputLayout tilFilter;
 
-  @BindView(R.id.rlProgress)
+  @BindView(R.id.progressBarContainer)
   RelativeLayout rlProgress;
 
   @BindView(R.id.progressBar)

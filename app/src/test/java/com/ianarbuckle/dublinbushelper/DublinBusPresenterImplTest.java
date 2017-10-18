@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.dublinbus.DublinBusPresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.dublinbus.DublinBusView;
 
@@ -44,7 +44,7 @@ public class DublinBusPresenterImplTest {
   private GoogleMap map;
 
   @Mock
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   @Mock
   DublinBusView view;
@@ -67,7 +67,7 @@ public class DublinBusPresenterImplTest {
   @Before
   public void setup() throws Exception {
     MockitoAnnotations.initMocks(this);
-    presenter = new DublinBusPresenterImpl(networkClient, locationHelper, view);
+    presenter = new DublinBusPresenterImpl(realTimePassengerInfoAPI, locationHelper, view);
     dialogPresenter = new DublinBusPresenterImpl(databaseHelper, callback);
 
     RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
@@ -94,7 +94,7 @@ public class DublinBusPresenterImplTest {
 
   @Test
   public void testNetworkResponse() {
-    when(networkClient.getStopInformation(any(NetworkClient.StopInformationCallback.class), ArgumentMatchers.<String, String>anyMap()))
+    when(realTimePassengerInfoAPI.getStopInformation(any(RealTimePassengerInfoAPI.StopInformationCallback.class), ArgumentMatchers.<String, String>anyMap()))
         .thenReturn(subscription);
     presenter.fetchStops();
     verify(view).showProgress();

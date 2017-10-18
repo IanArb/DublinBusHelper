@@ -22,12 +22,10 @@ import android.widget.Toast;
 import com.ianarbuckle.dublinbushelper.BaseFragment;
 import com.ianarbuckle.dublinbushelper.R;
 import com.ianarbuckle.dublinbushelper.TransportHelperApplication;
-import com.ianarbuckle.dublinbushelper.models.stopinfo.Result;
 import com.ianarbuckle.dublinbushelper.transports.irishrail.dagger.DaggerRailComponent;
 import com.ianarbuckle.dublinbushelper.transports.irishrail.dagger.RailModule;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 import com.ianarbuckle.dublinbushelper.utils.ErrorDialogFragment;
-import com.ianarbuckle.dublinbushelper.utils.OnRecyclerItemClickListener;
 import com.ianarbuckle.dublinbushelper.utils.ReyclerViewOnScrollListener;
 
 import javax.annotation.Nonnull;
@@ -43,13 +41,13 @@ import butterknife.ButterKnife;
 
 public class RailFragment extends BaseFragment implements RailView {
 
-  @BindView(R.id.rv)
+  @BindView(R.id.recyclerView)
   RecyclerView recyclerView;
 
   @BindView(R.id.tilFilter)
   TextInputLayout tilFilter;
 
-  @BindView(R.id.rlProgress)
+  @BindView(R.id.progressBarContainer)
   RelativeLayout rlProgress;
 
   @BindView(R.id.progressBar)
@@ -164,12 +162,7 @@ public class RailFragment extends BaseFragment implements RailView {
   }
 
   private void onClickListener(RailAdapter adapter) {
-    adapter.setOnRecyclerItemLongClickListener(new OnRecyclerItemClickListener() {
-      @Override
-      public void onItemClick(RecyclerView.Adapter adapter, Result result, int position) {
-        presenter.sendToDatabase(result);
-      }
-    });
+    adapter.setOnRecyclerItemLongClickListener((adapter1, result, position) -> presenter.sendToDatabase(result));
   }
 
   @Override

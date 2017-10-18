@@ -1,7 +1,7 @@
 package com.ianarbuckle.dublinbushelper;
 
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.irishrail.RailPresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.irishrail.RailView;
 
@@ -42,7 +42,7 @@ public class RailPresenterImplTest {
   DatabaseHelper databaseHelper;
 
   @Mock
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   @Mock
   Subscription subscription;
@@ -50,7 +50,7 @@ public class RailPresenterImplTest {
   @Before
   public void setup() throws Exception {
     MockitoAnnotations.initMocks(this);
-    presenter = new RailPresenterImpl(view, databaseHelper, networkClient);
+    presenter = new RailPresenterImpl(view, databaseHelper, realTimePassengerInfoAPI);
 
     RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
       @Override
@@ -76,7 +76,7 @@ public class RailPresenterImplTest {
 
   @Test
   public void testNetworkResponse() {
-    when(networkClient.getStopInformation(any(NetworkClient.StopInformationCallback.class), ArgumentMatchers.<String, String>anyMap()))
+    when(realTimePassengerInfoAPI.getStopInformation(any(RealTimePassengerInfoAPI.StopInformationCallback.class), ArgumentMatchers.<String, String>anyMap()))
         .thenReturn(subscription);
     presenter.fetchStations();
     verify(view).showProgress();

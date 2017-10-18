@@ -1,7 +1,7 @@
 package com.ianarbuckle.dublinbushelper;
 
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 import com.ianarbuckle.dublinbushelper.transports.luas.LuasPresenterImpl;
 import com.ianarbuckle.dublinbushelper.transports.luas.LuasView;
 
@@ -36,7 +36,7 @@ public class LuasPresenterimplTest {
   private LuasPresenterImpl presenter;
 
   @Mock
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   @Mock
   LuasView view;
@@ -50,7 +50,7 @@ public class LuasPresenterimplTest {
   @Before
   public void setup() throws Exception {
     MockitoAnnotations.initMocks(this);
-    presenter = new LuasPresenterImpl(view, databaseHelper, networkClient);
+    presenter = new LuasPresenterImpl(view, databaseHelper, realTimePassengerInfoAPI);
 
     RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
       @Override
@@ -76,7 +76,7 @@ public class LuasPresenterimplTest {
 
   @Test
   public void testNetworkResponse() {
-    when(networkClient.getStopInformation(any(NetworkClient.StopInformationCallback.class), ArgumentMatchers.<String, String>anyMap()))
+    when(realTimePassengerInfoAPI.getStopInformation(any(RealTimePassengerInfoAPI.StopInformationCallback.class), ArgumentMatchers.<String, String>anyMap()))
         .thenReturn(subscription);
     presenter.fetchStops();
     verify(view).showProgress();

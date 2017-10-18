@@ -4,22 +4,28 @@ apply from: '../config/quality.gradle'
 
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     def globalConfig = rootProject.extensions.getByName("ext")
-    compileSdkVersion globalConfig.getAt("androidCompileSdkVersion")
-    buildToolsVersion globalConfig.getAt("androidBuildToolsVersion")
+    compileSdkVersion globalConfig["androidCompileSdkVersion"]
+    buildToolsVersion globalConfig["androidBuildToolsVersion"]
 
     defaultConfig {
         applicationId "com.ianarbuckle.fitnow"
-        minSdkVersion globalConfig.getAt("androidMinSdkVersion")
-        targetSdkVersion globalConfig.getAt("androidTargetSdkVersion")
+        minSdkVersion globalConfig["androidMinSdkVersion"]
+        targetSdkVersion globalConfig["androidTargetSdkVersion"]
         versionCode calculateVersionCode()
         versionName "1.0"
 
         def version = versionName + '.' + System.env.BUILD_NUMBER
         buildConfigField "String", "VERSION", "\"$version\""
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -48,6 +54,10 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -62,7 +72,6 @@ dependencies {
     compile googleDependencies.googleMaps
     compile googleDependencies.googleLocation
     compile googleDependencies.googleGcm
-    compile googleDependencies.googleAnalytics
     compile googleDependencies.multidexSupportLib
     compile googleDependencies.gson
     compile googleDependencies.googleAuth
@@ -97,15 +106,14 @@ dependencies {
     compile thirdPartyDependencies.rxJava
     compile thirdPartyDependencies.rxAndroid
     compile thirdPartyDependencies.rxBinding
+    compile thirdPartyDependencies.rxBindingRV
+    compile thirdPartyDependencies.rxBindingAppCompat
+    compile thirdPartyDependencies.rxBindingV3
     compile thirdPartyDependencies.rxJavaAdapter
 
     // Dagger
     apt thirdPartyDependencies.daggerCompiler
     compile thirdPartyDependencies.dagger
-
-    // LeakCanary
-    debugCompile thirdPartyDependencies.leakCanaryDebug
-    releaseCompile thirdPartyDependencies.leakCanaryRelease
 
     // Test
     def testDependencies = rootProject.ext.testDependencies
@@ -116,7 +124,6 @@ dependencies {
     //    instrumentation testing
     androidTestCompile googleDependencies.annotationsSupportLib
     androidTestCompile testDependencies.testRunner
-    androidTestCompile testDependencies.espresso
 
     // Quality
     provided thirdPartyDependencies.findBugs

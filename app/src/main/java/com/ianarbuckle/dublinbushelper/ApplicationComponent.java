@@ -5,7 +5,7 @@ import android.content.Context;
 import com.ianarbuckle.dublinbushelper.firebase.authentication.FirebaseAuthHelper;
 import com.ianarbuckle.dublinbushelper.firebase.database.DatabaseHelper;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 
 import dagger.Component;
 
@@ -17,7 +17,7 @@ import dagger.Component;
 @Component(modules = AppContextModule.class)
 public interface ApplicationComponent {
   Context getContext();
-  NetworkClient getNetworkClient();
+  RealTimePassengerInfoAPI getNetworkClient();
   FirebaseAuthHelper getAuthHelper();
   DatabaseHelper getDatabaseHelper();
   LocationHelper getLocationHelper();

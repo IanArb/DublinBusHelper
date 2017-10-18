@@ -36,7 +36,7 @@ ext {
     okHttpVersion = '3.2.0'
     rxAndroidVersion = '1.2.1'
     rxBindingVersion = '1.0.0'
-    rxJavaVersion = '1.2.5'
+    rxJavaVersion = '1.2.1'
     daggerVersion = '2.11'
     retrofitVersion = '2.1.0'
     javaxVersion = '1.2'
@@ -99,6 +99,9 @@ ext {
             okHttpLogging      : "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
             rxAndroid          : "io.reactivex:rxandroid:${rxAndroidVersion}",
             rxBinding          : "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}",
+            rxBindingAppCompat : "com.jakewharton.rxbinding:rxbinding-appcompat-v7:${rxBindingVersion}",
+            rxBindingV3        : "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}",
+            rxBindingRV        : "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:${rxBindingVersion}",
             rxJava             : "io.reactivex:rxjava:${rxJavaVersion}",
             rxJavaAdapter      : "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}",
             retrofit           : "com.squareup.retrofit2:retrofit:${retrofitVersion}",

@@ -4,7 +4,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.ianarbuckle.dublinbushelper.helper.LocationHelper;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.RealTimeInfo;
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.Result;
-import com.ianarbuckle.dublinbushelper.network.NetworkClient;
+import com.ianarbuckle.dublinbushelper.network.RealTimePassengerInfoAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +28,16 @@ public class SchedulePresenterImpl implements SchedulePresenter {
   LocationHelper locationHelper;
 
   @Inject
-  NetworkClient networkClient;
+  RealTimePassengerInfoAPI realTimePassengerInfoAPI;
 
   private List<Result> resultList;
 
   private CompositeSubscription subscriptions;
 
-  public SchedulePresenterImpl(LocationHelper locationHelper, ScheduleView view, NetworkClient networkClient) {
+  public SchedulePresenterImpl(LocationHelper locationHelper, ScheduleView view, RealTimePassengerInfoAPI realTimePassengerInfoAPI) {
     this.view = view;
     this.locationHelper = locationHelper;
-    this.networkClient = networkClient;
+    this.realTimePassengerInfoAPI = realTimePassengerInfoAPI;
     this.subscriptions = new CompositeSubscription();
     resultList = new ArrayList<>();
   }
@@ -46,7 +46,7 @@ public class SchedulePresenterImpl implements SchedulePresenter {
   public void fetchSchedules(String stopId) {
     view.showProgress();
 
-    Subscription subscription = networkClient.getRealTimeInformation(new NetworkClient.RealTimeInformationCallback() {
+    Subscription subscription = realTimePassengerInfoAPI.getRealTimeInformation(new RealTimePassengerInfoAPI.RealTimeInformationCallback() {
       @Override
       public void onSuccess(RealTimeInfo realTimeInfo) {
         view.hideProgress();
