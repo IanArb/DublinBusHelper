@@ -8,24 +8,17 @@ allprojects {
 
 ext {
     // Android versions
-    androidBuildToolsVersion = '26.0.1'
+    androidBuildToolsVersion = '26.0.2'
     androidCompileSdkVersion = 26
     androidTargetSdkVersion = 26
     androidMinSdkVersion = 19
 
     // Google versions
     androidSupportLibVersion = '26.0.1'
-    googlePlayServicesVersion = '10.0.1'
+    googlePlayServicesVersion = '11.0.4'
     mapUtilsVersion = '0.3.4'
     multidexSupportVersion = '1.0.1'
     gsonVersion = '2.7'
-    googleAuthVersion = '10.0.1'
-    firebaseDatabaseVersion = '10.0.1'
-    firebaseAuthVersion = '10.0.1'
-    firebaseConfigVersion = '10.0.1'
-    firebaseInviteVersion = '10.0.1'
-    firebaseMessagingVersion = '10.0.1'
-    firebaseCrashVersion = '10.0.1'
     firebaseUIVersion = '1.1.0'
 
     // Third party versions
@@ -72,17 +65,17 @@ ext {
             googleMaps           : "com.google.android.gms:play-services-maps:${googlePlayServicesVersion}",
             googleGcm            : "com.google.android.gms:play-services-gcm:${googlePlayServicesVersion}",
             gson                 : "com.google.code.gson:gson:${gsonVersion}",
-            googleAuth           : "com.google.android.gms:play-services-auth:${googleAuthVersion}",
+            googleAuth           : "com.google.android.gms:play-services-auth:${googlePlayServicesVersion}",
             coreUtils            : "com.android.support:support-core-utils:${androidSupportLibVersion}"
     ]
 
     firebaseDependencies = [
-            firebaseDatabase     : "com.google.firebase:firebase-database:${firebaseDatabaseVersion}",
-            firebaseAuth         : "com.google.firebase:firebase-auth:${firebaseAuthVersion}",
-            firebaseConfig       : "com.google.firebase:firebase-config:${firebaseConfigVersion}",
-            firebaseInvite       : "com.google.android.gms:play-services-appinvite:${firebaseInviteVersion}",
-            firebaseMessage      : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
-            firebaseCrash        : "com.google.firebase:firebase-crash:${firebaseCrashVersion}",
+            firebaseDatabase     : "com.google.firebase:firebase-database:${googlePlayServicesVersion}",
+            firebaseAuth         : "com.google.firebase:firebase-auth:${googlePlayServicesVersion}",
+            firebaseConfig       : "com.google.firebase:firebase-config:${googlePlayServicesVersion}",
+            firebaseInvite       : "com.google.android.gms:play-services-appinvite:${googlePlayServicesVersion}",
+            firebaseMessage      : "com.google.firebase:firebase-messaging:${googlePlayServicesVersion}",
+            firebaseCrash        : "com.google.firebase:firebase-crash:${googlePlayServicesVersion}",
             firebaseUIDatabase   : "com.firebaseui:firebase-ui-database:${firebaseUIVersion}"
     ]
 

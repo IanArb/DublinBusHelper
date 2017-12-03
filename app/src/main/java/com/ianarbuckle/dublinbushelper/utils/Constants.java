@@ -36,6 +36,7 @@ public class Constants {
   public static final String PHOTO_KEY = "photoUrl";
   public static final String DEFAULT_KEY = "";
   public static final String STOPID_KEY = "stopId";
+  public static final String ROUTE_KEY = "routeId";
   public static final String LAT_KEY = "lat";
   public static final String LONG_KEY = "long";
   public static final String DISPLAYNAME_KEY = "displayName";

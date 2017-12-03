@@ -1,6 +1,7 @@
 package com.ianarbuckle.dublinbushelper.helper
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Build
@@ -34,8 +35,8 @@ import com.ianarbuckle.dublinbushelper.utils.PermissionsManager
 class LocationHelperImpl(private val context: Context) : LocationHelper, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private var map: GoogleMap? = null
     private var googleApiClient: GoogleApiClient? = null
-    internal lateinit var locationRequest: LocationRequest
-    internal lateinit var lastLocation: Location
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var lastLocation: Location
     private var currentLocation: Marker? = null
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -49,6 +50,7 @@ class LocationHelperImpl(private val context: Context) : LocationHelper, GoogleA
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun initMap(googleMap: GoogleMap) {
         map = googleMap
 
@@ -73,6 +75,7 @@ class LocationHelperImpl(private val context: Context) : LocationHelper, GoogleA
         googleApiClient?.connect()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onConnected(bundle: Bundle?) {
         locationRequest = LocationRequest()
         locationRequest.interval = 1000
@@ -116,6 +119,7 @@ class LocationHelperImpl(private val context: Context) : LocationHelper, GoogleA
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onRequestPermission() {
         buildGoogleApiClient()
         if (isLocationPermissionGranted) {

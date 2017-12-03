@@ -1,6 +1,8 @@
 package com.ianarbuckle.dublinbushelper.network;
 
 import com.ianarbuckle.dublinbushelper.models.realtimestopinfo.RealTimeInfo;
+import com.ianarbuckle.dublinbushelper.models.routeinformation.RouteInformation;
+import com.ianarbuckle.dublinbushelper.models.routelistinformation.RouteListInformation;
 import com.ianarbuckle.dublinbushelper.models.stopinfo.StopInformation;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 
@@ -50,6 +52,14 @@ public class RealTimePassengerInfoAPI {
 
   public Observable<StopInformation> getStopInformation(Map<String, String> dataMap) {
     return apiService.getStopInfo(dataMap);
+  }
+
+  public Observable<RouteListInformation> getRouteListInformation(String operator) {
+    return apiService.getRouteListInfo(operator);
+  }
+
+  public Observable<RouteInformation> getRouteInformation(Map<String, String> stringMap) {
+    return apiService.getRouteInfo(stringMap);
   }
 
   public interface RealTimeInformationCallback {

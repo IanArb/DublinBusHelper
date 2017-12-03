@@ -1,10 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply from: '../config/quality.gradle'
-
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'me.tatarka.retrolambda'
+apply from: '../config/quality.gradle'
 
 android {
     def globalConfig = rootProject.extensions.getByName("ext")
@@ -12,11 +9,12 @@ android {
     buildToolsVersion globalConfig["androidBuildToolsVersion"]
 
     defaultConfig {
-        applicationId "com.ianarbuckle.fitnow"
+        applicationId "com.ianarbuckle.dublinbushelper"
         minSdkVersion globalConfig["androidMinSdkVersion"]
         targetSdkVersion globalConfig["androidTargetSdkVersion"]
         versionCode calculateVersionCode()
         versionName "1.0"
+        multiDexEnabled true
 
         def version = versionName + '.' + System.env.BUILD_NUMBER
         buildConfigField "String", "VERSION", "\"$version\""
@@ -41,12 +39,15 @@ android {
 
     productFlavors {
         snapshot {
+            flavorDimensions "snapshot"
             applicationId "com.ianarbuckle.dublinbushelper.snapshot"
         }
         staging {
+            flavorDimensions "staging"
             applicationId "com.ianarbuckle.dublinbushelper.staging"
         }
         production {
+            flavorDimensions "production"
             applicationId "com.ianarbuckle.dublinbushelper"
         }
     }
@@ -79,6 +80,7 @@ dependencies {
     compile googleDependencies.supportV13Lib
 
     //Firebase dependencies
+    def firebaseDependencies = rootProject.ext.firebaseDependencies
     compile firebaseDependencies.firebaseDatabase
     compile firebaseDependencies.firebaseAuth
     compile firebaseDependencies.firebaseConfig
@@ -91,7 +93,7 @@ dependencies {
     // Third party dependencies
     def thirdPartyDependencies = rootProject.ext.thirdPartyDependencies
     compile thirdPartyDependencies.butterKnife
-    apt thirdPartyDependencies.butterKnifeCompiler
+    annotationProcessor thirdPartyDependencies.butterKnifeCompiler
     compile thirdPartyDependencies.okHttp
     compile thirdPartyDependencies.okHttpUrlConnection
     compile thirdPartyDependencies.okHttpLogging
@@ -112,7 +114,7 @@ dependencies {
     compile thirdPartyDependencies.rxJavaAdapter
 
     // Dagger
-    apt thirdPartyDependencies.daggerCompiler
+    annotationProcessor thirdPartyDependencies.daggerCompiler
     compile thirdPartyDependencies.dagger
 
     // Test
@@ -128,10 +130,7 @@ dependencies {
     // Quality
     provided thirdPartyDependencies.findBugs
     compile thirdPartyDependencies.javax
-
-    //Kotlin
-    compile kotlinDependencies.kotlinPlugin
-    compile kotlinDependencies.anko
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 buildscript {

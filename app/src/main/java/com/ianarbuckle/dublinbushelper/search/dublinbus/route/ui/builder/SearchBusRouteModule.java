@@ -2,10 +2,13 @@ package com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.builder;
 
 import android.content.Context;
 
-import com.ianarbuckle.dublinbushelper.search.dublinbus.route.builder.DefaultSearchBusRouteInjector;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.route.builder.SearchBusRouteInjector;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.DefaultSearchRouteView;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.SearchRouteView;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.SearchRouteFragment;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.core.view.DefaultSearchRouteView;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.core.view.SearchRouteView;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.core.presenter.DefaultSearchRoutePresenter;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.core.presenter.SearchRoutePresenter;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.wireframe.DefaultSearchRouteWireframe;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.wireframe.SearchRouteWireframe;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,6 +20,11 @@ import dagger.Provides;
 @SearchBusRouteScope
 @Module
 public class SearchBusRouteModule {
+  private final SearchRouteFragment fragment;
+
+  public SearchBusRouteModule(SearchRouteFragment fragment) {
+    this.fragment = fragment;
+  }
 
   @Provides
   SearchRouteView providesRouteView(Context context) {
@@ -24,7 +32,12 @@ public class SearchBusRouteModule {
   }
 
   @Provides
-  SearchBusRouteInjector provideInjector() {
-    return new DefaultSearchBusRouteInjector();
+  SearchRouteWireframe providesWireframe() {
+    return new DefaultSearchRouteWireframe(fragment);
+  }
+
+  @Provides
+  SearchRoutePresenter providesPresenter(SearchRouteView view, SearchRouteWireframe wireframe) {
+    return new DefaultSearchRoutePresenter(view, wireframe);
   }
 }

@@ -39,7 +39,7 @@ public class LoginPresenterImpl implements LoginPresenter {
   private RequestListener provideLoginCallback() {
     return new RequestListener() {
       @Override
-      public void onSucess() {
+      public void onSuccess() {
         view.hideProgressDialog();
         view.onLogin();
         view.onSuccess();

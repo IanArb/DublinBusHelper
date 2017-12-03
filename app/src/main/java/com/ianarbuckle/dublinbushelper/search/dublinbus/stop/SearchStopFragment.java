@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ianarbuckle.dublinbushelper.BaseFragment;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.ui.core.view.SearchStopView;
 import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.builder.DefaultSearchStopInjector;
 import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.builder.SearchStopInjector;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.ui.SearchStopView;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.ui.presenter.SearchStopPresenter;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.ui.core.presenter.SearchStopPresenter;
 import com.ianarbuckle.dublinbushelper.utils.Constants;
 
 import javax.inject.Inject;
@@ -42,9 +42,9 @@ public class SearchStopFragment extends BaseFragment {
   }
 
   @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    presenter.onCreate();
+  public void onStart() {
+    super.onStart();
+    presenter.onStart();
   }
 
   @Override

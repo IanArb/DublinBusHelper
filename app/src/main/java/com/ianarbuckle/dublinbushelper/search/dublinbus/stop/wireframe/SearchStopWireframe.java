@@ -7,5 +7,5 @@ package com.ianarbuckle.dublinbushelper.search.dublinbus.stop.wireframe;
 
 public interface SearchStopWireframe {
   void onClickCard();
-  void onClickContinue();
+  void onStopClickContinue();
 }

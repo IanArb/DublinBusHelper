@@ -6,6 +6,6 @@ package com.ianarbuckle.dublinbushelper.firebase
  */
 
 interface RequestListener {
-    fun onSucess()
+    fun onSuccess()
     fun onFailure()
 }

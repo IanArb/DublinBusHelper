@@ -3,7 +3,7 @@ package com.ianarbuckle.dublinbushelper.search.dublinbus.stop.wireframe;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import com.ianarbuckle.dublinbushelper.search.selection.SelectionActivity;
+import com.ianarbuckle.dublinbushelper.search.searchlist.StopSearchListActivity;
 
 /**
  * Created by Ian Arbuckle on 06/10/2017.
@@ -19,11 +19,11 @@ public class DefaultSearchStopWireframe implements SearchStopWireframe {
 
   @Override
   public void onClickCard() {
-    SelectionActivity.init(fragment.getActivity());
+    StopSearchListActivity.init(fragment.getActivity());
   }
 
   @Override
-  public void onClickContinue() {
+  public void onStopClickContinue() {
     Toast.makeText(fragment.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
   }
 }
