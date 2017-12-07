@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
@@ -59,8 +60,7 @@ public class SearchPagerActivity extends BaseActivity {
 
   private void initTabLayout() {
     tabLayout.addTab(tabLayout.newTab().setText("Route"));
-    tabLayout.addTab(tabLayout.newTab().setText("RouteStop"));
-    tabLayout.addTab(tabLayout.newTab().setText("News"));
+    tabLayout.addTab(tabLayout.newTab().setText("Stop"));
   }
 
   private void initPager() {
@@ -94,7 +94,7 @@ public class SearchPagerActivity extends BaseActivity {
     }
   }
 
-  private class SearchPagerAdapter extends FragmentStatePagerAdapter {
+  private class SearchPagerAdapter extends FragmentPagerAdapter {
     private final int numOfTabs;
 
     public SearchPagerAdapter(FragmentManager fragmentManager, int numOfTabs) {
@@ -109,8 +109,6 @@ public class SearchPagerActivity extends BaseActivity {
           return SearchRouteFragment.newInstance();
         case 1:
           return SearchStopFragment.newInstance();
-        case 2:
-          return BlankFragment.Companion.newInstance();
       }
       return null;
     }

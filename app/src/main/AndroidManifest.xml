@@ -61,7 +61,12 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".search.selection.SelectionActivity"
+            android:name=".search.searchlist.route.RouteSearchListActivity"
+            android:parentActivityName=".search.SearchPagerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".search.searchlist.StopSearchListActivity"
             android:parentActivityName=".search.SearchPagerActivity"
             android:screenOrientation="portrait"/>
 

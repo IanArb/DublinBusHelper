@@ -48,7 +48,7 @@ public class RegisterPresenterImpl implements RegisterPresenter {
   private RequestListener provideRegisterCallback() {
     return new RequestListener() {
       @Override
-      public void onSucess() {
+      public void onSuccess() {
         view.onSuccess();
         view.hideProgressDialog();
       }

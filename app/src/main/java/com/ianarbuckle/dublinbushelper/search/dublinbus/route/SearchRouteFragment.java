@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ianarbuckle.dublinbushelper.BaseFragment;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.route.builder.DefaultSearchBusRouteInjector;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.route.builder.SearchBusRouteInjector;
-import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.SearchRouteView;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.core.view.SearchRouteView;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.ui.core.presenter.SearchRoutePresenter;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.builder.DefaultSearchStopInjector;
+import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.builder.SearchStopInjector;
 
 import javax.inject.Inject;
 
@@ -23,14 +24,29 @@ public class SearchRouteFragment extends BaseFragment {
   @Inject
   SearchRouteView view;
 
+  @Inject
+  SearchRoutePresenter presenter;
+
   public static SearchRouteFragment newInstance() {
     return new SearchRouteFragment();
   }
 
   @Override
   protected void injectDagger() {
-    SearchBusRouteInjector injector = new DefaultSearchBusRouteInjector();
+    SearchStopInjector injector = new DefaultSearchStopInjector();
     injector.inject(this);
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    presenter.onCreate();
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    presenter.onDestroy();
   }
 
   @Nullable

@@ -1,12 +1,7 @@
 package com.ianarbuckle.dublinbushelper.firebase.authentication
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.ianarbuckle.dublinbushelper.firebase.RequestListener
 
@@ -21,11 +16,11 @@ class FirebaseAuthHelperImpl(private val firebaseAuth: FirebaseAuth) : FirebaseA
         val authCredential = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnCompleteListener { task ->
-                    listener.onSucess()
+                    listener.onSuccess()
                     if (!task.isSuccessful) {
                         listener.onFailure()
                     } else {
-                        listener.onSucess()
+                        listener.onSuccess()
                     }
                 }
     }
@@ -33,8 +28,8 @@ class FirebaseAuthHelperImpl(private val firebaseAuth: FirebaseAuth) : FirebaseA
     override fun registerUser(email: String, password: String, listener: RequestListener) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        listener.onSucess()
+                    if (task.isSuccessful) {
+                        listener.onSuccess()
                     } else {
                         listener.onFailure()
                     }
@@ -44,8 +39,8 @@ class FirebaseAuthHelperImpl(private val firebaseAuth: FirebaseAuth) : FirebaseA
     override fun signInUser(email: String, password: String, listener: RequestListener) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        listener.onSucess()
+                    if (task.isSuccessful) {
+                        listener.onSuccess()
                     } else {
                         listener.onFailure()
                     }
@@ -58,14 +53,14 @@ class FirebaseAuthHelperImpl(private val firebaseAuth: FirebaseAuth) : FirebaseA
         }
     }
 
-    override val isUserSignedIn: Boolean
-        get() = firebaseAuth.currentUser != null
-
     override val userDisplayName: String?
         get() {
             val firebaseUser = firebaseAuth.currentUser
             return firebaseUser?.displayName
         }
+
+    override val isUserSignedIn: Boolean
+        get() = !userDisplayName.isNullOrEmpty()
 
     override val userPhoto: String?
         get() {

@@ -1,5 +1,6 @@
 package com.ianarbuckle.dublinbushelper.search.dublinbus.stop.builder;
 
+import com.ianarbuckle.dublinbushelper.search.dublinbus.route.SearchRouteFragment;
 import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.SearchStopFragment;
 
 /**
@@ -9,4 +10,5 @@ import com.ianarbuckle.dublinbushelper.search.dublinbus.stop.SearchStopFragment;
 
 public interface SearchStopInjector {
   void inject(SearchStopFragment fragment);
+  void inject(SearchRouteFragment fragment);
 }
